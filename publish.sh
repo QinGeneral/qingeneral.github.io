@@ -6,4 +6,5 @@ gitbook build
 cp -r _book/* .
 git add .
 git commit -m "publish book"
-git push --set-upstream github gh-pages
+git push -f --set-upstream github gh-pages
+git checkout main
