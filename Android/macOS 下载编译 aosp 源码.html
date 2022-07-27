@@ -1,0 +1,1124 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>macOS 下载编译 aosp 源码 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="RePlugin 插件管理与权限管理.html" />
+    
+    
+    <link rel="prev" href="Android内存泄漏场景及解决方法.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    操作系统
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../操作系统/谈谈进程间通信.html">
+            
+                <a href="../操作系统/谈谈进程间通信.html">
+            
+                    
+                    谈谈进程间通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    计算机网络
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../计算机网络/计算机网络基础.html">
+            
+                <a href="../计算机网络/计算机网络基础.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    面试
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../面试/如何写好简历的指北.html">
+            
+                <a href="../面试/如何写好简历的指北.html">
+            
+                    
+                    如何写好简历的指北
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                <a href="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                    
+                    从 Android 源代码来看『观察者模式』
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                <a href="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                    
+                    从 Android 源码来看“ Builder 模式”
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" >
+            
+                <span>
+            
+                    
+                    算法与数据结构
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                    
+                    算法与数据结构 1：开篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                    
+                    算法与数据结构 2：如何学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                    
+                    算法与数据结构 3：数组与链表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                    
+                    算法与数据结构 4：栈与队列
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                    
+                    算法与数据结构 5：哈希表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                    
+                    算法与数据结构 6：二叉树基础篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    Android
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="四步准备 Android 面试.html">
+            
+                <a href="四步准备 Android 面试.html">
+            
+                    
+                    四步准备 Android 面试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="Android 开发涉及知识的概要.html">
+            
+                <a href="Android 开发涉及知识的概要.html">
+            
+                    
+                    Android 开发涉及知识的概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="Android 四大组件 1：Activity.html">
+            
+                <a href="Android 四大组件 1：Activity.html">
+            
+                    
+                    Android 四大组件 1：Activity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="Android Gradle 概要.html">
+            
+                <a href="Android Gradle 概要.html">
+            
+                    
+                    Android Gradle 概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="Android插件化框架 RePlugin 初探.html">
+            
+                <a href="Android插件化框架 RePlugin 初探.html">
+            
+                    
+                    Android插件化框架 RePlugin 初探
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="Android开发知识概要.html">
+            
+                <a href="Android开发知识概要.html">
+            
+                    
+                    Android开发知识概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="Android内存泄漏场景及解决方法.html">
+            
+                <a href="Android内存泄漏场景及解决方法.html">
+            
+                    
+                    Android内存泄漏场景及解决方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.8" data-path="macOS 下载编译 aosp 源码.html">
+            
+                <a href="macOS 下载编译 aosp 源码.html">
+            
+                    
+                    macOS 下载编译 aosp 源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="RePlugin 插件管理与权限管理.html">
+            
+                <a href="RePlugin 插件管理与权限管理.html">
+            
+                    
+                    RePlugin 插件管理与权限管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="RePlugin 插件启动源码分析.html">
+            
+                <a href="RePlugin 插件启动源码分析.html">
+            
+                    
+                    RePlugin 插件启动源码分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="RePlugin 阅读源码环境搭建.html">
+            
+                <a href="RePlugin 阅读源码环境搭建.html">
+            
+                    
+                    RePlugin 阅读源码环境搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Cocos Creator
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                <a href="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                    
+                    CocosCreator 引擎资源加载与释放原理简析
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../Git/Git 的诞生.html">
+            
+                <a href="../Git/Git 的诞生.html">
+            
+                    
+                    Git 的诞生
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../Git/Git 入门.html">
+            
+                <a href="../Git/Git 入门.html">
+            
+                    
+                    Git 入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                <a href="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                    
+                    Git 之旅：不那么深入理解 Git
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Java
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                <a href="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                    
+                    浅谈 JVM 1：一次编写，到处运行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                <a href="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                    
+                    浅谈 JVM 2：如何阅读字节码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                <a href="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                    
+                    浅谈 JVM 3：指令集及其执行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                <a href="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                    
+                    浅谈 JVM 4：类加载机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                <a href="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                    
+                    浅谈 JVM 5：方法调用机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                <a href="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                    
+                    浅谈 JVM 6：Android 虚拟机对比
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Linux 那些事儿
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                <a href="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                    
+                    apt 和 apt-get 有什么不同之处？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                <a href="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                    
+                    Linux 命令行 Tricks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                <a href="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                    
+                    Linux 终端操作入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Mac OS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../macOS/黑苹果安装与踩坑记.html">
+            
+                <a href="../macOS/黑苹果安装与踩坑记.html">
+            
+                    
+                    黑苹果安装与踩坑记
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >macOS 下载编译 aosp 源码</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605294398.95SmartPic.png" alt=""></p>
+<p>&#x6700;&#x8FD1;&#x5728;&#x8BFB;&#x300A;Android &#x8FDB;&#x9636;&#x6307;&#x5317;&#x300B;&#xFF0C;&#x5F00;&#x7BC7;&#x5C31;&#x662F;&#x4ECB;&#x7ECD;&#x5982;&#x4F55;&#x5728;&#x5B89;&#x88C5;&#x5230; VirtualBox &#x7684; Ubuntu &#x4E0A;&#x8FDB;&#x884C;&#x4E0B;&#x8F7D;&#x548C;&#x7F16;&#x8BD1; aosp&#xFF08;Android Open Source Project&#xFF09;&#x3002;&#x7531;&#x4E8E;&#x6211;&#x7684;&#x7535;&#x8111;&#x662F; macOS&#xFF0C;&#x6240;&#x4EE5;&#x9996;&#x5148;&#x5C1D;&#x8BD5;&#x4E86;&#x5728; macOS &#x4E0A;&#x8FDB;&#x884C;&#x4E0B;&#x8F7D;&#x548C;&#x7F16;&#x8BD1; aosp&#xFF0C;&#x5176;&#x4E2D;&#x78B0;&#x5230;&#x4E86;&#x5F88;&#x591A;&#x95EE;&#x9898;&#xFF0C;&#x6240;&#x4EE5;&#x6574;&#x7406;&#x6B64;&#x6587;&#x51FA;&#x6765;&#xFF0C;&#x7ED9;&#x540E;&#x6765;&#x4EBA;&#x501F;&#x9274;&#x3002;&#x540C;&#x65F6;&#xFF0C;&#x4E5F;&#x5728; Ubuntu &#x4E0A;&#x505A;&#x4E86;&#x5C1D;&#x8BD5;&#xFF0C;&#x95EE;&#x9898;&#x8F83;&#x5C11;&#xFF0C;&#x5176;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x4E5F;&#x4F1A;&#x5728;&#x6700;&#x540E;&#x5217;&#x51FA;&#x3002;</p>
+<p>&#x5B9E;&#x9645;&#x4E0A;&#xFF0C;&#x7F16;&#x8BD1;&#x6700;&#x65B0;&#x7684; aosp &#x6E90;&#x7801;&#xFF0C;&#x662F;&#x652F;&#x6301;&#x6700;&#x65B0;&#x7684; mac sdk 11.0 &#x7684;&#xFF0C;&#x4F46;&#x662F; android-9.0.0 &#x4EE3;&#x7801;&#x6700;&#x65B0;&#x652F;&#x6301;&#x5230; 10.13&#x3002;&#x5C31;&#x4F1A;&#x78B0;&#x5230;&#x4E00;&#x4E9B;&#x95EE;&#x9898;&#x3002;</p>
+<blockquote>
+<p>&#x4E0B;&#x8F7D;&#x7F16;&#x8BD1;&#x73AF;&#x5883;&#xFF1A;<br>&#x7CFB;&#x7EDF;&#xFF1A;<code>macOS Catalina 10.15.6</code><br>aosp &#x76EE;&#x6807;&#x7F16;&#x8BD1;&#x5E73;&#x53F0;&#xFF1A;<code>android-9.0.0_r1</code>  </p>
+</blockquote>
+<p>[TOC]</p>
+<h2 id="1-&#x914D;&#x7F6E;-macos-&#x73AF;&#x5883;">1. &#x914D;&#x7F6E; macOS &#x73AF;&#x5883;</h2>
+<p>&#x7531;&#x4E8E; Git &#x5BF9;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x6BD4;&#x8F83;&#x654F;&#x611F;&#xFF0C;&#x800C;&#x4E0B;&#x8F7D;&#x548C;&#x7BA1;&#x7406; aosp &#x6E90;&#x7801;&#x7528;&#x5230;&#x4E86; Git&#x3002;&#x6240;&#x4EE5;&#x9996;&#x5148;&#x8981;&#x5212;&#x5206;&#x4E00;&#x5757;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x7684;&#x78C1;&#x76D8;&#x51FA;&#x6765;&#x3002;</p>
+<h3 id="&#x521B;&#x5EFA;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x7684;&#x78C1;&#x76D8;">&#x521B;&#x5EFA;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x7684;&#x78C1;&#x76D8;</h3>
+<p>&#x4F7F;&#x7528;&#x4E00;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#x521B;&#x5EFA;&#x4E00;&#x5757;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x3001;&#x65E5;&#x5FD7;&#x5F0F;&#x7684;&#x78C1;&#x76D8;&#x3002;</p>
+<pre><code class="lang-shell">hdiutil create -type SPARSE -fs &#x2018;Case-sensitive Journaled HFS+&#x2019; -size 200g ~/android.dmg
+</code></pre>
+<p>&#x5176;&#x4E2D; size &#x6839;&#x636E;&#x9700;&#x8981;&#x8C03;&#x6574;&#xFF0C;&#x5982;&#x679C;&#x53EA;&#x662F;&#x4E0B;&#x8F7D;&#x6E90;&#x7801;&#xFF0C;100g &#x5DEE;&#x4E0D;&#x591A;&#x591F;&#x7528;&#x3002;&#x5982;&#x679C;&#x8981;&#x7F16;&#x8BD1;&#x5C31;&#x8981; 200g &#x53CA;&#x4EE5;&#x4E0A;&#x3002;&#x5047;&#x5982;&#x540E;&#x7EED;&#x78C1;&#x76D8;&#x7A7A;&#x95F4;&#x4E0D;&#x591F;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x8C03;&#x6574;&#x5DF2;&#x521B;&#x5EFA;&#x7684;&#x78C1;&#x76D8;&#x5927;&#x5C0F;&#xFF1A;</p>
+<blockquote>
+<p>&#x6CE8;&#xFF1A;&#x8FD9;&#x91CC;&#x9700;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x6839;&#x636E;&#x7CFB;&#x7EDF;&#x4E0D;&#x540C;&#xFF0C;&#x521B;&#x5EFA;&#x51FA;&#x7684;&#x78C1;&#x76D8;&#x6587;&#x4EF6;&#x540E;&#x7F00;&#x4E0D;&#x540C;&#xFF0C;&#x5206;&#x522B;&#x53EF;&#x80FD;&#x662F; <code>android.dmg.sparseimage</code> &#x548C; <code>android.dmg</code>&#x3002;&#x6240;&#x4EE5;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x6267;&#x884C;&#x7684;&#x5BF9;&#x5E94;&#x6587;&#x4EF6;&#x540D;&#x4E0D;&#x4E00;&#x81F4;&#x3002;  </p>
+</blockquote>
+<pre><code class="lang-shell">hdiutil resize -size &lt;new-size-you-want&gt;g ~/android.dmg.sparseimage
+</code></pre>
+<p>&#x53EF;&#x4EE5;&#x5728; <code>~/.bash_profile</code> &#x4E2D;&#x6DFB;&#x52A0;&#x4EE5;&#x4E0B;&#x4E24;&#x4E2A;&#x65B9;&#x6CD5;&#x6765;&#x65B9;&#x4FBF;&#x7684;&#x6302;&#x8F7D;&#x3001;&#x5378;&#x8F7D;&#x78C1;&#x76D8;&#xFF0C;&#x6267;&#x884C;&#x65B9;&#x6CD5;&#x524D;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x6267;&#x884C;&#x4E00;&#x4E0B; <code>source ~/.bash_profile</code> &#x5BFC;&#x5165;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<pre><code class="lang-shell"># mount the android file image
+function mountAndroid { hdiutil attach ~/android.dmg.sparseimage -mountpoint /Volumes/android; }
+
+# unmount the android file image
+function umountAndroid() { hdiutil detach /Volumes/android; }
+</code></pre>
+<p>&#x6302;&#x8F7D;&#x4E4B;&#x540E;&#x53EF;&#x4EE5;&#x5728; <code>Finder</code> &#x6216;&#x8005; <code>&#x78C1;&#x76D8;&#x5DE5;&#x5177;</code> &#x4E2D;&#x770B;&#x5230;&#x8BE5;&#x78C1;&#x76D8;&#xFF0C;&#x5176;&#x683C;&#x5F0F;&#x4E3A; MacOS &#x6269;&#x5C55;&#x3001;&#x533A;&#x5206;&#x5927;&#x5C0F;&#x5199;&#x3001;&#x65E5;&#x5FD7;&#x5F0F;&#x78C1;&#x76D8;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#xFF1A;</p>
+<p>&#x53E6;&#x5916;&#xFF0C;&#x5728; macOS &#x4E2D;&#x9ED8;&#x8BA4;&#x540C;&#x65F6;&#x6253;&#x5F00;&#x6587;&#x4EF6;&#x6570;&#x91CF;&#x4E0A;&#x9650;&#x8F83;&#x4F4E;&#xFF0C;&#x5F53;&#x6211;&#x4EEC;&#x5E76;&#x884C;&#x7F16;&#x8BD1; aosp &#x65F6;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x8D85;&#x51FA;&#x6B64;&#x4E0A;&#x9650;&#x3002;&#x6240;&#x4EE5;&#x5982;&#x679C;&#x8BA1;&#x5212;&#x5E76;&#x884C;&#x7F16;&#x8BD1;&#x6E90;&#x7801;&#xFF08;&#x6700;&#x597D;&#x662F;&#x8FD9;&#x6837;&#xFF0C;&#x56E0;&#x4E3A;&#x4EE3;&#x7801;&#x91CF;&#x5B9E;&#x5728;&#x592A;&#x591A;&#x4E86;&#xFF09;&#xFF0C;&#x5C31;&#x9700;&#x8981;&#x8BBE;&#x7F6E;&#x6587;&#x4EF6;&#x63CF;&#x8FF0;&#x7B26;&#x4E0A;&#x9650;&#xFF0C;&#x5C06;&#x4EE5;&#x4E0B;&#x5185;&#x5BB9;&#x6DFB;&#x52A0;&#x5230; <code>~/.bash_profile</code> &#x5373;&#x53EF;&#xFF0C;&#x540C;&#x6837;&#x7684;&#x53EF;&#x80FD;&#x9700;&#x8981;&#x6267;&#x884C; <code>source ~/.bash_profile</code> &#x6765;&#x4F7F;&#x914D;&#x7F6E;&#x751F;&#x6548;&#xFF1A;</p>
+<pre><code class="lang-shell"># set the number of open files to be 1024
+ulimit -S -n 1024
+</code></pre>
+<p>&#x81F3;&#x6B64;&#xFF0C;&#x5173;&#x4E8E;&#x78C1;&#x76D8;&#x6587;&#x4EF6;&#x76F8;&#x5173;&#x7684;&#x5185;&#x5BB9;&#x5C31;&#x8BBE;&#x7F6E;&#x597D;&#x4E86;&#x3002;&#x4E0B;&#x9762;&#x6765;&#x770B;&#x4E00;&#x4E0B;&#x5982;&#x4F55;&#x5B89;&#x88C5;&#x4E0B;&#x8F7D;&#x65F6;&#x4F1A;&#x7528;&#x5230;&#x7684;&#x8F6F;&#x4EF6;&#x3002;</p>
+<h3 id="&#x5B89;&#x88C5;&#x6240;&#x9700;&#x8F6F;&#x4EF6;">&#x5B89;&#x88C5;&#x6240;&#x9700;&#x8F6F;&#x4EF6;</h3>
+<h4 id="&#x5B89;&#x88C5;-xcode">&#x5B89;&#x88C5; Xcode</h4>
+<p>&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#xFF1A;</p>
+<pre><code class="lang-shell">xcode-select --install
+</code></pre>
+<h4 id="&#x4F7F;&#x7528;-homebrew-&#x5B89;&#x88C5;-git">&#x4F7F;&#x7528; homebrew &#x5B89;&#x88C5; Git</h4>
+<p>&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5B89;&#x88C5; homebrew&#xFF1A;<a href="https://brew.sh/" target="_blank">&#x70B9;&#x51FB;&#x8DF3;&#x8F6C; Homebrew &#x5B98;&#x7F51;</a></p>
+<pre><code class="lang-shell">/bin/bash -c &quot;$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)&quot;
+</code></pre>
+<p>&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5B89;&#x88C5;&#x3001;&#x914D;&#x7F6E; Git&#xFF1A;</p>
+<pre><code class="lang-shell"># install git by homebrew
+brew install git
+
+# config git user info
+git config --global user.name &quot;Your Name&quot;
+git config --global user.email &quot;you@example.com&quot;
+</code></pre>
+<h4 id="&#x68C0;&#x67E5;&#x662F;&#x5426;&#x5DF2;&#x5B89;&#x88C5;-python27">&#x68C0;&#x67E5;&#x662F;&#x5426;&#x5DF2;&#x5B89;&#x88C5; python2.7</h4>
+<p>aosp &#x8981;&#x6C42; python2.7 &#x7248;&#x672C;&#xFF0C;python3 &#x5219;&#x4E0D;&#x884C;&#x3002;macOS &#x81EA;&#x5E26;&#x4E86; python2.7 &#x7248;&#x672C;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x8FDB;&#x884C;&#x68C0;&#x67E5;&#xFF1A;</p>
+<pre><code class="lang-shell">python --version
+</code></pre>
+<p>&#x6709;&#x4EE5;&#x4E0B;&#x8F93;&#x51FA;&#x5373;&#x53EF;&#xFF1A;</p>
+<pre><code class="lang-shell">Python 2.7.16
+</code></pre>
+<h4 id="&#x5B89;&#x88C5;-jdk8">&#x5B89;&#x88C5; jdk8</h4>
+<p><a href="https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html" target="_blank">&#x70B9;&#x51FB;&#x4E0B;&#x8F7D; jdk 8</a>&#xFF0C;&#x9009;&#x62E9; macOS &#x7248;&#x672C;&#x8FDB;&#x884C;&#x4E0B;&#x8F7D;&#x5B89;&#x88C5;&#x3002;&#x5B89;&#x88C5;&#x5B8C;&#x6210;&#x4E4B;&#x540E;&#xFF0C;&#x8FD0;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x8FDB;&#x884C;&#x9A8C;&#x8BC1;&#xFF1A;</p>
+<pre><code class="lang-shell">java -version
+</code></pre>
+<h4 id="&#x4E0B;&#x8F7D;-repo-&#x5DE5;&#x5177;">&#x4E0B;&#x8F7D; repo &#x5DE5;&#x5177;</h4>
+<p>aosp &#x6E90;&#x7801;&#x662F;&#x901A;&#x8FC7; Git &#x8FDB;&#x884C;&#x7BA1;&#x7406;&#x7684;&#xFF0C;&#x4F46;&#x662F;&#x7531;&#x4E8E;&#x4EE3;&#x7801;&#x91CF;&#x5DE8;&#x5927;&#xFF0C;&#x5355;&#x7EAF;&#x4F7F;&#x7528; Git  &#x5DF2;&#x7ECF;&#x65E0;&#x6CD5;&#x6EE1;&#x8DB3;&#x65E5;&#x5E38;&#x4FBF;&#x6377;&#x64CD;&#x4F5C;&#x7684;&#x76EE;&#x6807;&#x3002;&#x6240;&#x4EE5; Google &#x4EE5; Git &#x4E3A;&#x57FA;&#x7840;&#xFF0C;&#x4F7F;&#x7528; Python &#x7F16;&#x5199;&#x4E86; repo &#x8FD9;&#x6B3E;&#x5DE5;&#x5177;&#xFF0C;&#x8BA9;&#x5F00;&#x53D1;&#x8005;&#x53EF;&#x4EE5;&#x66F4;&#x65B9;&#x4FBF;&#x8F7B;&#x677E;&#x7684;&#x7BA1;&#x7406;&#x6E90;&#x7801;&#xFF0C;<a href="https://source.android.com/source/developing" target="_blank">&#x70B9;&#x51FB;&#x67E5;&#x770B; repo &#x4F7F;&#x7528;&#x8BE6;&#x60C5;</a>&#x3002;</p>
+<p>&#x9996;&#x5148;&#xFF0C;&#x521B;&#x5EFA; repo &#x5DE5;&#x5177;&#x5B58;&#x653E;&#x6587;&#x4EF6;&#x5939;&#x3002;</p>
+<pre><code class="lang-shell">mkdir ~/bin
+</code></pre>
+<p>&#x7136;&#x540E;&#xFF0C;&#x4E0B;&#x8F7D; repo&#xFF0C;&#x5E76;&#x8D4B;&#x4E88; repo &#x53EF;&#x6267;&#x884C;&#x6743;&#x9650;&#x3002;</p>
+<pre><code class="lang-shell">curl https://storage.googleapis.com/git-repo-downloads/repo &gt; ~/bin/repo
+
+chmod a+x ~/bin/repo
+</code></pre>
+<p>&#x6700;&#x540E;&#xFF0C;&#x5C06; repo &#x5DE5;&#x5177;&#x6DFB;&#x52A0;&#x5230; PATH &#x8DEF;&#x5F84;&#xFF0C;&#x8FD9;&#x6837;&#x6211;&#x4EEC;&#x53EF;&#x4EE5;&#x5728;&#x4E4B;&#x540E;&#x5728;&#x7EC8;&#x7AEF;&#x76F4;&#x63A5;&#x8FDB;&#x884C;&#x8BBF;&#x95EE;&#xFF0C;&#x65E0;&#x9700;&#x5173;&#x5FC3; repo &#x6240;&#x5728;&#x8DEF;&#x5F84;&#x3002;&#x5728; <code>~/.bash_profile</code>  &#x6DFB;&#x52A0;&#x4EE5;&#x4E0B;&#x5185;&#x5BB9;&#x5373;&#x53EF;&#xFF1A;</p>
+<pre><code class="lang-shell">export PATH=~/bin:$PATH
+</code></pre>
+<p>&#x81F3;&#x6B64;&#xFF0C;&#x76F8;&#x5173;&#x8F6F;&#x4EF6;&#x5B89;&#x88C5;&#x5B8C;&#x6BD5;&#x3002;&#x63A5;&#x4E0B;&#x6765;&#x5F00;&#x59CB;&#x4E0B;&#x8F7D;&#x6E90;&#x7801;&#x3002;</p>
+<h2 id="2-&#x4F7F;&#x7528;-repo-&#x4E0B;&#x8F7D;&#x6E90;&#x7801;">2. &#x4F7F;&#x7528; repo &#x4E0B;&#x8F7D;&#x6E90;&#x7801;</h2>
+<h3 id="&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x5939;">&#x521B;&#x5EFA;&#x6587;&#x4EF6;&#x5939;</h3>
+<p>&#x9996;&#x5148;&#xFF0C;&#x8FDB;&#x5165;&#x6211;&#x4EEC;&#x4E4B;&#x524D;&#x521B;&#x5EFA;&#x3001;&#x5E76;&#x6302;&#x8F7D;&#x7684;&#x78C1;&#x76D8;&#xFF0C;&#x521B;&#x5EFA;&#x5E76;&#x8FDB;&#x5165; aosp &#x6E90;&#x7801;&#x4E0B;&#x8F7D;&#x6587;&#x4EF6;&#x5939;&#x3002;</p>
+<pre><code class="lang-shell">cd /Volumns/android
+mkdir aosp
+cd aosp
+</code></pre>
+<h3 id="&#x521D;&#x59CB;&#x5316;&#x7248;&#x672C;&#x5E93;">&#x521D;&#x59CB;&#x5316;&#x7248;&#x672C;&#x5E93;</h3>
+<p>&#x7136;&#x540E;&#xFF0C;&#x521D;&#x59CB;&#x5316;&#x4E00;&#x4E2A;&#x6307;&#x5B9A;&#x7248;&#x672C;&#x7684; aosp &#x6E90;&#x7801;&#x5E93;&#x3002;&#x5982;&#x679C;&#x547D;&#x4EE4;&#x540E;&#x8DDF;&#x4E0A; -b &#x53C2;&#x6570;&#xFF0C;&#x5219;&#x4EE3;&#x8868;&#x521D;&#x59CB;&#x5316;&#x6307;&#x5B9A;&#x7248;&#x672C;&#x7684;&#x6E90;&#x7801;&#x5E93;&#xFF0C;&#x5426;&#x5219;&#x4E3A;&#x9ED8;&#x8BA4;&#x7684; master &#x5206;&#x652F;&#x3002;&#x5206;&#x652F;&#x5217;&#x8868;&#x53EF;&#x4EE5;&#x53C2;&#x8003; <a href="https://source.android.com/source/build-numbers#source-code-tags-and-builds" target="_blank">aosp &#x4EE3;&#x53F7;&#x3001;&#x6807;&#x8BB0;&#x548C;&#x7EC6;&#x5206;&#x7248;&#x672C;&#x53F7;</a>&#x3002;&#x521D;&#x59CB;&#x5316;&#x4EE3;&#x7801;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell"># default is master
+repo init -u https://android.googlesource.com/platform/manifest
+
+# define 9.0.0_r1 branch
+repo init -u https://android.googlesource.com/platform/manifest -b android-9.0.0_r1
+</code></pre>
+<p>&#x5982;&#x679C;&#x5B58;&#x5728;&#x7F51;&#x7EDC;&#x95EE;&#x9898;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x6E05;&#x534E;&#x955C;&#x50CF;&#x6E90;&#xFF0C;&#x5177;&#x4F53;&#x53EF;&#x4EE5;&#x53C2;&#x8003; <a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank">AOSP &#x6E05;&#x534E;&#x5927;&#x5B66;&#x5F00;&#x6E90;&#x8F6F;&#x4EF6;&#x955C;&#x50CF;&#x7AD9;</a>&#x3002;&#x8FD9;&#x91CC;&#x8981;&#x6CE8;&#x610F;&#x7684;&#x662F;&#xFF0C;&#x5982;&#x679C;&#x5355;&#x7EAF;&#x9605;&#x8BFB;&#x4EE3;&#x7801;&#x4F7F;&#x7528;&#xFF0C;&#x4F7F;&#x7528;&#x6E05;&#x534E;&#x6E90;&#x5373;&#x53EF;&#x3002;&#x5982;&#x679C;&#x8BA1;&#x5212;&#x7F16;&#x8BD1;&#x4EE3;&#x7801;&#xFF0C;&#x5EFA;&#x8BAE;&#x80FD;&#x591F;&#x4F7F;&#x7528; Google &#x5B98;&#x65B9;&#x6E90;&#x5C31;&#x7528;&#x5B98;&#x65B9;&#x6E90;&#xFF0C;&#x56E0;&#x4E3A;&#x6E05;&#x534E;&#x6E90;&#x5B58;&#x5728;&#x6CA1;&#x6709;&#x540C;&#x6B65;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x53EF;&#x80FD;&#x4F1A;&#x9020;&#x6210;&#x4E00;&#x4E9B;&#x4E0D;&#x5FC5;&#x8981;&#x7684;&#x9EBB;&#x70E6;&#x3002;</p>
+<blockquote>
+<p>tips&#xFF1A;<br>&#x4F7F;&#x7528;&#x6E05;&#x534E;&#x6E90;&#x5C3D;&#x91CF;&#x5728;&#x591C;&#x95F4;&#x8FDB;&#x884C;&#xFF0C;&#x767D;&#x5929;&#x6E05;&#x534E;&#x6E90;&#x8BF7;&#x6C42;&#x91CF;&#x5927;&#xFF0C;&#x4E0B;&#x8F7D;&#x6E90;&#x7801;&#x5341;&#x5206;&#x5BB9;&#x6613;&#x4E2D;&#x65AD;&#x3002;&#x665A;&#x4E0A;&#x5219;&#x6BD4;&#x8F83;&#x987A;&#x7545;&#x3002;  </p>
+</blockquote>
+<p>&#x5982;&#x6709;&#x4E0B;&#x56FE;&#x8F93;&#x51FA;&#x5373;&#x4E3A;&#x521D;&#x59CB;&#x5316;&#x6210;&#x529F;&#xFF1A;</p>
+<p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605290827.63SmartPic.png" alt="initSuccess"></p>
+<h3 id="&#x4E0B;&#x8F7D;&#x6E90;&#x7801;">&#x4E0B;&#x8F7D;&#x6E90;&#x7801;</h3>
+<p>&#x5728;&#x5DF2;&#x7ECF;&#x521D;&#x59CB;&#x5316;&#x597D;&#x7684; aosp &#x6E90;&#x7801;&#x76EE;&#x5F55;&#x4E0B;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x5373;&#x53EF;&#x5F00;&#x59CB;&#x4E0B;&#x8F7D;&#x6E90;&#x7801;&#x3002;</p>
+<pre><code class="lang-shell">repo sync
+</code></pre>
+<p>&#x5982;&#x4E0B;&#x56FE;&#x8F93;&#x51FA;&#x5373;&#x4E3A;&#x4E0B;&#x8F7D;&#x6210;&#x529F;&#xFF1A;</p>
+<p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605290938.12SmartPic.png" alt="downloadSuccess"></p>
+<p>&#x6B64;&#x65F6;&#xFF0C;&#x5355;&#x5355;&#x4E0B;&#x8F7D; android-9.0.0 &#x7684;&#x4EE3;&#x7801;&#x5DF2;&#x7ECF;&#x5360;&#x7528; 99G &#x4E86;&#x3002;&#x5982;&#x4E0B;&#x56FE;&#x6240;&#x793A;&#x3002;</p>
+<p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605302350.04SmartPic.png" alt=""></p>
+<h2 id="3-&#x6784;&#x5EFA;&#x6E90;&#x7801;">3. &#x6784;&#x5EFA;&#x6E90;&#x7801;</h2>
+<h3 id="aosp-&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x7B80;&#x4ECB;">aosp &#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x7B80;&#x4ECB;</h3>
+<p>aosp &#x539F;&#x672C;&#x662F;&#x4F7F;&#x7528; make &#x8FDB;&#x884C;&#x6784;&#x5EFA;&#x6E90;&#x7801;&#x3002;&#x4F46;&#x662F;&#x7531;&#x4E8E;&#x5728; Android &#x4E0A; make &#x5341;&#x5206;&#x7F13;&#x6162;&#xFF0C;&#x6613;&#x51FA;&#x9519;&#x7B49;&#x7B49;&#x539F;&#x56E0;&#xFF0C;Google &#x8F6C;&#x800C;&#x4F7F;&#x7528;&#x7531; Go &#x8BED;&#x8A00;&#x7F16;&#x5199;&#x7684; Soong &#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x3002;Soong &#x662F; make &#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x7684;&#x66FF;&#x4EE3;&#x54C1;&#xFF0C;make &#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x4F7F;&#x7528; .mk &#x6587;&#x4EF6;&#x8FDB;&#x884C;&#x4E66;&#x5199;&#x7F16;&#x8BD1;&#x89C4;&#x5219;&#xFF0C;Soong &#x5219;&#x662F;&#x4F7F;&#x7528; Blueprint &#x7684; .bp &#x6587;&#x4EF6;&#x4E66;&#x5199;&#x3002;.bp &#x6587;&#x4EF6;&#x662F;&#x4E00;&#x79CD;&#x7C7B;&#x4F3C; JSON &#x7684;&#x8BED;&#x6CD5;&#x7ED3;&#x6784;&#xFF0C;&#x66F4;&#x52A0;&#x7B80;&#x5355;&#x660E;&#x4E86;&#x3002;Soong &#x6700;&#x7EC8;&#x5C06; .bp &#x6587;&#x4EF6;&#x7F16;&#x8BD1;&#x6210; ninja &#x6587;&#x4EF6;&#xFF0C;&#x8FDB;&#x800C;&#x7531; ninjia &#x8FDB;&#x884C;&#x7F16;&#x8BD1;&#x3002;ninjia &#x662F;&#x4E00;&#x79CD;&#x8FFD;&#x6C42;&#x7F16;&#x8BD1;&#x901F;&#x5EA6;&#x7684;&#x5C0F;&#x578B;&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#xFF0C;&#x5176;&#x8BBE;&#x8BA1;&#x76EE;&#x6807;&#x662F;&#x5D4C;&#x5165;&#x5230;&#x4E00;&#x4E2A;&#x9AD8;&#x7EA7;&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x4E2D;&#xFF0C;&#x8FFD;&#x6C42;&#x5C3D;&#x53EF;&#x80FD;&#x5FEB;&#x7684;&#x7F16;&#x8BD1;&#x901F;&#x5EA6;&#x3002;&#x5176;&#x6784;&#x5EFA;&#x6587;&#x4EF6;&#x53EF;&#x4EE5;&#x8BFB;&#x61C2;&#x4F46;&#x662F;&#x5E76;&#x4E0D;&#x9002;&#x5408;&#x624B;&#x52A8;&#x7F16;&#x5199;&#x2014;&#x2014;&#x7C7B;&#x4F3C;&#x4E8E;&#x6C47;&#x7F16;&#x8BED;&#x8A00;&#xFF0C;&#x4E00;&#x822C;&#x662F;&#x901A;&#x8FC7;&#x5C06;&#x5176;&#x4ED6;&#x9AD8;&#x7EA7;&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x7684;&#x6784;&#x5EFA;&#x6587;&#x4EF6;&#x7F16;&#x8BD1;&#x4E3A; ninjia &#x6587;&#x4EF6;&#x540E;&#x4F5C;&#x4E3A;&#x8F93;&#x5165;&#x3002;</p>
+<p>&#x6B64;&#x65F6;&#x8BFB;&#x8005;&#x53EF;&#x80FD;&#x4EA7;&#x751F;&#x7591;&#x95EE;&#xFF0C;Google &#x7531; make &#x8F6C; Soong &#x4E0D;&#x53EF;&#x80FD;&#x662F;&#x4E00;&#x591C;&#x4E4B;&#x95F4;&#x53D1;&#x751F;&#x7684;&#xFF0C;&#x90A3;&#x5982;&#x4F55;&#x517C;&#x5BB9;&#x4E24;&#x8005;&#x5462;&#xFF1F;&#x7B54;&#x6848;&#x662F;&#xFF0C;&#x9488;&#x5BF9;&#x539F;&#x6709;&#x7684; .mk &#x6587;&#x4EF6;&#xFF0C;Google &#x5F00;&#x53D1;&#x4E86; kati &#x7CFB;&#x7EDF;&#xFF0C;&#x5C06;&#x5176;&#x4E5F;&#x7F16;&#x8BD1;&#x4E3A; ninjia &#x6587;&#x4EF6;&#xFF0C;&#x518D;&#x4EA4;&#x7ED9; ninjia &#x8FDB;&#x884C;&#x7F16;&#x8BD1;&#x3002;</p>
+<p>&#x603B;&#x7684;&#x6765;&#x8BF4;&#xFF0C;Soong &#x662F;&#x901A;&#x8FC7;&#x89E3;&#x6790; .bp &#x6587;&#x4EF6;&#x4E3A; ninjia &#x6587;&#x4EF6;&#xFF0C;&#x5C06; .mk &#x6587;&#x4EF6;&#x901A;&#x8FC7; kati &#x7F16;&#x8BD1;&#x4E3A; ninjia &#x6587;&#x4EF6;&#xFF0C;&#x6700;&#x540E;&#x8FDB;&#x884C;&#x6784;&#x5EFA;&#x7684;&#x3002;</p>
+<p>&#x5982;&#x679C;&#x4F60;&#x60F3;&#x4E86;&#x89E3;&#x66F4;&#x591A;&#xFF0C;&#x4EE5;&#x4E0B;&#x8D44;&#x6E90;&#x53EF;&#x4EE5;&#x53C2;&#x8003;&#xFF1A;</p>
+<ul>
+<li><a href="https://android.googlesource.com/platform/build/+/master/README.md" target="_blank">Android Make Build System</a></li>
+<li><a href="https://github.com/google/kati/blob/master/README.md" target="_blank">kati</a></li>
+<li><a href="https://android.googlesource.com/platform/build/soong/+/refs/heads/master/README.md" target="_blank">Soong</a></li>
+<li><a href="https://ninja-build.org/" target="_blank">Ninja, a small build system with a focus on speed</a></li>
+</ul>
+<h3 id="&#x521D;&#x59CB;&#x5316;&#x6784;&#x5EFA;&#x73AF;&#x5883;">&#x521D;&#x59CB;&#x5316;&#x6784;&#x5EFA;&#x73AF;&#x5883;</h3>
+<p>&#x6267;&#x884C; <code>envsetup.sh</code> &#x811A;&#x672C;&#x6765;&#x521D;&#x59CB;&#x5316;&#x73AF;&#x5883;&#xFF0C;<code>envsetup.sh</code> &#x4F1A;&#x6DFB;&#x52A0;&#x4E00;&#x7CFB;&#x5217;&#x547D;&#x4EE4;&#x53EF;&#x4F9B;&#x7F16;&#x8BD1;&#x4F7F;&#x7528;&#x3002;</p>
+<blockquote>
+<p>&#x6CE8;&#xFF1A;&#x7F16;&#x8BD1;&#x76F8;&#x5173;&#x547D;&#x4EE4;&#x9700;&#x8981;&#x5728; bash shell &#x4E0B;&#x6267;&#x884C;&#xFF0C;&#x5982;&#x679C;&#x4F60;&#x4F7F;&#x7528;&#x4E86; zsh &#x7B49;&#x5176;&#x4ED6; shell&#xFF0C;&#x9700;&#x8981;&#x6267;&#x884C; <code>bash</code> &#x8FDB;&#x5165; bash shell &#x540E;&#x518D;&#x8FD0;&#x884C;&#x6784;&#x5EFA;&#x547D;&#x4EE4;&#x3002;</p>
+</blockquote>
+<pre><code class="lang-shell">source build/envsetup.sh
+</code></pre>
+<h3 id="&#x9009;&#x62E9;&#x7F16;&#x8BD1;&#x7684;&#x76EE;&#x6807;&#x7CFB;&#x7EDF;">&#x9009;&#x62E9;&#x7F16;&#x8BD1;&#x7684;&#x76EE;&#x6807;&#x7CFB;&#x7EDF;</h3>
+<pre><code class="lang-shell">lunch
+</code></pre>
+<p>&#x6B64;&#x65F6;&#x8F93;&#x51FA;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell">/Volumes/Windows/aosp &#xBB; lunch
+
+You&apos;re building on Darwin
+
+Lunch menu... pick a combo:
+     1. aosp_arm-eng
+     2. aosp_arm64-eng
+     3. aosp_mips-eng
+     4. aosp_mips64-eng
+     5. aosp_x86-eng
+     6. aosp_x86_64-eng
+     7. aosp_car_arm-userdebug
+     8. aosp_car_arm64-userdebug
+     9. aosp_car_x86-userdebug
+     10. aosp_car_x86_64-userdebug
+......
+Which would you like? [aosp_arm-eng]
+</code></pre>
+<p>&#x8F93;&#x5165;&#x82F1;&#x6587;&#x6216;&#x8005;&#x5E8F;&#x53F7;&#x90FD;&#x53EF;&#x4EE5;&#xFF0C;&#x56E0;&#x4E3A;&#x6211;&#x7684;&#x7535;&#x8111; CPU &#x662F; x86 &#x67B6;&#x6784;&#xFF0C;&#x6240;&#x4EE5;&#x8FD9;&#x91CC;&#x9009;&#x62E9; <code>aosp_x86-eng</code> &#x8FDB;&#x884C;&#x7F16;&#x8BD1;&#xFF0C;&#x8FD9;&#x6837;&#x8FD0;&#x884C; Android &#x865A;&#x62DF;&#x673A;&#x65F6;&#xFF0C;&#x901F;&#x5EA6;&#x4F1A;&#x6BD4;&#x8F83;&#x5FEB;&#x3002;</p>
+<h3 id="&#x5F00;&#x59CB;&#x7F16;&#x8BD1;">&#x5F00;&#x59CB;&#x7F16;&#x8BD1;</h3>
+<p>&#x6267;&#x884C; <code>make</code> &#x547D;&#x4EE4;&#x5373;&#x53EF;&#x5F00;&#x59CB;&#x7F16;&#x8BD1;&#xFF0C;&#x5982;&#x679C;&#x9700;&#x8981;&#x5E76;&#x884C;&#x6784;&#x5EFA;&#x7684;&#x8BDD;&#xFF0C;&#x9700;&#x8981;&#x6DFB;&#x52A0; -j &#x53C2;&#x6570;&#xFF0C;&#x793A;&#x4F8B;&#x547D;&#x4EE4;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell">make
+
+# simplify
+m
+
+# multi task
+m -j16
+</code></pre>
+<p>&#x5728;&#x7F16;&#x8BD1;&#x7684;&#x65F6;&#x5019;&#x4F1A;&#x78B0;&#x5230;&#x5F88;&#x591A;&#x95EE;&#x9898;&#xFF0C;&#x5176;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#x89C1;&#x4E0B;&#x4E00;&#x8282;&#x4E00;&#x4E00;&#x9053;&#x6765;&#x3002;&#x7F16;&#x8BD1;&#x6210;&#x529F;&#x6700;&#x540E;&#x4F1A;&#x6253;&#x5370; <code>build completed successfully</code>&#x3002;</p>
+<h3 id="&#x8FD0;&#x884C;&#x6A21;&#x62DF;&#x5668;">&#x8FD0;&#x884C;&#x6A21;&#x62DF;&#x5668;</h3>
+<p>&#x5982;&#x679C;&#x521A;&#x521A;&#x7F16;&#x8BD1;&#x5B8C;&#xFF0C;&#x76F4;&#x63A5;&#x6267;&#x884C; <code>emulator</code> &#x5373;&#x53EF;&#x3002;&#x5426;&#x5219;&#x9700;&#x8981;&#x91CD;&#x65B0;&#x6267;&#x884C; <code>source build/envsetup.sh; lunch aosp_x86-eng;</code> &#x5BFC;&#x5165; <code>emulator</code> &#x547D;&#x4EE4;&#x3002;</p>
+<pre><code class="lang-shell">emulator
+</code></pre>
+<p>&#x6700;&#x540E;&#x6210;&#x529F;&#x8FD0;&#x884C;&#x8D77;&#x6765;&#x4E86;&#x81EA;&#x5DF1;&#x6784;&#x5EFA;&#x51FA;&#x6765;&#x7684; Android &#x865A;&#x62DF;&#x673A;&#x4E86;&#xFF01;</p>
+<p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605291193.02SmartPic.png" alt="emualtor"></p>
+<h2 id="4-&#x53EF;&#x80FD;&#x78B0;&#x5230;&#x7684;&#x95EE;&#x9898;&#x53CA;&#x5176;&#x89E3;&#x51B3;">4. &#x53EF;&#x80FD;&#x78B0;&#x5230;&#x7684;&#x95EE;&#x9898;&#x53CA;&#x5176;&#x89E3;&#x51B3;</h2>
+<h3 id="&#x95EE;&#x9898;&#x4E00;&#xFF1A;could-not-find-a-supported-mac-sdk">&#x95EE;&#x9898;&#x4E00;&#xFF1A;Could not find a supported mac sdk</h3>
+<p>&#x95EE;&#x9898;&#x8BE6;&#x60C5;&#x8F93;&#x51FA;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell">internal error: Could not find a supported mac sdk: [&#x201C;10.10&#x201D; &#x201C;10.11&#x201D; &#x201C;10.12&#x201D; &#x201C;10.13&#x201D;]
+ninja: build stopped: subcommand failed.
+</code></pre>
+<p>&#x6267;&#x884C; <code>ls /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs</code> &#x53D1;&#x73B0;&#xFF0C;MacOSX.sdk &#x4E4B;&#x5916;&#xFF0C;&#x8FD8;&#x6709;&#x4E00;&#x4E2A;&#x4E0E;&#x5176;&#x5BF9;&#x5E94;&#x7684; MacOSX10.15.sdk &#x8F6F;&#x94FE;&#x63A5;&#x3002;&#x8BF4;&#x660E;&#x672C;&#x673A;&#x7684; mac sdk  &#x4E3A; 10.15 &#x7248;&#x672C;&#x3002;</p>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<p>&#x4FEE;&#x6539; <code>build/soong/cc/config/x86_darwin_host.go</code> &#x6587;&#x4EF6;&#xFF0C;&#x5728; <code>darwinSupportedSdkVersions</code> &#x4E0B;&#x6DFB;&#x52A0; &#x201C;10.15&#x201D;,&#xFF08;&#x8BB0;&#x5F97;&#x5E26;&#x82F1;&#x6587;&#x9017;&#x53F7;&#xFF09;&#x3002;</p>
+<h3 id="&#x95EE;&#x9898;&#x4E8C;&#xFF1A;&#x6267;&#x884C;&#x4E0A;&#x8FF0;&#x64CD;&#x4F5C;&#x540E;&#xFF0C;&#x91CD;&#x8BD5;&#x7F16;&#x8BD1;&#x62A5;&#x9519;">&#x95EE;&#x9898;&#x4E8C;&#xFF1A;&#x6267;&#x884C;&#x4E0A;&#x8FF0;&#x64CD;&#x4F5C;&#x540E;&#xFF0C;&#x91CD;&#x8BD5;&#x7F16;&#x8BD1;&#x62A5;&#x9519;</h3>
+<p>&#x62A5;&#x9519;&#x8BE6;&#x60C5;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell">ld: symbol(s) not found for architecture i386
+</code></pre>
+<p>&#x5176;&#x539F;&#x56E0;&#x662F;&#xFF0C;aosp &#x5E76;&#x6CA1;&#x6709;&#x652F;&#x6301;&#x6240;&#x6709;&#x7684; mac sdk &#x7248;&#x672C;&#x3002;&#x6BD4;&#x5982;&#x8BF4;&#x6211;&#x7535;&#x8111;&#x7684; mac sdk &#x7248;&#x672C; 10.15&#xFF0C;&#x76F8;&#x5173;&#x914D;&#x7F6E;&#x6587;&#x4EF6; <code>build/soong/cc/config/x86_darwin_host.go</code> &#x4E2D;&#x7684;&#x914D;&#x7F6E;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-go">darwinSupportedSdkVersions = []<span class="hljs-keyword">string</span>{
+        <span class="hljs-string">&quot;10.10&quot;</span>,
+        <span class="hljs-string">&quot;10.11&quot;</span>,
+        <span class="hljs-string">&quot;10.12&quot;</span>,
+        <span class="hljs-string">&quot;10.13&quot;</span>,
+</code></pre>
+<p>&#x4ECE;&#x8FD9;&#x91CC;&#x53EF;&#x4EE5;&#x770B;&#x5230;&#x5B98;&#x65B9;&#x6D4B;&#x8BD5;&#x901A;&#x8FC7;&#x3001;&#x652F;&#x6301;&#x7684; mac sdk &#x4E3A;&#x4E0A;&#x8FF0;&#x51E0;&#x4E2A;&#x7248;&#x672C;&#x3002;&#x800C;&#x66F4;&#x65B0;&#x7684;&#x7248;&#x672C;&#x662F;&#x4E0D;&#x652F;&#x6301;&#x7684;&#x3002;</p>
+<p>&#x6700;&#x7EC8;&#x5728; <a href="https://groups.google.com/g/android-building/c/f4_tNSapWsA" target="_blank">Unable to make AOSP systemimage on macOS Mojave</a> &#x627E;&#x5230;&#x4E86;&#x89E3;&#x51B3;&#x95EE;&#x9898;&#x7684;&#x7B54;&#x6848;&#x3002;</p>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<p>&#x53BB; <a href="https://github.com/phracker/MacOSX-SDKs/releases" target="_blank">phracker/MacOSX-SDKs</a> &#x4E0B;&#x8F7D; 10.13 &#x7248;&#x672C;&#x3002;&#x89E3;&#x538B;&#x540E;&#x653E;&#x7F6E;&#x5230; Mac sdk &#x6587;&#x4EF6;&#x5939; <code>/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs</code> &#x4E0B;&#x3002;</p>
+<h3 id="&#x95EE;&#x9898;&#x4E09;&#xFF1A;&#x6267;&#x884C;&#x4E0A;&#x8FF0;&#x64CD;&#x4F5C;&#x540E;&#xFF0C;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;&#x53C8;&#x56DE;&#x5230;&#x95EE;&#x9898;&#x4E00;">&#x95EE;&#x9898;&#x4E09;&#xFF1A;&#x6267;&#x884C;&#x4E0A;&#x8FF0;&#x64CD;&#x4F5C;&#x540E;&#xFF0C;&#x91CD;&#x65B0;&#x7F16;&#x8BD1;&#x53C8;&#x56DE;&#x5230;&#x95EE;&#x9898;&#x4E00;</h3>
+<p>&#x5176;&#x539F;&#x56E0;&#x5E94;&#x8BE5;&#x662F; aosp &#x7F16;&#x8BD1;&#x7CFB;&#x7EDF;&#x67E5;&#x627E; mac sdk &#x7684;&#x89C4;&#x5219;&#x95EE;&#x9898;&#xFF0C;&#x4F7F;&#x7528;&#x4EE5;&#x4E0B;&#x65B9;&#x6CD5;&#x53EF;&#x4EE5;&#x6B3A;&#x9A97;&#x4E00;&#x4E0B;&#x6784;&#x5EFA;&#x7CFB;&#x7EDF;&#x3002;</p>
+<p>&#x89E3;&#x51B3;&#x65B9;&#x6CD5;&#xFF1A;</p>
+<p>&#x79FB;&#x9664;&#x73B0;&#x6709;&#x7684; MacOSX10.15.sdk <strong>&#x8F6F;&#x94FE;&#x63A5;</strong>&#xFF0C;&#x6267;&#x884C;&#x4EE5;&#x4E0B;&#x547D;&#x4EE4;&#x6765;&#x7ED9;&#x4E4B;&#x524D;&#x590D;&#x5236;&#x8FDB;&#x6765;&#x7684; 10.13 sdk &#x521B;&#x5EFA;&#x4E00;&#x4E2A;&#x540D;&#x4E3A; MacOSX10.15.sdk &#x7684;&#x8F6F;&#x8FDE;&#x63A5;&#xFF0C;&#x6765;&#x5192;&#x5145; 10.15 sdk&#x3002;&#x6700;&#x540E;&#x8FD9;&#x4E2A;&#x95EE;&#x9898;&#x7EC8;&#x4E8E;&#x89E3;&#x51B3;&#x3002;</p>
+<blockquote>
+<p>&#x8FD9;&#x91CC;&#x4E0D;&#x80FD;&#x591F;&#x901A;&#x8FC7;&#x5728; Finder &#x4E2D;&#x521B;&#x5EFA;&#x66FF;&#x8EAB;&#x7684;&#x65B9;&#x5F0F;&#x6765;&#x521B;&#x5EFA;&#x8F6F;&#x94FE;&#x63A5;&#x3002;</p>
+</blockquote>
+<pre><code class="lang-shell">cd /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs
+
+sudo ln -s MacOSX10.13.sdk MacOSX10.15.sdk
+</code></pre>
+<p>&#x53C2;&#x8003;&#x8D44;&#x6599;&#xFF1A;<a href="https://stackoverflow.com/questions/31589866/running-aosp-build-on-mac-yosemite-and-later?answertab=active#tab-top" target="_blank">android - Running AOSP build on Mac (Yosemite and later) - Stack Overflow</a>&#x3002;</p>
+<h3 id="&#x95EE;&#x9898;&#x56DB;&#xFF1A;sepolicytestsintermediatessepolicytests-error">&#x95EE;&#x9898;&#x56DB;&#xFF1A;sepolicy_tests_intermediates/sepolicy_tests error</h3>
+<p>&#x95EE;&#x9898;&#x8BE6;&#x60C5;&#x5982;&#x4E0B;&#xFF1A;</p>
+<pre><code class="lang-shell">...
+[ 89% 64112/71309] build out/target/pr...icy_tests_intermediates/sepolicy_tests
+FAILED: out/target/product/generic/obj/ETC/sepolicy_tests_intermediates/sepolicy_tests
+...
+</code></pre>
+<p>&#x5176;&#x539F;&#x56E0;&#x662F; libc++_static &#x5E93;&#x88AB;&#x91CD;&#x590D;&#x5F15;&#x5165;&#x4E86;&#x3002;&#x5220;&#x9664; <code>system/sepolicy/tests/Android.pb</code> &#x6587;&#x4EF6;&#x4E2D;&#x7684; libc++_static &#x90A3;&#x4E00;&#x884C;&#x5373;&#x53EF;&#x3002;&#x540E;&#x6765;&#x6709;&#x63D0;&#x4EA4;&#x4FEE;&#x590D;&#x4E86;&#x8BE5;&#x95EE;&#x9898;&#xFF0C;<a href="https://android-review.googlesource.com/c/platform/system/sepolicy/+/1173528/1/tests/Android.bp" target="_blank">&#x70B9;&#x51FB;&#x67E5;&#x770B;&#x8BE5;&#x63D0;&#x4EA4;&#x7684; diff</a>&#x3002;&#x5176;&#x6539;&#x52A8;&#x5982;&#x4E0B;&#x56FE;&#xFF1A;</p>
+<p><img src="https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1605291337.39SmartPic.png" alt="diff"></p>
+<p>&#x53C2;&#x8003;&#x8D44;&#x6599;&#xFF1A;<a href="https://groups.google.com/g/android-building/c/_VyLXSosgoo" target="_blank">&#x70B9;&#x51FB;&#x8DF3;&#x8F6C;</a></p>
+<h2 id="&#x53C2;&#x8003;&#x8D44;&#x6599;">&#x53C2;&#x8003;&#x8D44;&#x6599;</h2>
+<ul>
+<li>&#x300A;Android &#x8FDB;&#x9636;&#x6307;&#x5317;&#x300B;</li>
+<li><a href="https://github.com/phracker/MacOSX-SDKs/releases" target="_blank">Releases &#xB7; phracker/MacOSX-SDKs &#xB7; GitHub</a></li>
+<li><a href="https://mirrors.tuna.tsinghua.edu.cn/help/AOSP/" target="_blank">AOSP &#x6E05;&#x534E;&#x5927;&#x5B66;&#x5F00;&#x6E90;&#x8F6F;&#x4EF6;&#x955C;&#x50CF;&#x7AD9;</a></li>
+<li>&#x5728;&#x89E3;&#x51B3;&#x95EE;&#x9898;&#x8FC7;&#x7A0B;&#x4E2D; Google&#x3001;StackOverflow &#x5E2E;&#x52A9;&#x5F88;&#x5927;&#xFF0C;&#x611F;&#x8C22;</li>
+</ul>
+<blockquote>
+<p>&#x6CE8;&#xFF1A;&#x4E00;&#x4E9B;&#x8D44;&#x6599;&#x5DF2;&#x5728;&#x6587;&#x4E2D;&#x5217;&#x51FA;&#x5728;&#x6B64;&#x4E0D;&#x518D;&#x7D2F;&#x8FF0;</p>
+</blockquote>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Android内存泄漏场景及解决方法.html" class="navigation navigation-prev " aria-label="Previous page: Android内存泄漏场景及解决方法">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="RePlugin 插件管理与权限管理.html" class="navigation navigation-next " aria-label="Next page: RePlugin 插件管理与权限管理">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"macOS 下载编译 aosp 源码","level":"1.7.8","depth":2,"next":{"title":"RePlugin 插件管理与权限管理","level":"1.7.9","depth":2,"path":"Android/RePlugin 插件管理与权限管理.md","ref":"Android/RePlugin 插件管理与权限管理.md","articles":[]},"previous":{"title":"Android内存泄漏场景及解决方法","level":"1.7.7","depth":2,"path":"Android/Android内存泄漏场景及解决方法.md","ref":"Android/Android内存泄漏场景及解决方法.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Android/macOS 下载编译 aosp 源码.md","mtime":"2022-07-27T03:18:24.750Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-07-27T04:25:48.192Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

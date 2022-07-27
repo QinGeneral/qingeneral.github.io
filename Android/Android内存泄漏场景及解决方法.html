@@ -1,0 +1,1037 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Android内存泄漏场景及解决方法 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="macOS 下载编译 aosp 源码.html" />
+    
+    
+    <link rel="prev" href="Android开发知识概要.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    操作系统
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../操作系统/谈谈进程间通信.html">
+            
+                <a href="../操作系统/谈谈进程间通信.html">
+            
+                    
+                    谈谈进程间通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    计算机网络
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../计算机网络/计算机网络基础.html">
+            
+                <a href="../计算机网络/计算机网络基础.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    面试
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../面试/如何写好简历的指北.html">
+            
+                <a href="../面试/如何写好简历的指北.html">
+            
+                    
+                    如何写好简历的指北
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                <a href="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                    
+                    从 Android 源代码来看『观察者模式』
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                <a href="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                    
+                    从 Android 源码来看“ Builder 模式”
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" >
+            
+                <span>
+            
+                    
+                    算法与数据结构
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                    
+                    算法与数据结构 1：开篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                    
+                    算法与数据结构 2：如何学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                    
+                    算法与数据结构 3：数组与链表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                    
+                    算法与数据结构 4：栈与队列
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                    
+                    算法与数据结构 5：哈希表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                    
+                    算法与数据结构 6：二叉树基础篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    Android
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="四步准备 Android 面试.html">
+            
+                <a href="四步准备 Android 面试.html">
+            
+                    
+                    四步准备 Android 面试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.2" data-path="Android 开发涉及知识的概要.html">
+            
+                <a href="Android 开发涉及知识的概要.html">
+            
+                    
+                    Android 开发涉及知识的概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="Android 四大组件 1：Activity.html">
+            
+                <a href="Android 四大组件 1：Activity.html">
+            
+                    
+                    Android 四大组件 1：Activity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="Android Gradle 概要.html">
+            
+                <a href="Android Gradle 概要.html">
+            
+                    
+                    Android Gradle 概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="Android插件化框架 RePlugin 初探.html">
+            
+                <a href="Android插件化框架 RePlugin 初探.html">
+            
+                    
+                    Android插件化框架 RePlugin 初探
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="Android开发知识概要.html">
+            
+                <a href="Android开发知识概要.html">
+            
+                    
+                    Android开发知识概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.7" data-path="Android内存泄漏场景及解决方法.html">
+            
+                <a href="Android内存泄漏场景及解决方法.html">
+            
+                    
+                    Android内存泄漏场景及解决方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.8" data-path="macOS 下载编译 aosp 源码.html">
+            
+                <a href="macOS 下载编译 aosp 源码.html">
+            
+                    
+                    macOS 下载编译 aosp 源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="RePlugin 插件管理与权限管理.html">
+            
+                <a href="RePlugin 插件管理与权限管理.html">
+            
+                    
+                    RePlugin 插件管理与权限管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="RePlugin 插件启动源码分析.html">
+            
+                <a href="RePlugin 插件启动源码分析.html">
+            
+                    
+                    RePlugin 插件启动源码分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="RePlugin 阅读源码环境搭建.html">
+            
+                <a href="RePlugin 阅读源码环境搭建.html">
+            
+                    
+                    RePlugin 阅读源码环境搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Cocos Creator
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                <a href="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                    
+                    CocosCreator 引擎资源加载与释放原理简析
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../Git/Git 的诞生.html">
+            
+                <a href="../Git/Git 的诞生.html">
+            
+                    
+                    Git 的诞生
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../Git/Git 入门.html">
+            
+                <a href="../Git/Git 入门.html">
+            
+                    
+                    Git 入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                <a href="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                    
+                    Git 之旅：不那么深入理解 Git
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Java
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                <a href="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                    
+                    浅谈 JVM 1：一次编写，到处运行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                <a href="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                    
+                    浅谈 JVM 2：如何阅读字节码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                <a href="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                    
+                    浅谈 JVM 3：指令集及其执行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                <a href="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                    
+                    浅谈 JVM 4：类加载机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                <a href="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                    
+                    浅谈 JVM 5：方法调用机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                <a href="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                    
+                    浅谈 JVM 6：Android 虚拟机对比
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Linux 那些事儿
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                <a href="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                    
+                    apt 和 apt-get 有什么不同之处？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                <a href="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                    
+                    Linux 命令行 Tricks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                <a href="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                    
+                    Linux 终端操作入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Mac OS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../macOS/黑苹果安装与踩坑记.html">
+            
+                <a href="../macOS/黑苹果安装与踩坑记.html">
+            
+                    
+                    黑苹果安装与踩坑记
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Android内存泄漏场景及解决方法</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="android-&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x573A;&#x666F;&#x53CA;&#x5176;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;">Android &#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x573A;&#x666F;&#x53CA;&#x5176;&#x89E3;&#x51B3;&#x65B9;&#x6CD5;</h1>
+<p><img src="http://upload-images.jianshu.io/upload_images/1214187-4d0a72ea0f8e0c03.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt=""></p>
+<p>&#x672C;&#x6587;&#x5305;&#x62EC;&#x4EE5;&#x4E0B;&#x5185;&#x5BB9;&#xFF1A;</p>
+<ol>
+<li>&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x539F;&#x7406;</li>
+<li>Android&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x53D1;&#x751F;&#x7684;&#x60C5;&#x51B5;</li>
+<li>&#x68C0;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5DE5;&#x5177;&#x3001;&#x65B9;&#x6CD5;</li>
+<li>&#x5982;&#x4F55;&#x907F;&#x514D;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;</li>
+</ol>
+<h2 id="1-&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x539F;&#x7406;">1. &#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x539F;&#x7406;</h2>
+<p>&#x7B80;&#x5355;&#x6765;&#x8BF4;&#xFF0C;Java&#x7684;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x5C31;&#x662F;&#x5BF9;&#x8C61;&#x4E0D;&#x518D;&#x4F7F;&#x7528;&#x7684;&#x65F6;&#x5019;&#xFF0C;&#x65E0;&#x6CD5;&#x88AB;JVM&#x56DE;&#x6536;&#x3002;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x6700;&#x7EC8;&#x4F1A;&#x5F15;&#x53D1;Out Of Memory&#x3002;</p>
+<p>&#x5728;Java&#x4E2D;&#xFF0C;&#x5224;&#x65AD;&#x5BF9;&#x8C61;&#x662F;&#x5426;&#x4ECD;&#x5728;&#x4F7F;&#x7528;&#x7684;&#x65B9;&#x6CD5;&#x662F;&#xFF1A;&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x6CD5;&#xFF0C;&#x53EF;&#x8FBE;&#x6027;&#x5206;&#x6790;&#x3002;  </p>
+<p>&#x5F15;&#x7528;&#x8BA1;&#x6570;&#x6CD5;&#x5C31;&#x662F;&#x5BF9;&#x6BCF;&#x4E2A;&#x5BF9;&#x8C61;&#x6240;&#x6301;&#x6709;&#x7684;&#x5F15;&#x7528;&#x8FDB;&#x884C;&#x8BA1;&#x6570;&#xFF0C;&#x8BA1;&#x6570;&#x4E3A;0&#xFF0C;&#x5219;&#x6CA1;&#x6709;&#x5F15;&#x7528;&#xFF0C;&#x5224;&#x65AD;&#x4E3A;&#x53EF;&#x56DE;&#x6536;&#x72B6;&#x6001;&#x3002;&#x4F46;&#x662F;&#x6B64;&#x65B9;&#x6CD5;&#x5B58;&#x5728;&#x7684;&#x95EE;&#x9898;&#x662F;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#xFF0C;&#x5373;A&#x6301;&#x6709;B&#x7684;&#x5F15;&#x7528;&#xFF0C;B&#x6301;&#x6709;A&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x540C;&#x65F6;AB&#x4E0D;&#x518D;&#x4F7F;&#x7528;&#x65F6;&#xFF0C;&#x65E0;&#x6CD5;&#x56DE;&#x6536;AB&#xFF0C;&#x53D1;&#x751F;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;  </p>
+<p>&#x53EF;&#x8FBE;&#x6027;&#x5206;&#x6790;&#x5C31;&#x662F;&#x4ECE;&#x4E00;&#x4E9B;GC Root &#x5BF9;&#x8C61;&#x51FA;&#x53D1;&#xFF0C;&#x53BB;&#x904D;&#x5386;&#x6240;&#x542B;&#x6709;&#x5BF9;&#x8C61;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x4EE5;&#x6B64;&#x9012;&#x5F52;&#x3002;&#x50CF;&#x6811;&#x4E00;&#x6837;&#xFF0C;&#x4ECE;&#x6839;&#x5411;&#x6811;&#x679D;&#x67E5;&#x627E;&#x53EF;&#x8FBE;&#x7684;&#x5BF9;&#x8C61;&#x3002;&#x6700;&#x540E;&#x6CA1;&#x6709;&#x6807;&#x8BB0;&#x5230;&#x7684;&#x5BF9;&#x8C61;&#x5373;&#x4E3A;&#x53EF;&#x56DE;&#x6536;&#x5BF9;&#x8C61;&#xFF0C;&#x89E3;&#x51B3;&#x4E86;&#x5FAA;&#x73AF;&#x5F15;&#x7528;&#x7684;&#x95EE;&#x9898;&#x3002;  </p>
+<p>&#x4F46;&#x662F;&#x5373;&#x4F7F;&#x91C7;&#x7528;&#x53EF;&#x8FBE;&#x6027;&#x5206;&#x6790;&#x7684;&#x65B9;&#x6CD5;&#xFF0C;&#x8FD8;&#x662F;&#x53EF;&#x80FD;&#x7531;&#x4E8E;&#x7A0B;&#x5E8F;&#x7F16;&#x5199;&#x7684;&#x95EE;&#x9898;&#x5F15;&#x53D1;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x603B;&#x7ED3;&#x6765;&#x8BF4;&#x5C31;&#x662F;&#x957F;&#x5468;&#x671F;&#x7684;&#x5BF9;&#x8C61;&#x6301;&#x6709;&#x4E86;&#x77ED;&#x5468;&#x671F;&#x5BF9;&#x8C61;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x5BFC;&#x81F4;&#x77ED;&#x5468;&#x671F;&#x5BF9;&#x8C61;&#x65E0;&#x6CD5;&#x56DE;&#x6536;&#xFF0C;&#x5F15;&#x8D77;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;</p>
+<h2 id="2-android&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x53D1;&#x751F;&#x7684;&#x60C5;&#x51B5;">2. Android&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x53D1;&#x751F;&#x7684;&#x60C5;&#x51B5;</h2>
+<p>&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x662F;&#x5426;&#x53D1;&#x751F;&#x7684;&#x5173;&#x952E;&#x5728;&#x4E8E;&#x5BF9;&#x8C61;&#x4E4B;&#x95F4;&#x751F;&#x547D;&#x5468;&#x671F;&#x7684;&#x957F;&#x77ED;&#x3002;&#x4E0B;&#x9762;&#x662F;&#x53EF;&#x80FD;&#x53D1;&#x751F;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x60C5;&#x51B5;&#xFF1A;</p>
+<p>&#x6BD4;&#x8F83;&#x5178;&#x578B;&#x7684;&#x662F;Activity&#x7684;Context&#xFF0C;&#x5305;&#x542B;&#x5927;&#x91CF;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x6BD4;&#x5982;View Hierarchies&#x548C;&#x5176;&#x4ED6;&#x8D44;&#x6E90;&#x3002;&#x4E00;&#x65E6;&#x65E0;&#x6CD5;&#x91CA;&#x653E;Context&#xFF0C;&#x4E5F;&#x610F;&#x5473;&#x7740;&#x65E0;&#x6CD5;&#x91CA;&#x653E;&#x5B83;&#x6307;&#x5411;&#x7684;&#x6240;&#x6709;&#x5BF9;&#x8C61;&#x3002;</p>
+<ul>
+<li><p>&#x9759;&#x6001;&#x53D8;&#x91CF;&#xFF1A;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x548C;&#x5E94;&#x7528;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E00;&#x6837;&#x957F;&#x3002;&#x5982;&#x679C;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x6301;&#x6709;&#x67D0;&#x4E2A;Activity&#x7684;context&#xFF0C;&#x5219;&#x4F1A;&#x5F15;&#x53D1;&#x5BF9;&#x5E94;Activity&#x65E0;&#x6CD5;&#x91CA;&#x653E;&#xFF0C;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x5982;&#x679C;&#x6301;&#x6709;application&#x7684;context&#xFF0C;&#x5C31;&#x6CA1;&#x6709;&#x95EE;&#x9898;&#xFF08;&#x4EE5;&#x4E0B;&#x4F8B;&#x5B50;&#x662F;&#x6307;Activity&#x9500;&#x6BC1;&#x65F6;&#x6CA1;&#x6709;&#x91CA;&#x653E;&#x7684;&#x60C5;&#x51B5;&#xFF09;</p>
+<ul>
+<li>&#x5355;&#x4F8B;&#x6A21;&#x5F0F;&#xFF1A;&#x5185;&#x90E8;&#x5B9E;&#x73B0;&#x662F;&#x9759;&#x6001;&#x53D8;&#x91CF;&#x548C;&#x65B9;&#x6CD5;</li>
+<li>&#x9759;&#x6001;&#x7684;View&#xFF1A;view&#x9ED8;&#x8BA4;&#x6301;&#x6709;Activity&#x7684;context</li>
+<li>&#x9759;&#x6001;Activity</li>
+</ul>
+</li>
+<li><p>&#x76D1;&#x542C;&#x5668;&#xFF1A;&#x5F53;&#x4F7F;&#x7528;Activity&#x7684;context&#x6CE8;&#x518C;&#x76D1;&#x542C;&#xFF0C;&#x4E0D;&#x518D;&#x9700;&#x8981;&#x76D1;&#x542C;&#x65F6;&#x6CA1;&#x6709;&#x53D6;&#x6D88;&#x6CE8;&#x518C;&#x3002;&#x6BD4;&#x5982;&#x4F20;&#x611F;&#x5668;&#x7684;&#x76D1;&#x542C;&#x7B49;</p>
+</li>
+<li><p>&#x5185;&#x90E8;&#x7C7B;</p>
+<ul>
+<li><p>&#x533F;&#x540D;&#x5185;&#x90E8;&#x7C7B;&#xFF1A;&#x6301;&#x6709;&#x5916;&#x90E8;&#x7C7B;&#x5F15;&#x7528;&#x3002;&#x533F;&#x540D;&#x5185;&#x90E8;&#x7C7B;&#x548C;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x4E00;&#x8D77;&#x51FA;&#x73B0;&#x65F6;&#xFF0C;&#x53EF;&#x80FD;&#x53D1;&#x751F;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;Activity&#x56DE;&#x6536;&#x65F6;&#xFF0C;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;&#x6CA1;&#x6709;&#x6267;&#x884C;&#x5B8C;&#x6BD5;&#x4F1A;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x53D1;&#x751F;&#x3002;&#x56E0;&#x4E3A;&#x533F;&#x540D;&#x4EFB;&#x52A1;&#x7C7B;&#x6301;&#x6709;Activity&#x5F15;&#x7528;&#xFF0C;&#x5F53;&#x533F;&#x540D;&#x4EFB;&#x52A1;&#x7C7B;&#x7684;&#x5F15;&#x7528;&#x88AB;&#x53E6;&#x4E00;&#x7EBF;&#x7A0B;&#x6301;&#x6709;&#xFF0C;&#x5BFC;&#x81F4;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E0D;&#x4E00;&#x81F4;&#x7684;&#x95EE;&#x9898;&#xFF0C;&#x8FDB;&#x800C;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;</p>
+<ul>
+<li><p>&#x533F;&#x540D;&#x7684;AsyncTask</p>
+<pre><code class="lang-Java">  <span class="hljs-keyword">new</span> AsyncTask&lt;String, String, String&gt;() {
+              <span class="hljs-meta">@Override</span>
+              <span class="hljs-function"><span class="hljs-keyword">protected</span> String <span class="hljs-title">doInBackground</span><span class="hljs-params">(String... params)</span> </span>{
+                  <span class="hljs-comment">// doSomething</span>
+                  <span class="hljs-keyword">return</span> <span class="hljs-keyword">null</span>;
+              }
+          };
+</code></pre>
+</li>
+<li><p>&#x533F;&#x540D;&#x7684;TimerTask</p>
+<pre><code class="lang-Java">  <span class="hljs-keyword">new</span> Timer().schedule(<span class="hljs-keyword">new</span> TimerTask() {
+              <span class="hljs-meta">@Override</span>
+              <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{
+                   <span class="hljs-comment">// doSomething</span>
+              }
+          }, <span class="hljs-number">1000</span>);
+</code></pre>
+</li>
+<li><p>&#x533F;&#x540D;&#x7684;Thread&#x6216;Runnable</p>
+<pre><code class="lang-Java">  <span class="hljs-keyword">new</span> Thread() {
+       <span class="hljs-meta">@Override</span> <span class="hljs-function"><span class="hljs-keyword">public</span> <span class="hljs-keyword">void</span> <span class="hljs-title">run</span><span class="hljs-params">()</span> </span>{
+           <span class="hljs-keyword">while</span>(<span class="hljs-keyword">true</span>);
+           }
+   }.start();
+</code></pre>
+</li>
+<li><p>&#x975E;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#xFF1A;&#x6301;&#x6709;&#x5916;&#x90E8;&#x7C7B;&#x5F15;&#x7528;</p>
+<ul>
+<li>Handler&#xFF1A;&#x6211;&#x4EEC;&#x77E5;&#x9053;Handler&#x5904;&#x7406;&#x6D88;&#x606F;&#x662F;&#x4E32;&#x884C;&#x7684;&#xFF0C;&#x6240;&#x4EE5;&#x5F53;Activity&#x5DF2;&#x7ECF;&#x9700;&#x8981;&#x56DE;&#x6536;&#xFF0C;&#x4F46;Looper&#x4ECD;&#x6709;&#x6D88;&#x606F;&#x672A;&#x5904;&#x7406;&#x5B8C;&#x6BD5;&#x65F6;&#x4F1A;&#x53D1;&#x751F;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x56E0;&#x4E3A;Looper&#x4F7F;&#x7528;ThreadLocal&#x4FDD;&#x5B58;&#xFF0C;ThreadLocal&#x662F;&#x9759;&#x6001;&#x7684;&#xFF0C;&#x751F;&#x547D;&#x5468;&#x671F;&#x4E0E;&#x5F53;&#x524D;&#x5E94;&#x7528;&#x4E00;&#x81F4;&#x3002;&#x540C;&#x65F6;Looper&#x6301;&#x6709;MessageQueue&#x7684;&#x5F15;&#x7528;&#xFF0C;MessageQueue&#x6301;&#x6709;Handler&#x5F15;&#x7528;&#xFF08;msg.target&#xFF09;&#xFF0C;Handler&#x6301;&#x6709;&#x5916;&#x90E8;Activity&#x5F15;&#x7528;&#xFF0C;&#x5BFC;&#x81F4;Activity&#x65E0;&#x6CD5;&#x56DE;&#x6536; </li>
+<li>&#x975E;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#x6709;&#x4E00;&#x4E2A;&#x9759;&#x6001;&#x7684;&#x5B9E;&#x4F8B;&#xFF1A;&#x975E;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#x6301;&#x6709;&#x5916;&#x90E8;&#x7C7B;&#x5F15;&#x7528;&#xFF0C;&#x5982;&#x679C;&#x5728;&#x67D0;&#x4E2A;&#x5730;&#x65B9;&#x6709;&#x4E2A;&#x975E;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#x7684;&#x9759;&#x6001;&#x5B9E;&#x4F8B;&#x7684;&#x8BDD;&#xFF0C;&#x540C;&#x6837;&#x4F1A;&#x5F15;&#x8D77;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>&#x8D44;&#x6E90;&#x5BF9;&#x8C61;&#x672A;&#x5173;&#x95ED;&#xFF1A;BraodcastReceiver&#xFF0C;ContentObserver&#xFF0C;File&#xFF0C;Cursor&#xFF0C;Stream&#xFF0C;Bitmap&#x7B49;&#x8D44;&#x6E90;&#xFF0C;&#x4F7F;&#x7528;&#x540E;&#x672A;&#x5173;&#x95ED;&#x4F1A;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x56E0;&#x4E3A;&#x8D44;&#x6E90;&#x6027;&#x5BF9;&#x8C61;&#x5F80;&#x5F80;&#x90FD;&#x7528;&#x4E86;&#x4E00;&#x4E9B;&#x7F13;&#x51B2;&#xFF0C;&#x7F13;&#x51B2;&#x4E0D;&#x4EC5;&#x5B58;&#x5728;&#x4E8E; java&#x865A;&#x62DF;&#x673A;&#x5185;&#xFF0C;&#x8FD8;&#x5B58;&#x5728;&#x4E8E;java&#x865A;&#x62DF;&#x673A;&#x5916;&#x3002;&#x5982;&#x679C;&#x4EC5;&#x4EC5;&#x662F;&#x628A;&#x5B83;&#x7684;&#x5F15;&#x7528;&#x7F6E;null&#xFF0C;&#x800C;&#x4E0D;&#x5173;&#x95ED;&#x5B83;&#x4EEC;&#xFF0C;&#x4E5F;&#x4F1A;&#x9020;&#x6210;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;</p>
+</li>
+<li>&#x5BB9;&#x5668;&#x4E2D;&#x7684;&#x5BF9;&#x8C61;&#x6CA1;&#x6709;&#x6E05;&#x7406;&#xFF1A;&#x96C6;&#x5408;&#x4E00;&#x822C;&#x5360;&#x7528;&#x5185;&#x5B58;&#x8F83;&#x5927;&#xFF0C;&#x4E0D;&#x53CA;&#x65F6;&#x5173;&#x95ED;&#x4F1A;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x7D27;&#x5F20;&#xFF08;&#x4E0D;&#x4F1A;&#x5BFC;&#x81F4;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#xFF0C;&#x800C;&#x4F1A;&#x5BFC;&#x81F4;&#x53EF;&#x7528;&#x5185;&#x5B58;&#x5927;&#x5927;&#x51CF;&#x5C11;&#xFF09;</li>
+<li>webview</li>
+</ul>
+<h2 id="3-&#x68C0;&#x6D4B;&#x3001;&#x5206;&#x6790;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5DE5;&#x5177;">3. &#x68C0;&#x6D4B;&#x3001;&#x5206;&#x6790;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5DE5;&#x5177;</h2>
+<ul>
+<li>MemoryMonitor&#xFF1A;&#x968F;&#x65F6;&#x95F4;&#x53D8;&#x5316;&#xFF0C;&#x5185;&#x5B58;&#x5360;&#x7528;&#x7684;&#x53D8;&#x5316;&#x60C5;&#x51B5;</li>
+<li>MAT&#xFF1A;&#x8F93;&#x5165;HRPOF&#x6587;&#x4EF6;&#xFF0C;&#x8F93;&#x51FA;&#x5206;&#x6790;&#x7ED3;&#x679C;<ul>
+<li>Histogram&#xFF1A;&#x67E5;&#x770B;&#x4E0D;&#x540C;&#x7C7B;&#x578B;&#x5BF9;&#x8C61;&#x53CA;&#x5176;&#x5927;&#x5C0F;</li>
+<li>DominateTree&#xFF1A;&#x5BF9;&#x8C61;&#x5360;&#x7528;&#x5185;&#x5B58;&#x53CA;&#x5176;&#x5F15;&#x7528;&#x5173;&#x7CFB;</li>
+<li><a href="http://www.cnblogs.com/larack/p/6071209.html" target="_blank">MAT&#x4F7F;&#x7528;&#x6559;&#x7A0B;</a></li>
+</ul>
+</li>
+<li>LeakCanary&#xFF1A;&#x5B9E;&#x65F6;&#x76D1;&#x6D4B;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x7684;&#x5E93;<a href="http://www.jianshu.com/p/87f2ba180066" target="_blank">&#xFF08;LeakCanary&#x539F;&#x7406;&#xFF09;</a></li>
+</ul>
+<h2 id="4-&#x5982;&#x4F55;&#x907F;&#x514D;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;">4. &#x5982;&#x4F55;&#x907F;&#x514D;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;</h2>
+<p>&#x957F;&#x5468;&#x671F;&#x7684;&#x5BF9;&#x8C61;&#x6301;&#x6709;&#x4E86;&#x77ED;&#x5468;&#x671F;&#x5BF9;&#x8C61;&#x7684;&#x5F15;&#x7528;&#xFF0C;&#x5BFC;&#x81F4;&#x77ED;&#x5468;&#x671F;&#x5BF9;&#x8C61;&#x65E0;&#x6CD5;&#x56DE;&#x6536;&#xFF0C;&#x5F15;&#x8D77;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x3002;&#x6240;&#x4EE5;&#x5728;&#x4F7F;&#x7528;&#x67D0;&#x4E2A;&#x5BF9;&#x8C61;&#x65F6;&#xFF0C;&#x6211;&#x4EEC;&#x9700;&#x8981;&#x4ED4;&#x7EC6;&#x7814;&#x7A76;&#x5BF9;&#x8C61;&#x7684;&#x751F;&#x547D;&#x5468;&#x671F;&#xFF0C;&#x5F53;&#x5904;&#x7406;&#x4E00;&#x4E9B;&#x5360;&#x7528;&#x5185;&#x5B58;&#x8F83;&#x5927;&#x5E76;&#x4E14;&#x751F;&#x547D;&#x5468;&#x671F;&#x8F83;&#x957F;&#x7684;&#x5BF9;&#x8C61;&#x65F6;&#xFF0C;&#x53EF;&#x4EE5;&#x4F7F;&#x7528;&#x8F6F;&#x5F15;&#x7528;&#x3002;&#x5BF9;&#x4E8E;&#x4E00;&#x4E9B;&#x8D44;&#x6E90;&#x64CD;&#x4F5C;&#x5BF9;&#x8C61;&#xFF0C;&#x53CA;&#x65F6;&#x5173;&#x95ED;&#x3002;</p>
+<ul>
+<li>&#x4E0D;&#x8981;&#x5728;&#x533F;&#x540D;&#x5185;&#x90E8;&#x7C7B;&#x4E2D;&#x8FDB;&#x884C;&#x5F02;&#x6B65;&#x64CD;&#x4F5C;</li>
+<li>&#x5C06;&#x975E;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B;&#x8F6C;&#x4E3A;&#x9759;&#x6001;&#x5185;&#x90E8;&#x7C7B; + WeakReference&#xFF08;&#x5F31;&#x5F15;&#x7528;&#xFF09;&#x7684;&#x65B9;&#x5F0F;</li>
+<li>&#x5728; Activity &#x56DE;&#x8C03; onDestroy &#x65F6;&#x6216;&#x8005; onStop &#x65F6;<ul>
+<li>&#x79FB;&#x9664;&#x6D88;&#x606F;&#x961F;&#x5217; MessageQueue &#x4E2D;&#x7684;&#x6D88;&#x606F;</li>
+<li>&#x9759;&#x6001;&#x53D8;&#x91CF;&#x7F6E;null</li>
+<li>&#x505C;&#x6B62;&#x5F02;&#x6B65;&#x4EFB;&#x52A1;</li>
+<li>&#x53D6;&#x6D88;&#x6CE8;&#x518C;</li>
+</ul>
+</li>
+<li>&#x4F7F;&#x7528;Context&#x65F6;&#xFF0C;&#x5C3D;&#x91CF;&#x4F7F;&#x7528;Application &#x7684; Context</li>
+<li>&#x5C3D;&#x91CF;&#x907F;&#x514D;&#x4F7F;&#x7528;static &#x6210;&#x5458;&#x53D8;&#x91CF;&#x3002;&#x53E6;&#x5916;&#x53EF;&#x4EE5;&#x8003;&#x8651;lazy&#x521D;&#x59CB;&#x5316;</li>
+<li>&#x4E3A;webView&#x5F00;&#x542F;&#x53E6;&#x5916;&#x4E00;&#x4E2A;&#x8FDB;&#x7A0B;&#xFF0C;&#x901A;&#x8FC7;AIDL&#x4E0E;&#x4E3B;&#x7EBF;&#x7A0B;&#x8FDB;&#x884C;&#x901A;&#x4FE1;&#xFF0C;WebView&#x6240;&#x5728;&#x7684;&#x8FDB;&#x7A0B;&#x53EF;&#x4EE5;&#x6839;&#x636E;&#x4E1A;&#x52A1;&#x7684;&#x9700;&#x8981;&#x9009;&#x62E9;&#x5408;&#x9002;&#x7684;&#x65F6;&#x673A;&#x8FDB;&#x884C;&#x9500;&#x6BC1;&#xFF0C;&#x4ECE;&#x800C;&#x8FBE;&#x5230;&#x5185;&#x5B58;&#x7684;&#x5B8C;&#x6574;&#x91CA;&#x653E;</li>
+<li>&#x53CA;&#x65F6;&#x5173;&#x95ED;&#x8D44;&#x6E90;&#x3002;Bitmap &#x4F7F;&#x7528;&#x540E;&#x8C03;&#x7528;recycle()&#x65B9;&#x6CD5;</li>
+</ul>
+<p>&#x9632;&#x6B62;&#x5185;&#x5B58;&#x6EA2;&#x51FA;&#x7684;&#x65B9;&#x6CD5;</p>
+<ul>
+<li>&#x53CA;&#x65F6;&#x6E05;&#x7406;&#x5BB9;&#x5668;&#xFF0C;&#x5C06;&#x96C6;&#x5408;&#x91CC;&#x7684;&#x4E1C;&#x897F;clear&#xFF0C;&#x7136;&#x540E;&#x7F6E;&#x4E3A;null</li>
+<li>&#x4F7F;&#x7528;adapter&#x65F6;&#xFF0C;&#x4F7F;&#x7528;ViewHolder&#x6765;&#x590D;&#x7528;convertView</li>
+<li><p>&#x4F18;&#x5316;&#x6570;&#x636E;&#x7ED3;&#x6784;</p>
+<ul>
+<li>&#x6BD4;&#x5982;HashMap&#x548C;ArrayMap&#xFF0C;&#x4F18;&#x5148;&#x4F7F;&#x7528;ArrayMap&#xFF1B;&#x4F18;&#x5148;&#x4F7F;&#x7528;&#x57FA;&#x672C;&#x7C7B;&#x578B;&#xFF0C;&#x800C;&#x975E;&#x5305;&#x88C5;&#x7C7B;</li>
+<li>&#x51CF;&#x5C11;&#x5360;&#x5185;&#x5B58;&#x8F83;&#x5927;&#x7684;&#x679A;&#x4E3E;&#x7684;&#x4F7F;&#x7528;</li>
+<li>&#x91C7;&#x7528;&#x4E09;&#x7EA7;&#x7F13;&#x5B58;&#x673A;&#x5236;&#xFF1A;LRUCache</li>
+<li>&#x56FE;&#x7247;&#x538B;&#x7F29;&#xFF1A;inSampleSize&#x3001;RGB_565&#x66FF;&#x6362;RGB_8888</li>
+</ul>
+</li>
+<li><p>&#x5C3D;&#x91CF;&#x4E0D;&#x8981;&#x5728;&#x5FAA;&#x73AF;&#x4E2D;&#x521B;&#x5EFA;&#x5927;&#x91CF;&#x5BF9;&#x8C61;</p>
+</li>
+</ul>
+<h3 id="&#x6CE8;&#xFF1A;">&#x6CE8;&#xFF1A;</h3>
+<ol>
+<li><p>&#x5728;C++ &#x4E2D;&#xFF0C;&#x5185;&#x5B58;&#x5206;&#x914D;&#x91CA;&#x653E;&#x6709;&#x7A0B;&#x5E8F;&#x5458;&#x81EA;&#x5DF1;&#x7BA1;&#x7406;&#x3002;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x53D1;&#x751F;&#x7684;&#x60C5;&#x51B5;&#x662F;&#xFF0C;&#x5982;&#x679C;&#x6709;&#x4E9B;&#x5BF9;&#x8C61;&#x88AB;&#x5206;&#x914D;&#x4E86;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#xFF0C;&#x7136;&#x540E;&#x5374;&#x4E0D;&#x53EF;&#x8FBE;&#xFF0C;&#x7531;&#x4E8E;C++&#x4E2D;&#x6CA1;&#x6709;&#x5783;&#x573E;&#x56DE;&#x6536;&#x673A;&#x5236;&#xFF0C;&#x5BFC;&#x81F4;&#x65E0;&#x6CD5;&#x518D;&#x91CA;&#x653E;&#x8FD9;&#x4E9B;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x3002;</p>
+</li>
+<li><p>&#x5BF9;&#x4E8E;Java&#x7A0B;&#x5E8F;&#x5458;&#x6765;&#x8BF4;&#xFF0C;GC&#x57FA;&#x672C;&#x662F;&#x900F;&#x660E;&#x7684;&#xFF0C;&#x4E0D;&#x53EF;&#x89C1;&#x7684;&#x3002;&#x867D;&#x7136;&#xFF0C;&#x6211;&#x4EEC;&#x53EA;&#x6709;&#x51E0;&#x4E2A;&#x51FD;&#x6570;&#x53EF;&#x4EE5;&#x8BBF;&#x95EE;GC&#xFF0C;&#x4F8B;&#x5982;&#x8FD0;&#x884C;GC&#x7684;&#x51FD;&#x6570;System.gc()&#xFF0C;&#x4F46;&#x662F;&#x6839;&#x636E;Java&#x8BED;&#x8A00;&#x89C4;&#x8303;&#x5B9A;&#x4E49;&#xFF0C; &#x8BE5;&#x51FD;&#x6570;&#x4E0D;&#x4FDD;&#x8BC1;JVM&#x7684;&#x5783;&#x573E;&#x6536;&#x96C6;&#x5668;&#x4E00;&#x5B9A;&#x4F1A;&#x6267;&#x884C;&#x3002;&#x56E0;&#x4E3A;&#xFF0C;&#x4E0D;&#x540C;&#x7684;JVM&#x5B9E;&#x73B0;&#x8005;&#x53EF;&#x80FD;&#x4F7F;&#x7528;&#x4E0D;&#x540C;&#x7684;&#x7B97;&#x6CD5;&#x7BA1;&#x7406;GC&#x3002;&#x901A;&#x5E38;&#xFF0C;GC&#x7684;&#x7EBF;&#x7A0B;&#x7684;&#x4F18;&#x5148;&#x7EA7;&#x522B;&#x8F83;&#x4F4E;&#x3002;JVM&#x8C03;&#x7528;GC&#x7684;&#x7B56;&#x7565;&#x4E5F;&#x6709;&#x5F88;&#x591A;&#x79CD;&#xFF0C;&#x6709;&#x7684;&#x662F;&#x5185;&#x5B58;&#x4F7F;&#x7528;&#x5230;&#x8FBE;&#x4E00;&#x5B9A;&#x7A0B;&#x5EA6;&#x65F6;&#xFF0C;GC&#x624D;&#x5F00;&#x59CB;&#x5DE5;&#x4F5C;&#xFF0C;&#x4E5F;&#x6709;&#x5B9A;&#x65F6;&#x6267;&#x884C;&#x7684;&#xFF0C;&#x6709;&#x7684;&#x662F;&#x5E73;&#x7F13;&#x6267;&#x884C;GC&#xFF0C;&#x6709;&#x7684;&#x662F;&#x4E2D;&#x65AD;&#x5F0F;&#x6267;&#x884C;GC&#x3002;&#x5C31;&#x662F;&#x8BF4;GC&#x662F;&#x4E0D;&#x53EF;&#x63A7;&#x7684;&#xFF0C;&#x57FA;&#x672C;&#x662F;&#x900F;&#x660E;&#x7684;&#x3002;</p>
+</li>
+<li><p>Java&#x5BF9;&#x5F15;&#x7528;&#x7684;&#x5206;&#x7C7B;&#x6709; Strong reference, SoftReference, WeakReference, PhatomReference &#x56DB;&#x79CD;</p>
+</li>
+<li><p>&#x5F3A;&#x5F15;&#x7528;(StrongReference)&#xFF1A;JVM &#x5B81;&#x53EF;&#x629B;&#x51FA; OOM &#xFF0C;&#x4E5F;&#x4E0D;&#x4F1A;&#x8BA9; GC &#x56DE;&#x6536;&#x5177;&#x6709;&#x5F3A;&#x5F15;&#x7528;&#x7684;&#x5BF9;&#x8C61;</p>
+</li>
+<li>&#x8F6F;&#x5F15;&#x7528;(SoftReference)&#xFF1A;&#x53EA;&#x6709;&#x5728;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x4E0D;&#x8DB3;&#x65F6;&#xFF0C;&#x624D;&#x4F1A;&#x88AB;&#x56DE;&#x7684;&#x5BF9;&#x8C61;</li>
+<li>&#x5F31;&#x5F15;&#x7528;(WeakReference)&#xFF1A;&#x5728; GC &#x65F6;&#xFF0C;&#x4E00;&#x65E6;&#x53D1;&#x73B0;&#x4E86;&#x53EA;&#x5177;&#x6709;&#x5F31;&#x5F15;&#x7528;&#x7684;&#x5BF9;&#x8C61;&#xFF0C;&#x4E0D;&#x7BA1;&#x5F53;&#x524D;&#x5185;&#x5B58;&#x7A7A;&#x95F4;&#x8DB3;&#x591F;&#x4E0E;&#x5426;&#xFF0C;&#x90FD;&#x4F1A;&#x56DE;&#x6536;&#x5B83;&#x7684;&#x5185;&#x5B58;</li>
+<li>&#x865A;&#x5F15;&#x7528;(PhantomReference)&#xFF1A;&#x4EFB;&#x4F55;&#x65F6;&#x5019;&#x90FD;&#x53EF;&#x4EE5;&#x88AB;GC&#x56DE;&#x6536;&#xFF0C;&#x5F53;&#x5783;&#x573E;&#x56DE;&#x6536;&#x5668;&#x51C6;&#x5907;&#x56DE;&#x6536;&#x4E00;&#x4E2A;&#x5BF9;&#x8C61;&#x65F6;&#xFF0C;&#x5982;&#x679C;&#x53D1;&#x73B0;&#x5B83;&#x8FD8;&#x6709;&#x865A;&#x5F15;&#x7528;&#xFF0C;&#x5C31;&#x4F1A;&#x5728;&#x56DE;&#x6536;&#x5BF9;&#x8C61;&#x7684;&#x5185;&#x5B58;&#x4E4B;&#x524D;&#xFF0C;&#x628A;&#x8FD9;&#x4E2A;&#x865A;&#x5F15;&#x7528;&#x52A0;&#x5165;&#x5230;&#x4E0E;&#x4E4B;&#x5173;&#x8054;&#x7684;&#x5F15;&#x7528;&#x961F;&#x5217;&#x4E2D;&#x3002;&#x7A0B;&#x5E8F;&#x53EF;&#x4EE5;&#x901A;&#x8FC7;&#x5224;&#x65AD;&#x5F15;&#x7528;&#x961F;&#x5217;&#x4E2D;&#x662F;&#x5426;&#x5B58;&#x5728;&#x8BE5;&#x5BF9;&#x8C61;&#x7684;&#x865A;&#x5F15;&#x7528;&#xFF0C;&#x6765;&#x4E86;&#x89E3;&#x8FD9;&#x4E2A;&#x5BF9;&#x8C61;&#x662F;&#x5426;&#x5C06;&#x8981;&#x88AB;&#x56DE;&#x6536;&#x3002;&#x53EF;&#x4EE5;&#x7528;&#x6765;&#x4F5C;&#x4E3A;GC&#x56DE;&#x6536;Object&#x7684;&#x6807;&#x5FD7;</li>
+</ol>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="Android开发知识概要.html" class="navigation navigation-prev " aria-label="Previous page: Android开发知识概要">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="macOS 下载编译 aosp 源码.html" class="navigation navigation-next " aria-label="Next page: macOS 下载编译 aosp 源码">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Android内存泄漏场景及解决方法","level":"1.7.7","depth":2,"next":{"title":"macOS 下载编译 aosp 源码","level":"1.7.8","depth":2,"path":"Android/macOS 下载编译 aosp 源码.md","ref":"Android/macOS 下载编译 aosp 源码.md","articles":[]},"previous":{"title":"Android开发知识概要","level":"1.7.6","depth":2,"path":"Android/Android开发知识概要.md","ref":"Android/Android开发知识概要.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Android/Android内存泄漏场景及解决方法.md","mtime":"2022-07-27T03:18:24.749Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-07-27T04:25:48.192Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+

@@ -1,0 +1,952 @@
+
+<!DOCTYPE HTML>
+<html lang="" >
+    <head>
+        <meta charset="UTF-8">
+        <meta content="text/html; charset=utf-8" http-equiv="Content-Type">
+        <title>Android 开发涉及知识的概要 · GitBook</title>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="description" content="">
+        <meta name="generator" content="GitBook 3.2.3">
+        
+        
+        
+    
+    <link rel="stylesheet" href="../gitbook/style.css">
+
+    
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-highlight/website.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-search/search.css">
+                
+            
+                
+                <link rel="stylesheet" href="../gitbook/gitbook-plugin-fontsettings/website.css">
+                
+            
+        
+
+    
+
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+        
+    
+    
+    <meta name="HandheldFriendly" content="true"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <link rel="apple-touch-icon-precomposed" sizes="152x152" href="../gitbook/images/apple-touch-icon-precomposed-152.png">
+    <link rel="shortcut icon" href="../gitbook/images/favicon.ico" type="image/x-icon">
+
+    
+    <link rel="next" href="Android 四大组件 1：Activity.html" />
+    
+    
+    <link rel="prev" href="四步准备 Android 面试.html" />
+    
+
+    </head>
+    <body>
+        
+<div class="book">
+    <div class="book-summary">
+        
+            
+<div id="book-search-input" role="search">
+    <input type="text" placeholder="Type to search" />
+</div>
+
+            
+                <nav role="navigation">
+                
+
+
+<ul class="summary">
+    
+    
+
+    
+
+    
+        
+        
+    
+        <li class="chapter " data-level="1.1" data-path="../">
+            
+                <a href="../">
+            
+                    
+                    Introduction
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.2" >
+            
+                <span>
+            
+                    
+                    操作系统
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.2.1" data-path="../操作系统/谈谈进程间通信.html">
+            
+                <a href="../操作系统/谈谈进程间通信.html">
+            
+                    
+                    谈谈进程间通信
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.3" >
+            
+                <span>
+            
+                    
+                    计算机网络
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.3.1" data-path="../计算机网络/计算机网络基础.html">
+            
+                <a href="../计算机网络/计算机网络基础.html">
+            
+                    
+                    计算机网络基础
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.4" >
+            
+                <span>
+            
+                    
+                    面试
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.4.1" data-path="../面试/如何写好简历的指北.html">
+            
+                <a href="../面试/如何写好简历的指北.html">
+            
+                    
+                    如何写好简历的指北
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5" >
+            
+                <span>
+            
+                    
+                    设计模式
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.5.1" data-path="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                <a href="../设计模式/从 Android 源代码来看『观察者模式』.html">
+            
+                    
+                    从 Android 源代码来看『观察者模式』
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.5.2" data-path="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                <a href="../设计模式/从 Android 源码来看“ Builder 模式”.html">
+            
+                    
+                    从 Android 源码来看“ Builder 模式”
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6" >
+            
+                <span>
+            
+                    
+                    算法与数据结构
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.6.1" data-path="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 1：开篇.html">
+            
+                    
+                    算法与数据结构 1：开篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.2" data-path="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 2：如何学习.html">
+            
+                    
+                    算法与数据结构 2：如何学习
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.3" data-path="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 3：数组与链表.html">
+            
+                    
+                    算法与数据结构 3：数组与链表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.4" data-path="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 4：栈与队列.html">
+            
+                    
+                    算法与数据结构 4：栈与队列
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.5" data-path="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 5：哈希表.html">
+            
+                    
+                    算法与数据结构 5：哈希表
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.6.6" data-path="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                <a href="../算法与数据结构/算法与数据结构 6：二叉树基础篇.html">
+            
+                    
+                    算法与数据结构 6：二叉树基础篇
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7" >
+            
+                <span>
+            
+                    
+                    Android
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.7.1" data-path="四步准备 Android 面试.html">
+            
+                <a href="四步准备 Android 面试.html">
+            
+                    
+                    四步准备 Android 面试
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter active" data-level="1.7.2" data-path="Android 开发涉及知识的概要.html">
+            
+                <a href="Android 开发涉及知识的概要.html">
+            
+                    
+                    Android 开发涉及知识的概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.3" data-path="Android 四大组件 1：Activity.html">
+            
+                <a href="Android 四大组件 1：Activity.html">
+            
+                    
+                    Android 四大组件 1：Activity
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.4" data-path="Android Gradle 概要.html">
+            
+                <a href="Android Gradle 概要.html">
+            
+                    
+                    Android Gradle 概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.5" data-path="Android插件化框架 RePlugin 初探.html">
+            
+                <a href="Android插件化框架 RePlugin 初探.html">
+            
+                    
+                    Android插件化框架 RePlugin 初探
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.6" data-path="Android开发知识概要.html">
+            
+                <a href="Android开发知识概要.html">
+            
+                    
+                    Android开发知识概要
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.7" data-path="Android内存泄漏场景及解决方法.html">
+            
+                <a href="Android内存泄漏场景及解决方法.html">
+            
+                    
+                    Android内存泄漏场景及解决方法
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.8" data-path="macOS 下载编译 aosp 源码.html">
+            
+                <a href="macOS 下载编译 aosp 源码.html">
+            
+                    
+                    macOS 下载编译 aosp 源码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.9" data-path="RePlugin 插件管理与权限管理.html">
+            
+                <a href="RePlugin 插件管理与权限管理.html">
+            
+                    
+                    RePlugin 插件管理与权限管理
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.10" data-path="RePlugin 插件启动源码分析.html">
+            
+                <a href="RePlugin 插件启动源码分析.html">
+            
+                    
+                    RePlugin 插件启动源码分析
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.7.11" data-path="RePlugin 阅读源码环境搭建.html">
+            
+                <a href="RePlugin 阅读源码环境搭建.html">
+            
+                    
+                    RePlugin 阅读源码环境搭建
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.8" >
+            
+                <span>
+            
+                    
+                    Cocos Creator
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.8.1" data-path="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                <a href="../CocosCreator/CocosCreator 引擎资源加载与释放原理简析.html">
+            
+                    
+                    CocosCreator 引擎资源加载与释放原理简析
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9" >
+            
+                <span>
+            
+                    
+                    Git
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.9.1" data-path="../Git/Git 的诞生.html">
+            
+                <a href="../Git/Git 的诞生.html">
+            
+                    
+                    Git 的诞生
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.2" data-path="../Git/Git 入门.html">
+            
+                <a href="../Git/Git 入门.html">
+            
+                    
+                    Git 入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.9.3" data-path="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                <a href="../Git/Git 之旅：不那么深入理解 Git.html">
+            
+                    
+                    Git 之旅：不那么深入理解 Git
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10" >
+            
+                <span>
+            
+                    
+                    Java
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.10.1" data-path="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                <a href="../Java/浅谈 JVM 1：一次编写，到处运行.html">
+            
+                    
+                    浅谈 JVM 1：一次编写，到处运行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.2" data-path="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                <a href="../Java/浅谈 JVM 2：如何阅读字节码.html">
+            
+                    
+                    浅谈 JVM 2：如何阅读字节码
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.3" data-path="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                <a href="../Java/浅谈 JVM 3：指令集及其执行.html">
+            
+                    
+                    浅谈 JVM 3：指令集及其执行
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.4" data-path="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                <a href="../Java/浅谈 JVM 4：类加载机制.html">
+            
+                    
+                    浅谈 JVM 4：类加载机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.5" data-path="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                <a href="../Java/浅谈 JVM 5：方法调用机制.html">
+            
+                    
+                    浅谈 JVM 5：方法调用机制
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.10.6" data-path="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                <a href="../Java/浅谈 JVM 6：Android 虚拟机对比.html">
+            
+                    
+                    浅谈 JVM 6：Android 虚拟机对比
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11" >
+            
+                <span>
+            
+                    
+                    Linux 那些事儿
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.11.1" data-path="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                <a href="../Linux 那些事儿/apt 和 apt-get 有什么不同之处？.html">
+            
+                    
+                    apt 和 apt-get 有什么不同之处？
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.2" data-path="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                <a href="../Linux 那些事儿/Linux 命令行 Tricks.html">
+            
+                    
+                    Linux 命令行 Tricks
+            
+                </a>
+            
+
+            
+        </li>
+    
+        <li class="chapter " data-level="1.11.3" data-path="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                <a href="../Linux 那些事儿/Linux 终端操作入门.html">
+            
+                    
+                    Linux 终端操作入门
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+        <li class="chapter " data-level="1.12" >
+            
+                <span>
+            
+                    
+                    Mac OS
+            
+                </span>
+            
+
+            
+            <ul class="articles">
+                
+    
+        <li class="chapter " data-level="1.12.1" data-path="../macOS/黑苹果安装与踩坑记.html">
+            
+                <a href="../macOS/黑苹果安装与踩坑记.html">
+            
+                    
+                    黑苹果安装与踩坑记
+            
+                </a>
+            
+
+            
+        </li>
+    
+
+            </ul>
+            
+        </li>
+    
+
+    
+
+    <li class="divider"></li>
+
+    <li>
+        <a href="https://www.gitbook.com" target="blank" class="gitbook-link">
+            Published with GitBook
+        </a>
+    </li>
+</ul>
+
+
+                </nav>
+            
+        
+    </div>
+
+    <div class="book-body">
+        
+            <div class="body-inner">
+                
+                    
+
+<div class="book-header" role="navigation">
+    
+
+    <!-- Title -->
+    <h1>
+        <i class="fa fa-circle-o-notch fa-spin"></i>
+        <a href=".." >Android 开发涉及知识的概要</a>
+    </h1>
+</div>
+
+
+
+
+                    <div class="page-wrapper" tabindex="-1" role="main">
+                        <div class="page-inner">
+                            
+<div id="book-search-results">
+    <div class="search-noresults">
+    
+                                <section class="normal markdown-section">
+                                
+                                <h1 id="android-&#x5F00;&#x53D1;&#x6D89;&#x53CA;&#x77E5;&#x8BC6;&#x6982;&#x8981;">Android &#x5F00;&#x53D1;&#x6D89;&#x53CA;&#x77E5;&#x8BC6;&#x6982;&#x8981;</h1>
+<h3 id="&#x57FA;&#x7840;">&#x57FA;&#x7840;</h3>
+<ul>
+<li>Android&#x5386;&#x53F2;  </li>
+<li>&#x5F00;&#x53D1;&#x8BED;&#x8A00;&#xFF1A;Java&#x3001;C++  </li>
+<li>&#x7CFB;&#x7EDF;&#xFF1A;Android&#x3001;TV&#x3001;Wear&#x3001;Auto&#x3001;Things  </li>
+<li>&#x7CFB;&#x7EDF;&#x67B6;&#x6784;&#x7B80;&#x4ECB;</li>
+<li>Android&#x5DF2;&#x53D1;&#x5E03;&#x7248;&#x672C;&#x53CA;&#x66F4;&#x65B0;</li>
+<li>&#x5F00;&#x53D1;&#x73AF;&#x5883;&#x642D;&#x5EFA;&#x3001;&#x5EFA;&#x7ACB;&#x5DE5;&#x7A0B;&#x3001;AndroidStudio&#x7B80;&#x5355;&#x4F7F;&#x7528;</li>
+</ul>
+<h3 id="&#x5165;&#x95E8;">&#x5165;&#x95E8;</h3>
+<ul>
+<li>UI&#x63A7;&#x4EF6;&#x3010;&#x5206;&#x4E3A;&#x5E03;&#x5C40;&#x3001;&#x7EC4;&#x4EF6;&#xFF1F;&#x3011;&#xFF08;&#x53EF;&#x7EC6;&#x5206;&#xFF09;&#xFF1B;Intent&#xFF08;&#x663E;&#xFF0C;&#x9690;&#xFF09;&#xFF1B;Notification&#xFF1B;Fragment</li>
+<li>&#x56DB;&#x5927;&#x7EC4;&#x4EF6;&#xFF1A;Activity&#x3001;Service&#x3001;Broadcast&#x3001;ContentProvider</li>
+<li>&#x591A;&#x5C4F;&#x5E55;&#x9002;&#x914D;&#xFF1B;&#x6743;&#x9650;&#x7BA1;&#x7406;&#xFF1B;WebView&#xFF1B;</li>
+<li>&#x7F51;&#x7EDC;&#xFF1A;WebView&#x3001;XML&#x3001;Json&#x3001;GSON&#x3001;HTTP&#xFF08;okHttp&#xFF09;&#xFF1B;</li>
+<li>&#x6301;&#x4E45;&#x5316;&#xFF1A;SQLite-LitePal&#x3001;SharedPreference&#x3001;&#x6587;&#x4EF6;&#x64CD;&#x4F5C;&#xFF1B;Application&#xFF1B;&#x4E0E;&#x5176;&#x4ED6;APP&#x4EA4;&#x4E92;&#xFF1B;&#x540E;&#x53F0;&#xFF1B;</li>
+<li>&#x8C03;&#x7528;&#x786C;&#x4EF6;&#xFF1A;&#x76F8;&#x673A;&#x3001;&#x76F8;&#x518C;&#x3001;&#x89C6;&#x9891;&#x3001;&#x97F3;&#x9891;&#x3001;&#x5F55;&#x97F3;&#x3001;&#x4F20;&#x611F;&#x5668;&#x3001;&#x5B9A;&#x4F4D;&#xFF08;GPS&#x3001;&#x7F51;&#x7EDC;&#xFF09;&#x3001;&#x5730;&#x56FE;&#xFF08;&#x767E;&#x5EA6;&#xFF09;&#x3001;NFC&#x3001;&#x84DD;&#x7259;&#xFF1B;</li>
+<li>&#x5DE5;&#x7A0B;&#x76EE;&#x5F55;&#x7ED3;&#x6784;&#xFF1A;layout&#x3001;res&#x3001;drawable&#x3001;values&#xFF1A;colors&#xFF0C;dimens&#xFF0C;strings&#xFF0C;styles&#xFF0C;theme&#x3001;menu&#x3001;XML&#x5E03;&#x5C40;&#x3001;AndroidManifest&#x3001;build.gradle&#x3001;assets&#x3001;SDK&#x7248;&#x672C;&#x4E0E;&#x517C;&#x5BB9;</li>
+<li>UI&#x7EC4;&#x4EF6;&#xFF1A;TextView&#x3001;Button&#x3001;EditText&#x3001;ImageView&#x3001;ProgressBar&#x3001;AlertDialog&#x3001;ProgressDialog&#x3001;ListView&#x3001;RecyclerView&#xFF0C;Adapter&#xFF0C;ViewHolder&#x3001;ListView&#x3001;GridView&#x3001;View Pager&#x3001;Nine-Patch&#x56FE;&#x7247;&#x3001;&#x5E03;&#x5C40;&#xFF08;Linear&#x3001;Frame&#x3001;Relative&#x3001;Absolute&#x3001;Fragment&#xFF1F;&#xFF09;&#x3001;&#x81EA;&#x5B9A;&#x4E49;&#x63A7;&#x4EF6;&#x3001;DialogFragment&#x3001;&#x5DE5;&#x5177;&#x680F;&#x3001;&#x83DC;&#x5355;&#x3001;&#x641C;&#x7D22;&#xFF08;&#x641C;&#x7D22;&#x6846;&#x3001;&#x641C;&#x7D22;&#x529F;&#x80FD;&#xFF09;</li>
+<li>Gradle&#x7B80;&#x5355;&#x4ECB;&#x7ECD;&#x3001;&#x6A21;&#x62DF;&#x5668;&#x3001;&#x65E5;&#x5FD7;&#x4F7F;&#x7528;&#x3001;&#x7B80;&#x5355;&#x8C03;&#x8BD5;</li>
+</ul>
+<h3 id="&#x8FDB;&#x9636;">&#x8FDB;&#x9636;</h3>
+<ul>
+<li>&#x7F16;&#x8BD1;&#x8FC7;&#x7A0B;&#x3001;MaterialDesign&#xFF1A;ToolBar&#xFF0C;DrawerLayout&#xFF0C;NavigationView&#xFF0C;FloatingActionButton&#xFF0C;SnackBar&#xFF0C;CardView&#xFF0C;FloatingActionButton&#xFF0C;C&#xFF0C;APPBarLayout&#xFF0C;&#x4E0B;&#x62C9;&#x5237;&#x65B0;</li>
+<li>Activity&#x751F;&#x547D;&#x5468;&#x671F;&#x3001;&#x542F;&#x52A8;&#x6A21;&#x5F0F;&#x3001;IPC&#x3001;View&#x4E8B;&#x4EF6;&#x4F53;&#x7CFB;&#xFF08;&#x7B49;&#x4E8E;&#x201C;&#x89E6;&#x6478;&#x4E8B;&#x4EF6;&#x4F20;&#x9012;&#x673A;&#x5236;&#xFF1F;&#xFF09;&#x3001;RemoteView&#x3001;View&#x5DE5;&#x4F5C;&#x539F;&#x7406;&#xFF08;&#x7ED8;&#x5236;&#x8FC7;&#x7A0B;&#xFF1F;&#xFF09;&#x3001;Drawable&#x3001;&#x52A8;&#x753B;&#x3001;Window&#x548C;WindowManager</li>
+<li>&#x56DB;&#x5927;&#x7EC4;&#x4EF6;&#x5DE5;&#x4F5C;&#x8FC7;&#x7A0B;&#x3001;&#x6D88;&#x606F;&#x673A;&#x5236;&#x3001;Bitmap&#x52A0;&#x8F7D;&#x548C;Cache&#x3001;CrashHandler&#x3001;JNI&#x3001;NDK&#x3001;&#x6027;&#x80FD;&#x4F18;&#x5316;&#x3001;&#x5185;&#x5B58;&#x6CC4;&#x6F0F;&#x5206;&#x6790;-MAT&#x3001;&#x63D0;&#x9AD8;&#x53EF;&#x7EF4;&#x62A4;&#x6027;&#x3001;Annotation&#x3001;EventBus&#x3001;&#x7EBF;&#x7A0B;&#xFF08;&#x591A;&#x7EBF;&#x7A0B;&#xFF1A;AsyncTask&#x3001;&#x5B50;&#x7EBF;&#x7A0B;&#x66F4;&#x65B0;UI&#xFF09;&#x548C;&#x7EBF;&#x7A0B;&#x6C60;&#x3001;&#x5F02;&#x6B65;&#x3001;OpenGL&#x3001;&#x51FD;&#x6570;&#x5F0F;&#x7F16;&#x7A0B;&#x3001;Percent Support Library&#x3001;Design Support Library</li>
+<li>Gradle&#x3001;&#x6CE8;&#x89E3;&#x3001;&#x6570;&#x636E;&#x5E8F;&#x5217;&#x5316;&#x3001;WebView&#x4E2D;Java&#x548C;JS&#x4EA4;&#x4E92;&#x3001;DataBinding&#x3001;&#x89C4;&#x8303;&#x4EE3;&#x7801;&#x3001;&#x57FA;&#x4E8E;&#x5F00;&#x6E90;&#x9879;&#x76EE;&#x642D;&#x5EFA;&#x5C5E;&#x4E8E;&#x81EA;&#x5DF1;&#x7684;&#x6280;&#x672F;&#x6808;&#x3001;&#x63D2;&#x4EF6;&#x6846;&#x67B6;&#x673A;&#x5236;&#x3001;&#x63A8;&#x9001;&#x673A;&#x5236;&#x3001;&#x5168;&#x5C40;Context&#x3001;&#x5B9A;&#x5236;&#x81EA;&#x5DF1;&#x7684;&#x65E5;&#x5FD7;&#x5DE5;&#x5177;&#x3001;&#x8C03;&#x8BD5;&#x3001;&#x5B9A;&#x65F6;&#x4EFB;&#x52A1;&#x3001;&#x591A;&#x7A97;&#x53E3;&#x3001;Lambda&#x3001;&#x81EA;&#x5B9A;&#x4E49;View&#xFF08;&#x7EC4;&#x4EF6;&#xFF09;&#x3001;Looper&#x3001;Handler&#x3001;HandlerThread&#x3001;Message&#x3001;&#x5B9A;&#x5236;View&#x548C;Event</li>
+<li>Android&#x5B89;&#x5168;&#x3001;&#x53CD;&#x7F16;&#x8BD1;</li>
+</ul>
+<h3 id="&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;">&#x8BBE;&#x8BA1;&#x6A21;&#x5F0F;</h3>
+<p>MVP&#x3001;MVVM&#x3001;Builder&#x6A21;&#x5F0F;</p>
+<h3 id="&#x5F00;&#x53D1;&#x5DE5;&#x5177;">&#x5F00;&#x53D1;&#x5DE5;&#x5177;</h3>
+<ul>
+<li>IDE&#xFF1A;AndroidStudio&#x3001;Eclipse</li>
+<li>&#x8C03;&#x8BD5;&#x5DE5;&#x5177;</li>
+<li>&#x63D2;&#x4EF6;</li>
+<li>&#x8F85;&#x52A9;&#x5DE5;&#x5177;&#xFF1A;Git</li>
+<li>&#x547D;&#x4EE4;&#x884C;&#x5DE5;&#x5177;</li>
+<li>&#x6301;&#x7EED;&#x96C6;&#x6210;</li>
+</ul>
+<h3 id="&#x5F00;&#x6E90;&#x9879;&#x76EE;&#x3001;&#x5F00;&#x6E90;&#x5E93;">&#x5F00;&#x6E90;&#x9879;&#x76EE;&#x3001;&#x5F00;&#x6E90;&#x5E93;</h3>
+<h3 id="&#x5305;&#x7BA1;&#x7406;">&#x5305;&#x7BA1;&#x7406;</h3>
+<h3 id="app&#x4E0A;&#x4F20;&#x3001;&#x6253;&#x5305;&#x3001;&#x5347;&#x7EA7;">APP&#x4E0A;&#x4F20;&#x3001;&#x6253;&#x5305;&#x3001;&#x5347;&#x7EA7;</h3>
+<h3 id="&#x7B2C;&#x4E09;&#x65B9;&#x670D;&#x52A1;">&#x7B2C;&#x4E09;&#x65B9;&#x670D;&#x52A1;</h3>
+<p>&#x5E7F;&#x544A;&#x3001;Crash&#x3001;&#x7EDF;&#x8BA1;&#x3001;&#x5E94;&#x7528;&#x5206;&#x53D1;&#x3001;&#x6570;&#x636E;&#x5B58;&#x50A8;&#x3001;&#x63A8;&#x9001;&#x3001;&#x5206;&#x4EAB;&#x3001;&#x4FBF;&#x6377;&#x767B;&#x5F55;&#x3001;Google Play&#x670D;&#x52A1;</p>
+
+                                
+                                </section>
+                            
+    </div>
+    <div class="search-results">
+        <div class="has-results">
+            
+            <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+            <ul class="search-results-list"></ul>
+            
+        </div>
+        <div class="no-results">
+            
+            <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+            
+        </div>
+    </div>
+</div>
+
+                        </div>
+                    </div>
+                
+            </div>
+
+            
+                
+                <a href="四步准备 Android 面试.html" class="navigation navigation-prev " aria-label="Previous page: 四步准备 Android 面试">
+                    <i class="fa fa-angle-left"></i>
+                </a>
+                
+                
+                <a href="Android 四大组件 1：Activity.html" class="navigation navigation-next " aria-label="Next page: Android 四大组件 1：Activity">
+                    <i class="fa fa-angle-right"></i>
+                </a>
+                
+            
+        
+    </div>
+
+    <script>
+        var gitbook = gitbook || [];
+        gitbook.push(function() {
+            gitbook.page.hasChanged({"page":{"title":"Android 开发涉及知识的概要","level":"1.7.2","depth":2,"next":{"title":"Android 四大组件 1：Activity","level":"1.7.3","depth":2,"path":"Android/Android 四大组件 1：Activity.md","ref":"Android/Android 四大组件 1：Activity.md","articles":[]},"previous":{"title":"四步准备 Android 面试","level":"1.7.1","depth":2,"path":"Android/四步准备 Android 面试.md","ref":"Android/四步准备 Android 面试.md","articles":[]},"dir":"ltr"},"config":{"gitbook":"*","theme":"default","variables":{},"plugins":[],"pluginsConfig":{"highlight":{},"search":{},"lunr":{"maxIndexSize":1000000,"ignoreSpecialCharacters":false},"sharing":{"facebook":true,"twitter":true,"google":false,"weibo":false,"instapaper":false,"vk":false,"all":["facebook","google","twitter","weibo","instapaper"]},"fontsettings":{"theme":"white","family":"sans","size":2},"theme-default":{"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"},"showLevel":false}},"structure":{"langs":"LANGS.md","readme":"README.md","glossary":"GLOSSARY.md","summary":"SUMMARY.md"},"pdf":{"pageNumbers":true,"fontSize":12,"fontFamily":"Arial","paperSize":"a4","chapterMark":"pagebreak","pageBreaksBefore":"/","margin":{"right":62,"left":62,"top":56,"bottom":56}},"styles":{"website":"styles/website.css","pdf":"styles/pdf.css","epub":"styles/epub.css","mobi":"styles/mobi.css","ebook":"styles/ebook.css","print":"styles/print.css"}},"file":{"path":"Android/Android 开发涉及知识的概要.md","mtime":"2022-07-27T03:18:24.749Z","type":"markdown"},"gitbook":{"version":"3.2.3","time":"2022-07-27T04:25:48.192Z"},"basePath":"..","book":{"language":""}});
+        });
+    </script>
+</div>
+
+        
+    <script src="../gitbook/gitbook.js"></script>
+    <script src="../gitbook/theme.js"></script>
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search-engine.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-search/search.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/lunr.min.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-lunr/search-lunr.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-sharing/buttons.js"></script>
+        
+    
+        
+        <script src="../gitbook/gitbook-plugin-fontsettings/fontsettings.js"></script>
+        
+    
+
+    </body>
+</html>
+
