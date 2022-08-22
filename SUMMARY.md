@@ -28,6 +28,8 @@
   * [RePlugin 插件管理与权限管理](Android/RePlugin 插件管理与权限管理.md)
   * [RePlugin 插件启动源码分析](Android/RePlugin 插件启动源码分析.md)
   * [RePlugin 阅读源码环境搭建](Android/RePlugin 阅读源码环境搭建.md)
+- C 语言
+  * [浅谈 C 语言 1：编译过程及其可移植性](C 语言/浅谈 C 语言 1：编译过程及其可移植性.md)
 - Cocos Creator
   * [CocosCreator 引擎资源加载与释放原理简析](CocosCreator/CocosCreator 引擎资源加载与释放原理简析.md)
 - Git
