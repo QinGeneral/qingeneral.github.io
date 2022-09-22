@@ -2,6 +2,7 @@
 # git checkout -b gh-pages
 book sm
 sed -i '' 's/%20/ /g' SUMMARY.md
+nvm use 10.24.0
 gitbook build
 cp -r _book/* .
 git add .
