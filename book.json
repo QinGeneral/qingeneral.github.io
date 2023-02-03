@@ -1,0 +1,43 @@
+{
+    "plugins": [
+        "hide-element",
+        "back-to-top-button",
+        "expandable-chapters",
+        "code",
+        "-lunr",
+        "-search",
+        "search-pro",
+        "insert-logo",
+        "custom-favicon",
+        "pageview-count",
+        "tbfed-pagefooter",
+        "popup",
+        "-sharing",
+        "sharing-plus"
+    ],
+    "pluginsConfig": {
+        "hide-element": {
+            "elements": [
+                ".gitbook-link"
+            ]
+        },
+        "insert-logo": {
+            "url": "images/logo.jpg",
+            "style": "background: none; max-height: 30px; min-height: 30px"
+        },
+        "favicon": "images/icon.ico",
+        "tbfed-pagefooter": {
+            "copyright": "Copyright &copy qingeneral.github.io 2023",
+            "modify_label": "该文章修订时间：",
+            "modify_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "sharing": {
+            "douban": true,
+            "twitter": true,
+            "all": [
+                "douban",
+                "twitter"
+            ]
+        }
+    }
+}
