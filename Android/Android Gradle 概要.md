@@ -12,7 +12,7 @@ include ':app', ':libraries:lib1'
 
 其他build.gradle文件的内容大致包括：
 
-```
+```gradle
 buildscript {
     repositories {
         mavenCentral()
