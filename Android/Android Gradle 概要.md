@@ -5,7 +5,7 @@ Android 工程 Gradle 相关文件有：
 工程目录下的build.gradle、settings.gradle；各个module目录下的build.gradle。
 
 其中settings.gradle里的内容非常简单,比如：
-```
+```gradle
 include ':app', ':libraries:lib1'
 ```
 这里定义了有哪些Gradle工程。
@@ -66,14 +66,14 @@ Android使用了和Java同样的约定规则来和其他插件保持兼容，并
 
 1. 在工程目录下新建common_config.gradle文件，用于公共变量
 2. 输入代码如下
-    ```
+    ```gradle
     project.ext {
         compileSdkVersion = 23
         ...
     }
     ```
 3. 工程中各个module的 build. gradle 文件引用全局配置项如下。 
-    ```
+    ```gradle
     apply from: "${project. rootDir}/common_config.gradle"
     android { 
         compileSdkVersion project.ext.compileSdkVersion
@@ -81,7 +81,7 @@ Android使用了和Java同样的约定规则来和其他插件保持兼容，并
     }
     ```
 4. 在module比较多时，按照第三步的配置就比较复杂。可以在工程目录下的build.gradle中如下配置：
-    ```
+    ```gradle
     subprojects {
         apply from: "${project. rootDir}/common_config.gradle"
     }
@@ -92,7 +92,7 @@ Android使用了和Java同样的约定规则来和其他插件保持兼容，并
 远程仓库包括Maven Central、JCenter。JCenter传输速度快、更加安全的特性，Android Studio 已将JCenter作为默认依赖源。
 
 代码中，添加远程依赖的方式：
-```
+```gradle
 compile 'de.greenrobot:eventbus:2.4.1'
 ```
 
