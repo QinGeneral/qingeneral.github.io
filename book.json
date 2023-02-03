@@ -22,10 +22,10 @@
             ]
         },
         "insert-logo": {
-            "url": "images/logo.jpg",
+            "url": "https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1675423380.614676SmartPic.png",
             "style": "background: none; max-height: 30px; min-height: 30px"
         },
-        "favicon": "images/icon.ico",
+        "favicon": "./images/icon.ico",
         "tbfed-pagefooter": {
             "copyright": "Copyright &copy qingeneral.github.io 2023",
             "modify_label": "该文章修订时间：",
