@@ -1,6 +1,6 @@
 # Android 四大组件 1：Activity
 
-![Activity相关会问些什么](http://upload-images.jianshu.io/upload_images/1214187-1a8e4fe137b26455.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![Activity相关会问些什么](https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1675412537.153298SmartPic.png)
 
 本文包括以下内容（针对Android面试，部分细节略去）：
 
@@ -12,7 +12,7 @@
 
 ## 1. Activity生命周期
 
-![ Activity生命周期](http://upload-images.jianshu.io/upload_images/1214187-2e8c745b7fea7541.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![ Activity生命周期](https://blog-pic-1251295613.cos.ap-guangzhou.myqcloud.com/1675412576.751284SmartPic.png)
 
 onStart、onStop代表着应用是否可见  
 onResume、onPause代表应用是否在前台
