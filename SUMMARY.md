@@ -1,48 +1,40 @@
 # Your Book Title
 
-- 编译原理
-  * [编译原理 1：概要篇](编译原理/编译原理 1：概要篇.md)
-  * [编译原理 2：词法分析](编译原理/编译原理 2：词法分析.md)
-- 操作系统
-  * [谈谈进程间通信](操作系统/谈谈进程间通信.md)
-- 计算机网络
-  * [计算机网络基础](计算机网络/计算机网络基础.md)
-- 面试
-  * [如何写好简历的指北](面试/如何写好简历的指北.md)
-- 设计模式
-  * [从 Android 源代码来看『观察者模式』](设计模式/从 Android 源代码来看『观察者模式』.md)
-  * [从 Android 源码来看“ Builder 模式”](设计模式/从 Android 源码来看“ Builder 模式”.md)
-- 算法与数据结构
-  * [算法与数据结构 1：开篇](算法与数据结构/算法与数据结构 1：开篇.md)
-  * [算法与数据结构 2：如何学习](算法与数据结构/算法与数据结构 2：如何学习.md)
-  * [算法与数据结构 3：数组与链表](算法与数据结构/算法与数据结构 3：数组与链表.md)
-  * [算法与数据结构 4：栈与队列](算法与数据结构/算法与数据结构 4：栈与队列.md)
-  * [算法与数据结构 5：哈希表](算法与数据结构/算法与数据结构 5：哈希表.md)
-  * [算法与数据结构 6：二叉树基础篇](算法与数据结构/算法与数据结构 6：二叉树基础篇.md)
 - AI
   - AI 产品
     * [Chat GPT](AI/AI 产品/ChatGPT.md)
+    * [Chat PDF](AI/AI 产品/ChatPDF.md)
+    * [Civitai](AI/AI 产品/Civitai.md)
+    * [Copilot](AI/AI 产品/Copilot.md)
+    * [Glarity Summary](AI/AI 产品/Glarity-Summary.md)
+    * [Hugging Face](AI/AI 产品/HuggingFace.md)
+    * [Logo Design Lab](AI/AI 产品/Logo Design Lab.md)
+    * [Midjourney](AI/AI 产品/Midjourney.md)
+    * [New Bing](AI/AI 产品/New Bing.md)
+    * [Notion AI](AI/AI 产品/Notion AI.md)
+    * [Stable Diffusion](AI/AI 产品/Stable Diffusion.md)
+    * [彩云小译](AI/AI 产品/彩云小译.md)
   * [AI 产品汇总](AI/AI 产品汇总.md)
 - Android
-  * [四步准备 Android 面试](Android/四步准备 Android 面试.md)
-  * [Android 开发涉及知识的概要](Android/Android 开发涉及知识的概要.md)
-  * [Android 四大组件 1：Activity](Android/Android 四大组件 1：Activity.md)
   * [Android Gradle 概要](Android/Android Gradle 概要.md)
-  * [Android插件化框架 RePlugin 初探](Android/Android插件化框架 RePlugin 初探.md)
-  * [Android开发知识概要](Android/Android开发知识概要.md)
+  * [Android 四大组件 1：Activity](Android/Android 四大组件 1：Activity.md)
+  * [Android 开发涉及知识的概要](Android/Android 开发涉及知识的概要.md)
   * [Android内存泄漏场景及解决方法](Android/Android内存泄漏场景及解决方法.md)
+  * [Android开发知识概要](Android/Android开发知识概要.md)
+  * [Android插件化框架 RePlugin 初探](Android/Android插件化框架 RePlugin 初探.md)
   * [macOS 下载编译 aosp 源码](Android/macOS 下载编译 aosp 源码.md)
-  * [RePlugin 插件管理与权限管理](Android/RePlugin 插件管理与权限管理.md)
   * [RePlugin 插件启动源码分析](Android/RePlugin 插件启动源码分析.md)
+  * [RePlugin 插件管理与权限管理](Android/RePlugin 插件管理与权限管理.md)
   * [RePlugin 阅读源码环境搭建](Android/RePlugin 阅读源码环境搭建.md)
+  * [四步准备 Android 面试](Android/四步准备 Android 面试.md)
 - C 语言
   * [浅谈 C 语言 1：编译过程及其可移植性](C 语言/浅谈 C 语言 1：编译过程及其可移植性.md)
 - Cocos Creator
   * [CocosCreator 引擎资源加载与释放原理简析](CocosCreator/CocosCreator 引擎资源加载与释放原理简析.md)
 - Git
-  * [Git 的诞生](Git/Git 的诞生.md)
-  * [Git 入门](Git/Git 入门.md)
   * [Git 之旅：不那么深入理解 Git](Git/Git 之旅：不那么深入理解 Git.md)
+  * [Git 入门](Git/Git 入门.md)
+  * [Git 的诞生](Git/Git 的诞生.md)
 - Java
   * [浅谈 JVM 1：一次编写，到处运行](Java/浅谈 JVM 1：一次编写，到处运行.md)
   * [浅谈 JVM 2：如何阅读字节码](Java/浅谈 JVM 2：如何阅读字节码.md)
@@ -58,3 +50,22 @@
   * [黑苹果安装与踩坑记](macOS/黑苹果安装与踩坑记.md)
 - TDD
   * [浅谈测试驱动开发](TDD/浅谈测试驱动开发.md)
+- 操作系统
+  * [谈谈进程间通信](操作系统/谈谈进程间通信.md)
+- 算法与数据结构
+  * [算法与数据结构 1：开篇](算法与数据结构/算法与数据结构 1：开篇.md)
+  * [算法与数据结构 2：如何学习](算法与数据结构/算法与数据结构 2：如何学习.md)
+  * [算法与数据结构 3：数组与链表](算法与数据结构/算法与数据结构 3：数组与链表.md)
+  * [算法与数据结构 4：栈与队列](算法与数据结构/算法与数据结构 4：栈与队列.md)
+  * [算法与数据结构 5：哈希表](算法与数据结构/算法与数据结构 5：哈希表.md)
+  * [算法与数据结构 6：二叉树基础篇](算法与数据结构/算法与数据结构 6：二叉树基础篇.md)
+- 编译原理
+  * [编译原理 1：概要篇](编译原理/编译原理 1：概要篇.md)
+  * [编译原理 2：词法分析](编译原理/编译原理 2：词法分析.md)
+- 计算机网络
+  * [计算机网络基础](计算机网络/计算机网络基础.md)
+- 设计模式
+  * [从 Android 源代码来看『观察者模式』](设计模式/从 Android 源代码来看『观察者模式』.md)
+  * [从 Android 源码来看“ Builder 模式”](设计模式/从 Android 源码来看“ Builder 模式”.md)
+- 面试
+  * [如何写好简历的指北](面试/如何写好简历的指北.md)
