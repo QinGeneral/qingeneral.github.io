@@ -2,6 +2,8 @@
 
 谈谈 AI、编程和读书。
 
+基于 Vercel + Notion 搭建的博客：[khanzhang.tech](https://www.khanzhang.tech/)。
+
 个人项目：
 - [CatTalk](https://www.cattalk.club/) 无需翻墙的 ChatGPT 网站
 - TalkWithCat 基于 OpenAI 的聊天、PDF 摘要小程序
