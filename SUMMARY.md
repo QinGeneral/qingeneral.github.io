@@ -17,6 +17,7 @@
     * [彩云小译](AI/AI 产品/彩云小译.md)
   * [AI 产品汇总](AI/AI 产品汇总.md)
   * [CatTalk：无需翻墙的 ChatGPT](AI/CatTalk：无需翻墙的 ChatGPT.md)
+  * [Prompt 工程最佳实践：ChatGPT 版](AI/Prompt 工程最佳实践：ChatGPT 版.md)
 - Android
   * [Android Gradle 概要](Android/Android Gradle 概要.md)
   * [Android 四大组件 1：Activity](Android/Android 四大组件 1：Activity.md)
