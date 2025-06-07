@@ -22,6 +22,8 @@ Trae + Claude 4 写到一半，写出了一个 bug，一直无法修复：
 
 ## 要有 Rules
 
+Rules 规则是一种可重用的 Context 上下文，你可以将工作流程、特定领域模块说明、标准化架构或代码等作为 Rules 设置进来，指导 AI 进行编码。你也可以把它看成反复需要输入的 Prompt 提示词的另一种形式。
+
 **这里给 Trae 配置效果比较好的 Rule 是 riper-5**，这是 Cursor 论坛上一位用户提供的，给 AI 提供了五种模式：
 
 - Research：研究模式，主要用来收集背景信息
@@ -34,7 +36,7 @@ Trae + Claude 4 写到一半，写出了一个 bug，一直无法修复：
 
 riper-5 Rule 的来源网址：[I created an AMAZING MODE called “RIPER-5 Mode” Fixes Claude 3.7 Drastically!](https://forum.cursor.com/t/i-created-an-amazing-mode-called-riper-5-mode-fixes-claude-3-7-drastically/65516)
 
-**AI Coding 要合理的使用 Rule，不要不使用，也不要一次性使用过多的 Rule，这会导致模型的 Context 爆炸，进而导致对每个 Rule 的理解都不是很到位。** 所以要合理的加载 Rules，这里不再多说，可以参考 Cursor 的 Rule 配置规则。合理配置 Always、Manual、Agent Request 等模式即可。Trae 当前对 Rule 的配置支持还比较差，只支持配置一个 Project Rule，需要自己去定义路由规则。
+**AI Coding 要合理的使用 Rule，不要不使用，也不要一次性使用过多的 Rule，这会导致模型的 Context 爆炸，进而导致对每个 Rule 的理解都不是很到位。** 所以要合理的加载 Rules，这里不再多说，可以参考 [Cursor 的 Rule 配置说明](https://docs.cursor.com/context/rules)。合理配置 Always、Manual、Agent Request 等模式即可。Trae 当前对 Rule 的配置支持还比较差，只支持配置一个 Project Rule，需要自己去定义路由规则。
 
 ## 要有 MCP
 
