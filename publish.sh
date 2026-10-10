@@ -1,15 +1,8 @@
-git checkout main
-git add .
-git commit -m "add article ***"
+#!/usr/bin/env bash
+set -euo pipefail
 
-git checkout gh-pages
-git merge main
-
-book sm
-sed -i '' 's/%20/ /g' SUMMARY.md
-nvm use 10.24.0
-gitbook build
-cp -r _book/* .
-git add .
-git commit -m "publish book"
-git push
+# Run from any directory; publishing no longer switches branches or stages drafts.
+cd "$(dirname "$0")"
+npm run build
+npm run check
+printf '%s\n' '本地构建完成。提交页面改造到 main 并推送后，GitHub Actions 将自动发布到 gh-pages。'

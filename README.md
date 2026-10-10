@@ -11,3 +11,9 @@
 不再维护项目：
 - [CatTalk](https://www.cattalk.club/) 无需翻墙的 ChatGPT 网站
 - TalkWithCat 基于 OpenAI 的聊天、PDF 摘要小程序
+
+## 网站维护
+
+使用 Node.js 22+，运行 `npm ci` 和 `npm run dev` 本地预览。`npm run build` 生成静态页面，`npm run check` 检查站内链接和文章目录。推送到 `main` 后由 GitHub Actions 发布到 `gh-pages`。
+
+详见 [网站维护说明](docs/website.md)。
