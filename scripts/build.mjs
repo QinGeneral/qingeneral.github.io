@@ -70,7 +70,14 @@ await mkdir(output, { recursive: true });
 await cp('site/assets', path.join(output, 'assets'), { recursive: true });
 await cp('node_modules/highlight.js/styles/github.css', path.join(output, 'assets/highlight.css'));
 // Retain local article assets when present.
-for (const dir of ['images']) await cp(dir, path.join(output, dir), { recursive: true });
+for (const dir of ['images']) {
+  try {
+    await cp(dir, path.join(output, dir), { recursive: true });
+  } catch (error) {
+    // Git does not retain empty directories, so clean checkouts may omit images/.
+    if (error.code !== 'ENOENT') throw error;
+  }
+}
 async function write(file, content) {
   const destination = path.join(output, file);
   await mkdir(path.dirname(destination), { recursive: true });
