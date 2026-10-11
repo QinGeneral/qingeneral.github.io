@@ -24,6 +24,9 @@
   --quote-border:#9cae99;
   --quote-text:#5e6c60;
   --toc-bg:#f0f2ec;
+  --rss-bg:#fff0df;
+  --rss-ink:#9a4b0b;
+  --rss-border:#eed1ac;
   color-scheme:light;
   --serif:Georgia,'Songti SC','Noto Serif CJK SC',serif;
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
@@ -54,6 +57,9 @@
   --quote-border:#718d76;
   --quote-text:#b8c9bb;
   --toc-bg:#202b23;
+  --rss-bg:#35271b;
+  --rss-ink:#f1b578;
+  --rss-border:#6b4b2c;
   color-scheme:dark;
 }
 
@@ -153,7 +159,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 }
 
 .site-header {
-  gap:8px;
+  gap:26px;
   height:72px;
   display:flex;
   justify-content:space-between;
@@ -183,7 +189,25 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   align-items:center;
   gap:40px;
   height:100%;
+  margin-left:auto;
 }
+
+.rss-link {
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-shrink:0;
+  min-height:38px;
+  padding:6px 12px;
+  border:1px solid var(--rss-border);
+  border-radius:8px;
+  background:var(--rss-bg);
+  color:var(--rss-ink);
+  font-size:13px;
+  font-weight:600;
+}
+.rss-link .icon { width:16px; height:16px; }
+.rss-link:hover { border-color:var(--rss-ink); }
 
 .site-header nav a {
   position:relative;
@@ -460,8 +484,6 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   margin-top:6px;
 }
 .project-destination .icon { width:14px; height:14px; }
-.footer-links { display:flex; align-items:center; gap:18px; flex-wrap:wrap; justify-content:flex-end; }
-.footer-links a { color:var(--green); }
 
 .latest {
   margin-top:65px;
@@ -1394,4 +1416,24 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
     width:16px;
     height:16px;
   }
+}
+
+@media(max-width:600px) {
+  .site-header {
+    display:grid;
+    grid-template-columns:1fr auto;
+    height:auto;
+    padding:14px 0;
+    gap:12px;
+  }
+  .site-header .rss-link { grid-column:2; grid-row:1; }
+  .site-header nav {
+    grid-column:1/-1;
+    grid-row:2;
+    margin-left:0;
+    justify-content:space-between;
+    height:36px;
+    gap:12px;
+  }
+  .site-header nav a[aria-current]:after { bottom:0; }
 }
