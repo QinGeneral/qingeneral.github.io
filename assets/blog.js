@@ -10,6 +10,7 @@
   const next = document.querySelector('#next-page');
   const perPage = 8;
   let category = '', page = 1, timer;
+  let loadingIndex = true;
   let fullText = new Map();
   const initialOrder = new Map(rows.map((row, i) => [row, i]));
   const cachedText = new Map(rows.map(row => [row, row.textContent.toLocaleLowerCase()]));
@@ -41,9 +42,11 @@
     });
     if (categoryLinks.some(link => link.closest('details') && link.dataset.category === category)) document.querySelector('.more-categories').open = true;
     const label = document.querySelector('#result-label');
-    label.replaceChildren(document.createTextNode(words.length ? '搜索结果 ' : `${category || '全部文章'} `));
-    const count = document.createElement('span'); count.textContent = `${matching.length} 篇`; label.append(count);
-    document.querySelector('#empty-state').hidden = matching.length !== 0;
+    const searching = words.length > 0 && loadingIndex;
+    label.setAttribute('aria-busy', String(searching));
+    label.replaceChildren(document.createTextNode(searching ? '正在搜索全文… ' : words.length ? '搜索结果 ' : `${category || '全部文章'} `));
+    const count = document.createElement('span'); count.textContent = `${searching ? '暂找到 ' : ''}${matching.length} 篇`; label.append(count);
+    document.querySelector('#empty-state').hidden = searching || matching.length !== 0;
     document.querySelector('#pagination').hidden = pages <= 1;
     document.querySelector('#page-label').textContent = `${page} / ${pages}`;
     previous.disabled = page === 1; next.disabled = page === pages;
@@ -76,7 +79,9 @@
   fetch(new URL('search.json', document.currentScript.src)).then(response => {
     if (!response.ok) throw new Error('search index unavailable');
     return response.json();
-  }).then(index => { fullText = new Map(index.map(item => [item.path, item.text.toLocaleLowerCase()])); render(false); }).catch(() => {
+  }).then(index => { fullText = new Map(index.map(item => [item.path, item.text.toLocaleLowerCase()])); loadingIndex = false; render(false); }).catch(() => {
+    loadingIndex = false;
     search.placeholder = '搜索文章标题或摘要…';
+    render(false);
   });
 })();
