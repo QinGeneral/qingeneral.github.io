@@ -39,13 +39,24 @@ export function annotateSeries(articles) {
     if (!groups.has(key)) groups.set(key, { name: match[1], category: a.category, items: [] });
     groups.get(key).items.push({ article: a, part: Number(match[2]), subtitle: match[3] });
   }
-  // RePlugin is an editorial sequence whose original titles have no part numbers.
-  const repluginOrder = ['Android插件化框架 RePlugin 初探', 'RePlugin 阅读源码环境搭建', 'RePlugin 插件启动源码分析', 'RePlugin 插件管理与权限管理'];
-  const replugin = repluginOrder.flatMap((title, index) => {
-    const article = articles.find(a => a.path === `Android/${title}.md`);
-    return article ? [{ article, part: index + 1, subtitle: title }] : [];
-  });
-  if (replugin.length > 1) groups.set('Android\0RePlugin', { name: 'RePlugin', category: 'Android', items: replugin });
+  // Editorial sequences also include introductions without numbered titles.
+  const editorialSeries = [
+    { name: 'RePlugin', category: 'Android', order: ['Android插件化框架 RePlugin 初探', 'RePlugin 阅读源码环境搭建', 'RePlugin 插件启动源码分析', 'RePlugin 插件管理与权限管理'] },
+    { name: 'TDD 与重构', category: 'TDD', order: ['浅谈测试驱动开发', '重构', '代码坏味道及其重构 1 命名问题', '代码坏味道及其重构 2 重复代码', '代码坏味道及其重构 3 过长函数', '代码坏味道及其重构 4 过长参数列表'] },
+  ];
+  for (const { name, category, order } of editorialSeries) {
+    const items = order.flatMap((title, index) => {
+      const article = articles.find(a => a.path === `${category}/${title}.md`);
+      return article ? [{ article, part: index + 1, subtitle: article.title }] : [];
+    });
+    if (items.length < 2) continue;
+    const included = new Set(items.map(item => item.article));
+    // Replace inferred subseries rather than showing the same articles twice.
+    for (const [key, group] of groups) {
+      if (group.items.every(item => included.has(item.article))) groups.delete(key);
+    }
+    groups.set(`${category}\0${name}`, { name, category, items });
+  }
   const series = [...groups.values()].filter(s => s.items.length > 1);
   for (const s of series) {
     s.items.sort((x, y) => x.part - y.part);
