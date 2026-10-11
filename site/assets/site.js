@@ -21,6 +21,12 @@ if (tocDetails) {
   const compact = matchMedia('(max-width:760px)');
   tocDetails.open = !compact.matches;
   compact.addEventListener('change', event => { tocDetails.open = !event.matches; });
+  tocDetails.querySelector('nav').addEventListener('click', event => {
+    if (compact.matches && event.target.closest('a')) tocDetails.open = false;
+  });
+  document.addEventListener('keydown', event => {
+    if (compact.matches && event.key === 'Escape') tocDetails.open = false;
+  });
 }
 
 async function copyCode(code) {
@@ -51,7 +57,8 @@ document.querySelectorAll('.prose pre').forEach((pre, index) => {
   const status = document.createElement('span'); status.setAttribute('role', 'status');
   const button = document.createElement('button'); button.type = 'button'; button.className = 'copy-code'; button.textContent = '复制代码';
   button.setAttribute('aria-label', `复制第 ${index + 1} 个代码块`);
-  toolbar.append(status, button); pre.before(block); block.append(toolbar, pre);
+  const language = document.createElement('span'); language.className = 'code-language'; language.textContent = code.className.replace('language-', '') || 'CODE';
+  toolbar.append(language, status, button); pre.before(block); block.append(toolbar, pre);
   let reset;
   button.addEventListener('click', async () => {
     clearTimeout(reset); button.disabled = true;
@@ -68,9 +75,14 @@ function onScroll() {
   requestAnimationFrame(() => {
     topButton.hidden = window.scrollY < 500;
     if (progress && article) {
-      const start = article.offsetTop;
+      const start = article.getBoundingClientRect().top + window.scrollY;
       const distance = article.offsetHeight - window.innerHeight;
-      progress.style.width = `${Math.min(100, Math.max(0, (window.scrollY - start) / Math.max(1, distance) * 100))}%`;
+      const percent = Math.min(100, Math.max(0, (window.scrollY - start) / Math.max(1, distance) * 100));
+      progress.style.width = `${percent}%`;
+      const readout = document.querySelector('.toc-progress');
+      if (readout) readout.textContent = `${Math.round(percent)}%`;
+      const bar = document.querySelector('.toc-bar span');
+      if (bar) bar.style.width = `${percent}%`;
     }
     scheduled = false;
   });
@@ -95,3 +107,26 @@ if (tocLinks.length && 'IntersectionObserver' in window) {
     if (heading) observer.observe(heading);
   });
 }
+
+// RSS addresses and article permalinks share the code-copy fallback.
+document.querySelectorAll('[data-copy]').forEach(button => {
+  const label = button.innerHTML;
+  let reset;
+  const status = document.createElement('span');
+  status.className = 'sr-only'; status.setAttribute('role', 'status'); button.after(status);
+  button.addEventListener('click', async () => {
+    clearTimeout(reset); button.disabled = true;
+    const copied = await copyCode({ textContent: button.dataset.copy });
+    button.disabled = false; button.textContent = copied ? '已复制' : '复制失败';
+    status.textContent = copied ? '已复制到剪贴板' : '复制失败，请手动选择地址复制';
+    reset = setTimeout(() => { button.innerHTML = label; status.textContent = ''; }, 3000);
+  });
+});
+document.addEventListener('keydown', event => {
+  if (event.key !== '/' || event.metaKey || event.ctrlKey || event.altKey || event.target.closest('input,textarea,select,[contenteditable]')) return;
+  event.preventDefault();
+  const search = document.querySelector('#article-search');
+  if (search) { search.focus(); search.scrollIntoView({ block: 'center' }); }
+  else document.querySelector('.search-trigger')?.click();
+});
+if (location.hash === '#article-search') document.querySelector('#article-search')?.focus();

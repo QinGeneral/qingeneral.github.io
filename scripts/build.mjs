@@ -3,7 +3,7 @@ import { execFileSync } from 'node:child_process';
 import path from 'node:path';
 import MarkdownIt from 'markdown-it';
 import hljs from 'highlight.js';
-import { escape, url, home, blogPage, projectsPage, articlePage, layout } from '../site/views.mjs';
+import { annotateSeries, escape, url, home, blogPage, projectsPage, articlePage, layout } from '../site/views.mjs';
 
 const root = path.resolve(import.meta.dirname, '..');
 process.chdir(root);
@@ -69,6 +69,7 @@ const articles = await Promise.all(files.map(async file => {
   return { path: file, origin: aiArticles.has(file) ? 'ai' : 'manual', href: file.replace(/\.md$/, '.html').split('/').map(encodeURIComponent).join('/'), title, category: file.split('/')[0], date, minutes: Math.max(1, Math.ceil(text.length / 450)), excerpt: summary.slice(0, 115) + (summary.length > 115 ? '…' : ''), text, tokens, firstTitle };
 }));
 articles.sort((a, b) => b.date.localeCompare(a.date) || a.path.localeCompare(b.path, 'zh-CN'));
+const series = annotateSeries(articles);
 
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
@@ -91,8 +92,8 @@ async function write(file, content) {
   await mkdir(path.dirname(destination), { recursive: true });
   await writeFile(destination, content);
 }
-await write('index.html', home(projects, articles));
-await write('blog/index.html', blogPage(articles));
+await write('index.html', home(projects, articles, series));
+await write('blog/index.html', blogPage(articles, series));
 await write('projects/index.html', projectsPage(projects));
 await write('assets/search.json', JSON.stringify(articles.map(({ path, text }) => ({ path, text }))));
 
@@ -122,7 +123,7 @@ for (const a of articles) {
     }
   }
   const content = md.renderer.render(tokens, md.options, {});
-  await write(a.path.replace(/\.md$/, '.html'), articlePage(a, content, headings, articles.filter(b => b.category === a.category && b.path !== a.path).slice(0, 2)));
+  await write(a.path.replace(/\.md$/, '.html'), articlePage(a, content, headings, articles.filter(b => b.category === a.category && b.path !== a.path).slice(0, 2), { older: articles[articles.indexOf(a) + 1], newer: articles[articles.indexOf(a) - 1] }));
 }
 await write('404.html', layout({ title: '页面未找到', canonical: '404.html', body: `<main id="main" class="wrap page-intro not-found"><h1>这一页，暂时走丢了。</h1><p>可以回到博客，继续寻找感兴趣的内容。</p><a class="button primary" href="${url('blog/')}">浏览博客</a></main>` }));
 await write('.nojekyll', '');

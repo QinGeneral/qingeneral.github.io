@@ -5,13 +5,17 @@
   const form = document.querySelector('.search-form');
   const sort = document.querySelector('#article-sort');
   const results = document.querySelector('#article-results');
-  const rows = [...results.querySelectorAll('.article-row')];
+  const rows = [...results.querySelectorAll('.article-row[data-path]')];
+  const summaries = [...results.querySelectorAll('[data-collection-summary]')];
+  const originButtons = [...document.querySelectorAll('.origin-filter button')];
+  const collapse = document.querySelector('#collapse-collections');
+  const expanded = new Set();
   const categoryLinks = [...document.querySelectorAll('.category-link')];
   const clear = document.querySelector('#clear-search');
   const previous = document.querySelector('#previous-page');
   const next = document.querySelector('#next-page');
   const perPage = 8;
-  let category = '', page = 1, timer;
+  let category = '', origin = '', page = 1, timer;
   let loadingIndex = true;
   let fullText = new Map();
   const initialOrder = new Map(rows.map((row, i) => [row, i]));
@@ -38,6 +42,9 @@
   function updateUrl() {
     const params = new URLSearchParams();
     if (category) params.set('category', category);
+    if (origin) params.set('origin', origin);
+    if (expanded.size) params.set('expanded', [...expanded].join(','));
+    if (collapse && !collapse.checked) params.set('cards', 'all');
     if (search.value.trim()) params.set('q', search.value.trim());
     if (sort.value !== 'newest') params.set('sort', sort.value);
     if (page > 1) params.set('page', page);
@@ -47,16 +54,40 @@
   function render(saveUrl = true) {
     clearTimeout(timer); timer = null;
     const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
-    const matching = rows.filter(row => (!category || row.dataset.category === category) && words.every(word => `${cachedText.get(row)} ${fullText.get(row.dataset.path) || ''}`.includes(word)));
+    const matching = rows.filter(row => (!category || row.dataset.category === category) && (!origin || row.dataset.origin === origin) && words.every(word => `${cachedText.get(row)} ${fullText.get(row.dataset.path) || ''}`.includes(word)));
     matching.sort((a, b) => sort.value === 'title' ? a.querySelector('h2').textContent.localeCompare(b.querySelector('h2').textContent, 'zh-CN') : (initialOrder.get(a) - initialOrder.get(b)) * (sort.value === 'oldest' ? -1 : 1));
-    const pages = Math.max(1, Math.ceil(matching.length / perPage));
+    const display = [];
+    const inserted = new Set();
+    for (const row of matching) {
+      const key = row.dataset.collection;
+      const summary = summaries.find(item => item.dataset.collectionSummary === key);
+      if (key && summary && collapse?.checked && !words.length) {
+        if (!inserted.has(key)) {
+          inserted.add(key); display.push(summary);
+          const button = summary.querySelector('.expand-collection');
+          button.textContent = expanded.has(key) ? '收起 −' : '展开 +';
+          button.setAttribute('aria-expanded', String(expanded.has(key)));
+          summary.querySelector('.collection-count').textContent = `×${matching.filter(item => item.dataset.collection === key).length}`;
+        }
+        if (!expanded.has(key)) continue;
+      }
+      display.push(row);
+    }
+    const pages = Math.max(1, Math.ceil(display.length / perPage));
     // Full-text matches can arrive later; do not discard a requested page yet.
     if (!words.length || !loadingIndex) page = Math.max(1, Math.min(page, pages));
-    rows.forEach(row => { row.hidden = true; });
-    matching.forEach((row, index) => {
+    results.querySelectorAll('.year-label').forEach(label => label.remove());
+    [...rows, ...summaries].forEach(row => { row.hidden = true; });
+    let previousYear = '';
+    display.forEach((row, index) => {
+      if (sort.value !== 'title' && index >= (page - 1) * perPage && index < page * perPage && row.dataset.year !== previousYear) {
+        const year = document.createElement('div'); year.className = 'year-label'; year.textContent = row.dataset.year;
+        results.append(year); previousYear = row.dataset.year;
+      }
       results.append(row);
       row.hidden = index < (page - 1) * perPage || index >= page * perPage;
     });
+    originButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.origin === origin)));
     categoryLinks.forEach(link => {
       const selected = link.dataset.category === category;
       link.classList.toggle('selected', selected);
@@ -81,6 +112,12 @@
     const requested = params.get('category') || '';
     category = categoryLinks.some(link => link.dataset.category === requested) ? requested : '';
     search.value = params.get('q') || '';
+    origin = ['manual', 'ai'].includes(params.get('origin')) ? params.get('origin') : '';
+    if (collapse) collapse.checked = params.get('cards') !== 'all';
+    expanded.clear();
+    for (const key of (params.get('expanded') || '').split(',')) {
+      if (summaries.some(summary => summary.dataset.collectionSummary === key)) expanded.add(key);
+    }
     sort.value = ['newest', 'oldest', 'title'].includes(params.get('sort')) ? params.get('sort') : 'newest';
     page = Math.max(1, parseInt(params.get('page'), 10) || 1);
     render(false);
@@ -89,11 +126,18 @@
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault(); category = link.dataset.category; page = 1; render();
   }));
+  originButtons.forEach(button => button.addEventListener('click', () => { origin = button.dataset.origin; page = 1; render(); }));
+  collapse?.addEventListener('change', () => { page = 1; render(); });
+  summaries.forEach(summary => summary.querySelector('.expand-collection').addEventListener('click', () => {
+    const key = summary.dataset.collectionSummary;
+    if (expanded.has(key)) expanded.delete(key); else expanded.add(key);
+    render();
+  }));
   search.addEventListener('input', () => { page = 1; clearTimeout(timer); timer = setTimeout(() => render(), 120); });
   form.addEventListener('submit', event => { event.preventDefault(); clearTimeout(timer); page = 1; render(); });
   sort.addEventListener('change', () => { page = 1; render(); });
   clear.addEventListener('click', () => { search.value = ''; page = 1; render(); search.focus(); });
-  document.querySelector('#reset-filters').addEventListener('click', () => { category = ''; search.value = ''; page = 1; sort.value = 'newest'; render(); });
+  document.querySelector('#reset-filters').addEventListener('click', () => { category = ''; origin = ''; search.value = ''; page = 1; sort.value = 'newest'; render(); });
   for (const [button, direction] of [[previous, -1], [next, 1]]) button.addEventListener('click', () => {
     page += direction; render(); document.querySelector('.list-toolbar').scrollIntoView({ block: 'start', behavior: 'instant' });
   });
