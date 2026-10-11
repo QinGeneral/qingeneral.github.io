@@ -5,6 +5,12 @@ export const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&
 export const base = (process.env.SITE_BASE_PATH || '').replace(/\/$/, '');
 export const url = path => `${base}/${path}`;
 const siteOrigin = 'https://qingeneral.github.io';
+// Public site identifier from Cloudflare's installation snippet; empty env disables analytics.
+const analyticsToken = (process.env.CLOUDFLARE_WEB_ANALYTICS_TOKEN ?? 'd5d1a73bfefc4797998e83cb80de1477').trim();
+if (analyticsToken && !/^[a-f0-9]{32}$/i.test(analyticsToken)) {
+  throw new Error('CLOUDFLARE_WEB_ANALYTICS_TOKEN 必须是 Cloudflare Web Analytics 代码片段中的 32 位十六进制 token。');
+}
+const analyticsScript = analyticsToken ? `<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='${JSON.stringify({ token: analyticsToken, spa: false })}'></script>` : '';
 const feedUrl = `${siteOrigin}${url('feed.xml')}`;
 const assetVersions = Object.fromEntries(['site.css', 'site.js', 'blog.js', 'theme.js'].map(name => [name, createHash('sha256').update(readFileSync(new URL(`assets/${name}`, import.meta.url))).digest('hex').slice(0, 12)]));
 const asset = name => url(`assets/${name}?v=${assetVersions[name]}`);
@@ -89,7 +95,8 @@ export function layout({ title, description = '谈谈 AI、编程和读书，也
 <div class="header-tools"><a class="search-trigger" href="${url('blog/')}#article-search"><span class="prompt" aria-hidden="true">&gt;</span><span class="search-label">搜索文章</span><kbd aria-hidden="true">/</kbd></a><a class="icon-button github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer" aria-label="GitHub">${icon('external')}<span>GitHub</span></a><button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到日间模式" aria-pressed="true" hidden>${icon('moon', 'theme-moon')}${icon('sun', 'theme-sun')}</button><a class="icon-button rss-link" href="${url('feed.xml')}" aria-label="RSS 订阅博客">${icon('rss')}</a></div></div></header>
 ${body}
 <footer class="site-footer"><div class="wrap footer-inner"><span>© QINGENERAL — 保持好奇，持续记录。</span><span class="footer-links"><a href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GITHUB</a><a href="${url('feed.xml')}">RSS</a><a href="${url('sitemap.xml')}">SITEMAP</a></span></div></footer>
-<button class="back-top" aria-label="回到顶部" hidden>${icon('up')}</button></body></html>`;
+<button class="back-top" aria-label="回到顶部" hidden>${icon('up')}</button>
+${analyticsScript}</body></html>`;
 }
 
 const sectionHeading = (id, index, title, link = '') => `<div class="section-heading"><h2 id="${id}"><span class="section-index" aria-hidden="true">[${index}]</span>${title}</h2>${link}</div>`;

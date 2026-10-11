@@ -52,6 +52,18 @@ npm run check
 
 `publish.sh` 现在只执行本地构建与检查，避免旧脚本将草稿一并提交或切换当前分支。发布后可在 Actions 查看构建状态。
 
+## 访问统计（Cloudflare Web Analytics）
+
+所有页面共用模板，通过 Cloudflare Web Analytics 统计访问数据。`qingeneral.github.io` 的站点 token 已配置在 `site/views.mjs` 中；这是公开的统计标识，不是 Cloudflare API 密钥，无需额外配置 GitHub Actions 变量。
+
+运行普通构建即会将官方 `type="module"` beacon 脚本加入首页、列表页、项目页、文章页和 404 页。模块脚本不会阻塞 HTML 解析；静态网站不启用 SPA 跟踪，避免列表筛选的 URL 更新被当成新页面访问。GitHub Pages 使用手动添加脚本的方式，无需迁移托管或修改 DNS。
+
+推送更新到 `main` 并完成发布后，访问网站，在浏览器 Network 面板确认加载 `static.cloudflareinsights.com/beacon.min.js`，并向 `cloudflareinsights.com/cdn-cgi/rum` 发送统计请求。稍等几分钟后在 [Cloudflare Web Analytics 控制台](https://dash.cloudflare.com/?to=/:account/web-analytics) 查看访问量、页面、来源及性能数据。
+
+构建时可通过环境变量 `CLOUDFLARE_WEB_ANALYTICS_TOKEN` 覆盖默认 token，显式设置为空值则关闭统计：`CLOUDFLARE_WEB_ANALYTICS_TOKEN='' npm run dev`。本地调试建议使用此方式，避免加载远程统计脚本。非空 token 必须为 32 位十六进制字符，否则构建会明确报错。更换站点时从 Cloudflare **Manage site** 获取新 token，更新模板后重新构建发布。
+
+接入流程参考 [Cloudflare 官方说明](https://developers.cloudflare.com/web-analytics/get-started/)，模块脚本说明见 [Cloudflare FAQ](https://developers.cloudflare.com/web-analytics/faq/)。
+
 ## 科技风页面
 
 视觉使用近黑底色、信号青、坐标网格、面板角标和等宽编号；日间模式使用浅灰底和深青强调色。字体无法在线加载时使用系统字体。
