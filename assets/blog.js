@@ -1,4 +1,6 @@
 (() => {
+  // The filtered list owns its scroll restoration after async full-text loading.
+  history.scrollRestoration = 'manual';
   const search = document.querySelector('#article-search');
   const form = document.querySelector('.search-form');
   const sort = document.querySelector('#article-sort');
@@ -14,6 +16,24 @@
   let fullText = new Map();
   const initialOrder = new Map(rows.map((row, i) => [row, i]));
   const cachedText = new Map(rows.map(row => [row, row.textContent.toLocaleLowerCase()]));
+  const articleLinks = rows.flatMap(row => [...row.querySelectorAll('a')]);
+  const articleUrls = new Map(articleLinks.map(link => [link, link.href]));
+  const scrollKey = () => `blog-scroll:${location.pathname}${location.search}`;
+
+  function updateArticleLinks() {
+    for (const link of articleLinks) {
+      const target = new URL(articleUrls.get(link));
+      target.searchParams.set('returnTo', `${location.pathname}${location.search}`);
+      link.href = target.href;
+    }
+  }
+  function restoreScroll() {
+    try {
+      const saved = sessionStorage.getItem(scrollKey());
+      sessionStorage.removeItem(scrollKey());
+      if (saved !== null && Number.isFinite(Number(saved))) requestAnimationFrame(() => window.scrollTo({ top: Number(saved), behavior: 'instant' }));
+    } catch {}
+  }
 
   function updateUrl() {
     const params = new URLSearchParams();
@@ -25,11 +45,13 @@
     history.replaceState(null, '', `${location.pathname}${suffix}`);
   }
   function render(saveUrl = true) {
+    clearTimeout(timer); timer = null;
     const words = search.value.trim().toLocaleLowerCase().split(/\s+/).filter(Boolean);
     const matching = rows.filter(row => (!category || row.dataset.category === category) && words.every(word => `${cachedText.get(row)} ${fullText.get(row.dataset.path) || ''}`.includes(word)));
     matching.sort((a, b) => sort.value === 'title' ? a.querySelector('h2').textContent.localeCompare(b.querySelector('h2').textContent, 'zh-CN') : (initialOrder.get(a) - initialOrder.get(b)) * (sort.value === 'oldest' ? -1 : 1));
     const pages = Math.max(1, Math.ceil(matching.length / perPage));
-    page = Math.max(1, Math.min(page, pages));
+    // Full-text matches can arrive later; do not discard a requested page yet.
+    if (!words.length || !loadingIndex) page = Math.max(1, Math.min(page, pages));
     rows.forEach(row => { row.hidden = true; });
     matching.forEach((row, index) => {
       results.append(row);
@@ -52,6 +74,7 @@
     previous.disabled = page === 1; next.disabled = page === pages;
     clear.hidden = !search.value;
     if (saveUrl) updateUrl();
+    updateArticleLinks();
   }
   function readUrl() {
     const params = new URLSearchParams(location.search);
@@ -66,7 +89,7 @@
     if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     event.preventDefault(); category = link.dataset.category; page = 1; render();
   }));
-  search.addEventListener('input', () => { clearTimeout(timer); timer = setTimeout(() => { page = 1; render(); }, 120); });
+  search.addEventListener('input', () => { page = 1; clearTimeout(timer); timer = setTimeout(() => render(), 120); });
   form.addEventListener('submit', event => { event.preventDefault(); clearTimeout(timer); page = 1; render(); });
   sort.addEventListener('change', () => { page = 1; render(); });
   clear.addEventListener('click', () => { search.value = ''; page = 1; render(); search.focus(); });
@@ -75,13 +98,20 @@
     page += direction; render(); document.querySelector('.list-toolbar').scrollIntoView({ block: 'start', behavior: 'instant' });
   });
   window.addEventListener('popstate', readUrl);
+  results.addEventListener('click', event => {
+    if (!event.target.closest('a')) return;
+    const scrollPosition = window.scrollY;
+    // Flush a recent keystroke before the browser follows the article link.
+    if (timer) render();
+    try { sessionStorage.setItem(scrollKey(), String(scrollPosition)); } catch {}
+  });
   readUrl();
   fetch(new URL('search.json', document.currentScript.src)).then(response => {
     if (!response.ok) throw new Error('search index unavailable');
     return response.json();
-  }).then(index => { fullText = new Map(index.map(item => [item.path, item.text.toLocaleLowerCase()])); loadingIndex = false; render(false); }).catch(() => {
+  }).then(index => { fullText = new Map(index.map(item => [item.path, item.text.toLocaleLowerCase()])); loadingIndex = false; render(); restoreScroll(); }).catch(() => {
     loadingIndex = false;
     search.placeholder = '搜索文章标题或摘要…';
-    render(false);
+    render(); restoreScroll();
   });
 })();
