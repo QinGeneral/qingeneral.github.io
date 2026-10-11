@@ -49,7 +49,7 @@ export function articleRow(a) {
 }
 
 export function home(projects, articles) {
-  return layout({ title: '首页', active: 'home', body: `<main id="main" class="wrap"><section class="hero"><div><h1>在代码与文字之间，<br><em>持续探索。</em></h1><p>谈谈 AI、编程和读书，也把想法做成小工具。</p><div class="hero-actions"><a class="button primary" href="${url('blog/')}">阅读博客 ${icon('arrow')}</a><a class="button" href="${url('projects/')}">浏览项目</a></div></div><div class="hero-type" aria-hidden="true"><span>&amp;</span><p>Build. Write. Think.</p></div></section>
+  return layout({ title: '首页', active: 'home', body: `<main id="main" class="wrap"><section class="hero"><div><h1>在代码与文字之间，<br><em>持续探索世界。</em></h1><p>谈谈 AI、编程和读书，也把想法做成小工具。</p><div class="hero-actions"><a class="button primary" href="${url('blog/')}">阅读博客 ${icon('arrow')}</a><a class="button" href="${url('projects/')}">浏览项目</a></div></div><div class="hero-type" aria-hidden="true"><span>&amp;</span><p>Build. Write. Think.</p></div></section>
 <section class="section" aria-labelledby="projects-title"><div class="section-heading"><h2 id="projects-title">把想法，做成工具</h2><a class="text-link" href="${url('projects/')}">全部项目 ${icon('arrow')}</a></div>${projectCards(projects.slice(0, 4))}</section>
 <section class="section latest" aria-labelledby="latest-title"><div class="section-heading"><h2 id="latest-title">最近的记录</h2><a class="text-link" href="${url('blog/')}">全部文章 ${icon('arrow')}</a></div>${articles.slice(0, 3).map(articleRow).join('')}</section></main>`, canonical: '' });
 }
