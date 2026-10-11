@@ -24,11 +24,16 @@ export const icon = (name, className = '') => {
 };
 
 export function layout({ title, description = '谈谈 AI、编程和读书，也把想法做成小工具。', active = '', body, canonical = '', script = false }) {
+  const canonicalUrl = `https://qingeneral.github.io${url(canonical)}`;
+  const previewUrl = `https://qingeneral.github.io${url('assets/share-preview.png')}`;
   return `<!doctype html>
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${escape(title)} · QinGeneral</title><meta name="description" content="${escape(description)}">
 <meta name="theme-color" content="#f8f7f4"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:type" content="${active === 'article' ? 'article' : 'website'}">
-${canonical ? `<link rel="canonical" href="https://qingeneral.github.io${url(canonical)}">` : ''}
+<link rel="canonical" href="${escape(canonicalUrl)}"><meta property="og:url" content="${escape(canonicalUrl)}"><meta property="og:site_name" content="QinGeneral"><meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="${escape(previewUrl)}"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="QinGeneral · 在代码与文字之间，持续探索世界。">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${escape(title)}"><meta name="twitter:description" content="${escape(description)}"><meta name="twitter:image" content="${escape(previewUrl)}">
+<link rel="alternate" type="application/rss+xml" title="QinGeneral 博客订阅" href="${url('feed.xml')}">
 <script src="${asset('theme.js')}"></script>
 <link rel="icon" href="${url('assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${asset('site.css')}">
 <script src="${asset('site.js')}" defer></script>${script ? `<script src="${asset('blog.js')}" defer></script>` : ''}</head>
@@ -36,11 +41,11 @@ ${canonical ? `<link rel="canonical" href="https://qingeneral.github.io${url(can
 <header class="site-header wrap"><a class="wordmark" href="${url('')}" aria-label="QinGeneral 首页">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a>
 <nav aria-label="主导航">${[['首页', '', 'home'], ['博客', 'blog/', 'blog'], ['项目', 'projects/', 'projects']].map(([label, href, key]) => `<a href="${url(href)}" ${active === key || (active === 'article' && key === 'blog') ? 'aria-current="page"' : ''}>${label}</a>`).join('')}<a class="github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换到夜间模式" aria-pressed="false" hidden>${icon('moon', 'theme-moon')}${icon('sun', 'theme-sun')}</button></nav></header>
 ${body}
-<footer class="site-footer wrap"><a href="${url('')}" class="footer-brand">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a><span>保持好奇，持续记录。</span></footer>
+<footer class="site-footer wrap"><a href="${url('')}" class="footer-brand">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a><span class="footer-links"><span>保持好奇，持续记录。</span><a href="${url('feed.xml')}" aria-label="RSS 订阅博客">RSS 订阅</a></span></footer>
 <button class="back-top" aria-label="回到顶部" hidden>${icon('up')}</button></body></html>`;
 }
 
-export const projectCards = projects => `<div class="project-grid">${projects.map(p => `<a class="project-card" href="${escape(p.url)}"><span class="project-icon">${icon(p.icon)}</span>${icon('external', 'project-arrow')}<h3>${escape(p.name)}</h3><p>${escape(p.description)}</p><span class="project-tags">${escape(p.tags)}</span></a>`).join('')}</div>`;
+export const projectCards = projects => `<div class="project-grid">${projects.map(p => `<a class="project-card" href="${escape(p.url)}"><span class="project-icon">${icon(p.icon)}</span>${icon('external', 'project-arrow')}<h3>${escape(p.name)}</h3><p>${escape(p.description)}</p><span class="project-tags">${escape(p.tags)}</span><span class="project-destination">${new URL(p.url).hostname === 'github.com' ? '查看源码' : '打开网站'} ${icon('external')}</span></a>`).join('')}</div>`;
 
 const articleOrigin = a => `<span class="article-origin origin-${a.origin}">${a.origin === 'ai' ? 'AI 生成' : '手工编写'}</span>`;
 
@@ -68,6 +73,6 @@ export function blogPage(articles) {
 }
 
 export function articlePage(a, content, headings, related) {
-  const toc = headings.length ? `<aside class="toc"><details open><summary>文章目录</summary><nav aria-label="文章目录">${headings.map(h => `<a class="toc-link level-${h.level}" href="#${escape(h.id)}">${escape(h.text)}</a>`).join('')}</nav></details></aside>` : '';
+  const toc = headings.length ? `<aside class="toc"><details><summary>文章目录</summary><nav aria-label="文章目录">${headings.map(h => `<a class="toc-link level-${h.level}" href="#${escape(h.id)}">${escape(h.text)}</a>`).join('')}</nav></details></aside>` : '';
   return layout({ title: a.title, description: a.excerpt, active: 'article', canonical: a.href, body: `<div class="reading-progress" aria-hidden="true"></div><main id="main" class="wrap article-page"><a class="text-link article-back" href="${url('blog/')}?category=${encodeURIComponent(a.category)}">${icon('back')} 返回${escape(a.category)}文章</a><header class="article-heading"><div class="article-meta"><a href="${url('blog/')}?category=${encodeURIComponent(a.category)}">${escape(a.category)}</a><span aria-hidden="true">·</span><span>更新于 <time datetime="${a.date}">${a.date}</time></span><span aria-hidden="true">·</span><span>${a.minutes} 分钟阅读</span>${articleOrigin(a)}</div><h1>${escape(a.title)}</h1></header><div class="reading-layout"><article class="prose">${content}<div class="article-end"><p>感谢阅读。保持好奇，持续探索。</p><a class="text-link" href="https://github.com/QinGeneral/qingeneral.github.io/blob/main/${a.path.split('/').map(encodeURIComponent).join('/')}" target="_blank" rel="noopener noreferrer">查看 Markdown 原文 ${icon('external')}</a></div></article>${toc}</div>${related.length ? `<section class="related section"><div class="section-heading"><h2>继续阅读</h2><a class="text-link" href="${url('blog/')}?category=${encodeURIComponent(a.category)}">更多${escape(a.category)}文章 ${icon('arrow')}</a></div>${related.map(articleRow).join('')}</section>` : ''}</main>` });
 }

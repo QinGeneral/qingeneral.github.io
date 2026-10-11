@@ -124,7 +124,17 @@ for (const a of articles) {
   const content = md.renderer.render(tokens, md.options, {});
   await write(a.path.replace(/\.md$/, '.html'), articlePage(a, content, headings, articles.filter(b => b.category === a.category && b.path !== a.path).slice(0, 2)));
 }
-await write('404.html', layout({ title: '页面未找到', body: `<main id="main" class="wrap page-intro not-found"><h1>这一页，暂时走丢了。</h1><p>可以回到博客，继续寻找感兴趣的内容。</p><a class="button primary" href="${url('blog/')}">浏览博客</a></main>` }));
+await write('404.html', layout({ title: '页面未找到', canonical: '404.html', body: `<main id="main" class="wrap page-intro not-found"><h1>这一页，暂时走丢了。</h1><p>可以回到博客，继续寻找感兴趣的内容。</p><a class="button primary" href="${url('blog/')}">浏览博客</a></main>` }));
 await write('.nojekyll', '');
+// Stable article URLs and GUIDs let readers recognize updates without duplicates.
+const xml = value => escape(value);
+const absolute = href => `https://qingeneral.github.io${url(href)}`;
+await write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel>
+<title>QinGeneral · 文字里的探索</title><link>${xml(absolute('blog/'))}</link><description>关于 AI、编程与阅读的思考和实践。</description><language>zh-CN</language>
+<atom:link href="${xml(absolute('feed.xml'))}" rel="self" type="application/rss+xml"/>
+<lastBuildDate>${new Date(`${articles[0].date}T00:00:00Z`).toUTCString()}</lastBuildDate>
+${articles.map(a => `<item><title>${xml(a.title)}</title><link>${xml(absolute(a.href))}</link><guid isPermaLink="true">${xml(absolute(a.href))}</guid><description>${xml(a.excerpt)}</description><category>${xml(a.category)}</category><pubDate>${new Date(`${a.date}T00:00:00Z`).toUTCString()}</pubDate></item>`).join('\n')}
+</channel></rss>`);
 await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['', 'blog/', 'projects/', ...articles.map(a => a.href)].map(href => `<url><loc>https://qingeneral.github.io${url(href)}</loc></url>`).join('')}</urlset>`);
 console.log(`已生成首页、项目页、博客列表和 ${articles.length} 篇文章 → dist/`);
