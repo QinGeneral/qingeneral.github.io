@@ -58,6 +58,14 @@
     "group": "阅读与学习"
   },
   {
+    "name": "yixi-cli",
+    "description": "查询一席演讲与课程，保存图文、音频和视频，方便离线学习与回看。",
+    "tags": "学习工具 · 一席 · 命令行",
+    "url": "https://github.com/QinGeneral/yixi-cli",
+    "icon": "note",
+    "group": "阅读与学习"
+  },
+  {
     "name": "Note Exporter",
     "description": "让笔记自由流动。将 Bear 笔记导出，方便迁移与备份。",
     "tags": "笔记工具 · Bear",
