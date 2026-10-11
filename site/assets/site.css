@@ -1,4 +1,5 @@
 @import url('./highlight.css');
+@import url('./highlight-dark.css');
 :root {
   --paper:#f8f7f4;
   --surface:#fff;
@@ -7,8 +8,53 @@
   --green:#245c44;
   --sage:#e8eee7;
   --line:#dedfd9;
+  --on-accent:#fff;
+  --accent-hover:#194832;
+  --button-border:#a7aea6;
+  --decoration:#d5dcd1;
+  --card-hover:#9bac9d;
+  --control-border:#c8ccc5;
+  --placeholder:#7b837d;
+  --soft:#eef0e9;
+  --selected:#dfe7dd;
+  --origin-text:#59635b;
+  --origin-border:#cad8cd;
+  --code-bg:#f0f1eb;
+  --inline-code:#e9ece4;
+  --quote-border:#9cae99;
+  --quote-text:#5e6c60;
+  --toc-bg:#f0f2ec;
+  color-scheme:light;
   --serif:Georgia,'Songti SC','Noto Serif CJK SC',serif;
   --sans:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+}
+
+
+:root[data-theme="dark"] {
+  --paper:#151a17;
+  --surface:#1d2520;
+  --ink:#e5ebe4;
+  --muted:#a7b3a9;
+  --green:#9cccaa;
+  --sage:#283a2d;
+  --line:#39453d;
+  --on-accent:#132318;
+  --accent-hover:#b3debf;
+  --button-border:#647368;
+  --decoration:#314436;
+  --card-hover:#718d76;
+  --control-border:#536257;
+  --placeholder:#98a89d;
+  --soft:#233229;
+  --selected:#314936;
+  --origin-text:#b5c2b7;
+  --origin-border:#4a6551;
+  --code-bg:#1b241e;
+  --inline-code:#2b352e;
+  --quote-border:#718d76;
+  --quote-text:#b8c9bb;
+  --toc-bg:#202b23;
+  color-scheme:dark;
 }
 
 * {
@@ -97,7 +143,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   top:-100px;
   left:20px;
   background:var(--green);
-  color:white;
+  color:var(--on-accent);
   padding:10px 20px;
   z-index:100;
 }
@@ -107,6 +153,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 }
 
 .site-header {
+  gap:8px;
   height:72px;
   display:flex;
   justify-content:space-between;
@@ -171,6 +218,42 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   height:14px;
 }
 
+.theme-toggle {
+  display:grid;
+  place-items:center;
+  width:36px;
+  height:36px;
+  flex-shrink:0;
+  padding:0;
+  border:1px solid var(--line);
+  border-radius:50%;
+  background:transparent;
+  color:var(--green);
+}
+
+.theme-toggle:hover {
+  background:var(--sage);
+}
+
+.site-header nav .theme-toggle .icon {
+  width:18px;
+  height:18px;
+}
+
+.theme-sun,:root[data-theme="dark"] .theme-moon {
+  display:none;
+}
+
+:root[data-theme="dark"] .theme-sun {
+  display:block;
+}
+
+@media(max-width:600px) {
+  .site-header nav .github-link {
+    display:none;
+  }
+}
+
 .hero {
   display:grid;
   grid-template-columns:1.65fr 1fr;
@@ -209,7 +292,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   justify-content:center;
   align-items:center;
   gap:12px;
-  border:1px solid #a7aea6;
+  border:1px solid var(--button-border);
   border-radius:7px;
   background:transparent;
   padding:11px 26px;
@@ -225,12 +308,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .button.primary {
   background:var(--green);
-  color:#fff;
+  color:var(--on-accent);
   border-color:var(--green);
 }
 
 .button.primary:hover {
-  background:#194832;
+  background:var(--accent-hover);
 }
 
 .hero-type {
@@ -244,7 +327,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .hero-type>span {
   position:absolute;
-  color:#d5dcd1;
+  color:var(--decoration);
   font:420px/.8 var(--serif);
   top:-36px;
   left:50%;
@@ -313,7 +396,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .project-card:hover {
   transform:translateY(-3px);
-  border-color:#9bac9d;
+  border-color:var(--card-hover);
   box-shadow:0 8px 22px #243b2a08;
 }
 
@@ -414,7 +497,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   gap:14px;
   max-width:820px;
   margin:0 auto 30px;
-  border:1px solid #c8ccc5;
+  border:1px solid var(--control-border);
   border-radius:7px;
   padding:12px 18px;
   background:transparent;
@@ -444,7 +527,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 }
 
 .search-form input::placeholder {
-  color:#7b837d;
+  color:var(--placeholder);
 }
 
 .search-form button {
@@ -481,13 +564,13 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 }
 
 .category-link:hover {
-  background:#eef0e9;
+  background:var(--soft);
   color:var(--green);
 }
 
 .category-link.selected {
   color:var(--green);
-  background:#dfe7dd;
+  background:var(--selected);
   font-weight:600;
 }
 
@@ -560,11 +643,11 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   font-size:11px;
   line-height:1.6;
   white-space:nowrap;
-  color:#59635b;
+  color:var(--origin-text);
 }
 
 .article-origin.origin-ai {
-  border-color:#cad8cd;
+  border-color:var(--origin-border);
   background:var(--sage);
   color:var(--green);
 }
@@ -755,7 +838,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .prose pre {
   position:relative;
-  background:#f0f1eb;
+  background:var(--code-bg);
   border:1px solid var(--line);
   border-radius:8px;
   padding:22px;
@@ -771,7 +854,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .prose :not(pre)>code {
   font-size:.86em;
-  background:#e9ece4;
+  background:var(--inline-code);
   padding:3px 5px;
   border-radius:4px;
   overflow-wrap:anywhere;
@@ -783,10 +866,10 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 .prose blockquote {
   margin:28px 0;
-  border-left:3px solid #9cae99;
+  border-left:3px solid var(--quote-border);
   padding:12px 23px;
-  background:#eef0e9;
-  color:#5e6c60;
+  background:var(--soft);
+  color:var(--quote-text);
 }
 
 .prose blockquote p:last-child {
@@ -995,12 +1078,12 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
     font-size:23px;
   }
   .site-header nav {
-    gap:22px;
+    gap:12px;
   }
   .site-header nav a {
     font-size:14px;
   }
-  .site-header nav .icon {
+  .site-header nav a .icon {
     display:none;
   }
   .hero {
@@ -1138,7 +1221,7 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
     padding:15px 20px;
     border:1px solid var(--line);
     border-radius:8px;
-    background:#f0f2ec;
+    background:var(--toc-bg);
   }
   .toc summary {
     margin-bottom:0;
@@ -1197,13 +1280,21 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
 
 @media(max-width:390px) {
   .site-header nav {
-    gap:16px;
+    gap:8px;
   }
-  .site-header nav a:last-child {
+  .site-header nav a {
+    font-size:13px;
+  }
+  .theme-toggle {
+    width:32px;
+    height:32px;
+  }
+  .site-header nav .github-link {
     display:none;
   }
   .wordmark {
-    font-size:22px;
+    font-size:20px;
+    gap:4px;
   }
   .project-card {
     grid-template-columns:42px 1fr;

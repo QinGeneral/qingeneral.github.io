@@ -1,6 +1,11 @@
+import { createHash } from 'node:crypto';
+import { readFileSync } from 'node:fs';
+
 export const escape = value => String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 export const base = (process.env.SITE_BASE_PATH || '').replace(/\/$/, '');
 export const url = path => `${base}/${path}`;
+const assetVersions = Object.fromEntries(['site.css', 'site.js', 'blog.js', 'theme.js'].map(name => [name, createHash('sha256').update(readFileSync(new URL(`assets/${name}`, import.meta.url))).digest('hex').slice(0, 12)]));
+const asset = name => url(`assets/${name}?v=${assetVersions[name]}`);
 export const icon = (name, className = '') => {
   const paths = {
     arrow: '<path d="M5 12h14m-6-6 6 6-6 6"/>',
@@ -12,6 +17,8 @@ export const icon = (name, className = '') => {
     image: '<rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-6 4 4 3-3 5 5"/>',
     back: '<path d="M19 12H5m6-6-6 6 6 6"/>',
     up: '<path d="m6 14 6-6 6 6"/>',
+    moon: '<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>',
+    sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
   };
   return `<svg class="icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.arrow}</svg>`;
 };
@@ -22,11 +29,12 @@ export function layout({ title, description = '谈谈 AI、编程和读书，也
 <title>${escape(title)} · QinGeneral</title><meta name="description" content="${escape(description)}">
 <meta name="theme-color" content="#f8f7f4"><meta property="og:title" content="${escape(title)}"><meta property="og:description" content="${escape(description)}"><meta property="og:type" content="${active === 'article' ? 'article' : 'website'}">
 ${canonical ? `<link rel="canonical" href="https://qingeneral.github.io${url(canonical)}">` : ''}
-<link rel="icon" href="${url('assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${url('assets/site.css')}">
-<script src="${url('assets/site.js')}" defer></script>${script ? `<script src="${url('assets/blog.js')}" defer></script>` : ''}</head>
+<script src="${asset('theme.js')}"></script>
+<link rel="icon" href="${url('assets/favicon.svg')}" type="image/svg+xml"><link rel="stylesheet" href="${asset('site.css')}">
+<script src="${asset('site.js')}" defer></script>${script ? `<script src="${asset('blog.js')}" defer></script>` : ''}</head>
 <body><a class="skip-link" href="#main">跳到正文</a>
 <header class="site-header wrap"><a class="wordmark" href="${url('')}" aria-label="QinGeneral 首页">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a>
-<nav aria-label="主导航">${[['首页', '', 'home'], ['博客', 'blog/', 'blog'], ['项目', 'projects/', 'projects']].map(([label, href, key]) => `<a href="${url(href)}" ${active === key || (active === 'article' && key === 'blog') ? 'aria-current="page"' : ''}>${label}</a>`).join('')}<a href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a></nav></header>
+<nav aria-label="主导航">${[['首页', '', 'home'], ['博客', 'blog/', 'blog'], ['项目', 'projects/', 'projects']].map(([label, href, key]) => `<a href="${url(href)}" ${active === key || (active === 'article' && key === 'blog') ? 'aria-current="page"' : ''}>${label}</a>`).join('')}<a class="github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换到夜间模式" aria-pressed="false" hidden>${icon('moon', 'theme-moon')}${icon('sun', 'theme-sun')}</button></nav></header>
 ${body}
 <footer class="site-footer wrap"><a href="${url('')}" class="footer-brand">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a><span>保持好奇，持续记录。</span></footer>
 <button class="back-top" aria-label="回到顶部" hidden>${icon('up')}</button></body></html>`;

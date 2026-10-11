@@ -74,6 +74,9 @@ await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp('site/assets', path.join(output, 'assets'), { recursive: true });
 await cp('node_modules/highlight.js/styles/github.css', path.join(output, 'assets/highlight.css'));
+const darkSyntax = await readFile('node_modules/highlight.js/styles/github-dark.css', 'utf8');
+// Scope the bundled syntax theme so manual light/dark switching applies to code too.
+await writeFile(path.join(output, 'assets/highlight-dark.css'), darkSyntax.replace(/(^|\n)([.#a-z][^{}]*?)\s*\{/g, (_, start, selectors) => `${start}${selectors.split(',').map(selector => `:root[data-theme="dark"] ${selector.trim()}`).join(',\n')} {`));
 // Retain local article assets when present.
 for (const dir of ['images']) {
   try {
