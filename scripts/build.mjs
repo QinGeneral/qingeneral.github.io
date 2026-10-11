@@ -9,9 +9,14 @@ const root = path.resolve(import.meta.dirname, '..');
 process.chdir(root);
 const output = path.join(root, 'dist');
 const projects = JSON.parse(await readFile('site/projects.json', 'utf8'));
+const { aiGenerated } = JSON.parse(await readFile('site/article-origins.json', 'utf8'));
+const aiArticles = new Set(aiGenerated);
 // Only versioned content is published. Drafts and working notes never enter the site.
 const files = execFileSync('git', ['ls-files', '-z', '*.md'], { encoding: 'utf8' }).split('\0').filter(file => file.includes('/') && !/^(?:site|scripts|docs|\.\w+|gitbook|node_modules|_book|草稿)\//.test(file));
 if (!files.length) throw new Error('没有已跟踪的 Markdown 文章，请先用 git add 添加文章。');
+for (const file of aiArticles) {
+  if (!files.includes(file)) throw new Error(`AI 生成文章未找到：${file}`);
+}
 const md = new MarkdownIt({ html: false, linkify: true, typographer: true, highlight(code, language) {
   return language && hljs.getLanguage(language) ? hljs.highlight(code, { language }).value : escape(code);
 } });
@@ -61,7 +66,7 @@ const articles = await Promise.all(files.map(async file => {
   const text = `${plain(tokens)} ${tokens.filter(t => ['fence', 'code_block'].includes(t.type)).map(t => t.content).join(' ')}`.trim();
   const date = execFileSync('git', ['log', '-1', '--format=%cs', '--', file], { encoding: 'utf8' }).trim() || new Date().toISOString().slice(0, 10);
   const summary = paragraphs.join(' ') || text;
-  return { path: file, href: file.replace(/\.md$/, '.html').split('/').map(encodeURIComponent).join('/'), title, category: file.split('/')[0], date, minutes: Math.max(1, Math.ceil(text.length / 450)), excerpt: summary.slice(0, 115) + (summary.length > 115 ? '…' : ''), text, tokens, firstTitle };
+  return { path: file, origin: aiArticles.has(file) ? 'ai' : 'manual', href: file.replace(/\.md$/, '.html').split('/').map(encodeURIComponent).join('/'), title, category: file.split('/')[0], date, minutes: Math.max(1, Math.ceil(text.length / 450)), excerpt: summary.slice(0, 115) + (summary.length > 115 ? '…' : ''), text, tokens, firstTitle };
 }));
 articles.sort((a, b) => b.date.localeCompare(a.date) || a.path.localeCompare(b.path, 'zh-CN'));
 

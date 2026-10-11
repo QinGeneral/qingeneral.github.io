@@ -28,6 +28,8 @@ npm run check
 
 新增分类只需新增文章目录，无需更新 `SUMMARY.md`。中文与空格路径、Markdown 表格、代码高亮和文章内部链接均受支持。图片继续使用文章已有图床链接；远程图片的可用性取决于原图床。
 
+文章列表、首页最近文章及阅读页会显示写作来源。`site/article-origins.json` 的 `aiGenerated` 列表按仓库内 Markdown 路径标记“AI 生成”，其余文章默认显示“手工编写”。新增 AI 文章时同步更新该列表；构建会检查列出的文章是否存在。
+
 ## 维护项目
 
 编辑 `site/projects.json` 的项目名称、描述、分类和地址。整张项目卡片点击后进入对应仓库。已停止维护的项目在 `site/views.mjs` 中单独展示；TalkWithCat 原文没有地址，因此保留为文字。

@@ -553,6 +553,22 @@ a:focus-visible,button:focus-visible,summary:focus-visible,select:focus-visible,
   color:var(--green);
 }
 
+.article-origin {
+  padding:1px 7px;
+  border:1px solid var(--line);
+  border-radius:4px;
+  font-size:11px;
+  line-height:1.6;
+  white-space:nowrap;
+  color:#59635b;
+}
+
+.article-origin.origin-ai {
+  border-color:#cad8cd;
+  background:var(--sage);
+  color:var(--green);
+}
+
 .article-row h2 {
   font:600 25px/1.45 var(--serif);
   margin:7px 0 8px;
