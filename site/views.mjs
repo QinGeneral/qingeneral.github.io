@@ -19,6 +19,7 @@ export const icon = (name, className = '') => {
     up: '<path d="m6 14 6-6 6 6"/>',
     moon: '<path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/>',
     sun: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/>',
+    rss: '<circle cx="5" cy="19" r="1"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/>',
   };
   return `<svg class="icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.arrow}</svg>`;
 };
@@ -39,9 +40,9 @@ export function layout({ title, description = '谈谈 AI、编程和读书，也
 <script src="${asset('site.js')}" defer></script>${script ? `<script src="${asset('blog.js')}" defer></script>` : ''}</head>
 <body><a class="skip-link" href="#main">跳到正文</a>
 <header class="site-header wrap"><a class="wordmark" href="${url('')}" aria-label="QinGeneral 首页">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a>
-<nav aria-label="主导航">${[['首页', '', 'home'], ['博客', 'blog/', 'blog'], ['项目', 'projects/', 'projects']].map(([label, href, key]) => `<a href="${url(href)}" ${active === key || (active === 'article' && key === 'blog') ? 'aria-current="page"' : ''}>${label}</a>`).join('')}<a class="github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换到夜间模式" aria-pressed="false" hidden>${icon('moon', 'theme-moon')}${icon('sun', 'theme-sun')}</button></nav></header>
+<nav aria-label="主导航">${[['首页', '', 'home'], ['博客', 'blog/', 'blog'], ['项目', 'projects/', 'projects']].map(([label, href, key]) => `<a href="${url(href)}" ${active === key || (active === 'article' && key === 'blog') ? 'aria-current="page"' : ''}>${label}</a>`).join('')}<a class="github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GitHub ${icon('external')}</a><button id="theme-toggle" class="theme-toggle" type="button" aria-label="切换到夜间模式" aria-pressed="false" hidden>${icon('moon', 'theme-moon')}${icon('sun', 'theme-sun')}</button></nav><a class="rss-link" href="${url('feed.xml')}" aria-label="RSS 订阅博客">${icon('rss')}<span>RSS 订阅</span></a></header>
 ${body}
-<footer class="site-footer wrap"><a href="${url('')}" class="footer-brand">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a><span class="footer-links"><span>保持好奇，持续记录。</span><a href="${url('feed.xml')}" aria-label="RSS 订阅博客">RSS 订阅</a></span></footer>
+<footer class="site-footer wrap"><a href="${url('')}" class="footer-brand">QinGeneral<span class="brand-dot" aria-hidden="true"></span></a><span>保持好奇，持续记录。</span></footer>
 <button class="back-top" aria-label="回到顶部" hidden>${icon('up')}</button></body></html>`;
 }
 
