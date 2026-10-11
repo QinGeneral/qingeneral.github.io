@@ -1,10 +1,59 @@
 [
   {
+    "name": "wx-downloader",
+    "description": "保存微信视频号分享的视频。支持批量下载和去重，方便收藏与回看。",
+    "tags": "视频工具 · 微信视频号",
+    "url": "https://github.com/QinGeneral/wx-downloader",
+    "icon": "image"
+  },
+  {
+    "name": "精英日课知识地图",
+    "description": "用知识地图串联 22 个领域、785 个概念，支持概念搜索、领域脑图和资料下载。",
+    "tags": "知识整理 · 在线阅读",
+    "url": "https://github.com/QinGeneral/elite-course-knowledge-map",
+    "icon": "layers"
+  },
+  {
+    "name": "geektime_cli",
+    "description": "查询极客时间课程，下载已购内容，并导出为 Markdown 或 PDF，方便离线学习。",
+    "tags": "学习工具 · 极客时间",
+    "url": "https://github.com/QinGeneral/geektime_cli",
+    "icon": "note"
+  },
+  {
+    "name": "littleUqu",
+    "description": "小小优趣命令行工具。查询和下载电影、动画与熏听内容，整理孩子的学习素材。",
+    "tags": "亲子学习 · 小小优趣",
+    "url": "https://github.com/QinGeneral/littleUqu",
+    "icon": "image"
+  },
+  {
+    "name": "getnotes-cli",
+    "description": "管理与导出 Get 笔记，支持知识库、语义搜索和 MCP 集成，让笔记进入 AI 工作流。",
+    "tags": "笔记工具 · Get 笔记 · MCP",
+    "url": "https://github.com/QinGeneral/getnotes-cli",
+    "icon": "note"
+  },
+  {
+    "name": "duku_cli",
+    "description": "下载读库会员文章、电子书及“听”栏目内容，并将 Markdown 转成 EPUB，方便随身阅读。",
+    "tags": "阅读工具 · 读库",
+    "url": "https://github.com/QinGeneral/duku_cli",
+    "icon": "note"
+  },
+  {
     "name": "Note Exporter",
     "description": "让笔记自由流动。将 Bear 笔记导出，方便迁移与备份。",
     "tags": "笔记工具 · Bear",
     "url": "https://github.com/QinGeneral/note_exporter?tab=readme-ov-file",
     "icon": "note"
+  },
+  {
+    "name": "SmartPic",
+    "description": "在 Alfred 中快速上传图片，让写作少一步操作。",
+    "tags": "效率工具 · Alfred",
+    "url": "https://github.com/QinGeneral/SmartPic",
+    "icon": "image"
   },
   {
     "name": "cocos-jsc-endecryptor",
@@ -19,12 +68,5 @@
     "tags": "虚拟机 · Kotlin",
     "url": "https://github.com/QinGeneral/jvm.kotlin",
     "icon": "layers"
-  },
-  {
-    "name": "SmartPic",
-    "description": "在 Alfred 中快速上传图片，让写作少一步操作。",
-    "tags": "效率工具 · Alfred",
-    "url": "https://github.com/QinGeneral/SmartPic",
-    "icon": "image"
   }
 ]

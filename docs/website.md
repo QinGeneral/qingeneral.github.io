@@ -34,6 +34,8 @@ npm run check
 
 编辑 `site/projects.json` 的项目名称、描述、分类和地址。整张项目卡片点击后进入对应仓库。已停止维护的项目在 `site/views.mjs` 中单独展示；TalkWithCat 原文没有地址，因此保留为文字。
 
+数组顺序就是展示顺序：按潜在受众范围、使用场景的普遍性及使用门槛估计，通用内容工具优先，平台专用工具随后，专业开发工具靠后；这不是实际用户量排名。首页展示前 4 个项目，项目页展示全部项目。
+
 ## 发布到 GitHub Pages
 
 仓库现有配置为 `gh-pages` 分支根目录发布。新增 `.github/workflows/pages.yml` 沿用该配置，不要求切换 Pages 的 Source。
