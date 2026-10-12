@@ -1,5 +1,13 @@
 [
   {
+    "name": "溪流 · Stream RSS",
+    "description": "本地优先的 RSS 阅读器与个人知识集合，让信息成为知识。",
+    "tags": "RSS 阅读 · 知识整理",
+    "url": "https://stream-rss.vercel.app/",
+    "icon": "rss",
+    "group": "阅读与学习"
+  },
+  {
     "name": "wx-downloader",
     "description": "保存微信视频号分享的视频。支持批量下载和去重，方便收藏与回看。",
     "tags": "视频工具 · 微信视频号",
