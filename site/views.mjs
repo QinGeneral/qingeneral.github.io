@@ -115,8 +115,12 @@ const projectRow = (p, i) => `<a class="project-row" href="${escape(p.url)}"><sp
 
 const projectCard = p => `<a class="project-card" href="${escape(p.url)}"><span class="project-card-head"><span class="project-name${/^[\w.-]+$/.test(p.name) ? ' mono' : ''}">${escape(p.name)}</span>${icon('external', 'project-arrow')}</span><span class="project-desc">${escape(p.description)}</span><span class="project-foot"><span>${escape(p.tags)}</span><span class="project-kind">${isRepo(p) ? '源码 REPO' : '打开网站'}</span></span></a>`;
 
+const featuredProject = p => `<a class="featured-project" href="${escape(p.url)}"><span class="featured-project-copy"><span class="signal"><span class="pulse" aria-hidden="true"></span>FEATURED · LIVE SITE</span><span class="featured-project-name">${escape(p.name)}</span><span class="featured-project-desc">${escape(p.description)}</span>${p.stats ? `<span class="readouts">${p.stats.map(s => `<span><span class="readout-label">${escape(s.label)}</span><span class="readout-value">${escape(s.value)}</span></span>`).join('')}</span>` : ''}<span class="button primary">打开网站 ${icon('external')}</span></span><span class="featured-project-tags">${escape(p.tags)}</span></a>`;
+const featuredProjects = projects => projects.some(p => p.featured) ? `<div class="featured-projects">${projects.filter(p => p.featured).map(featuredProject).join('')}</div>` : '';
+
 export function home(projects, articles, series) {
   const [latest, ...rest] = articles;
+  const featuredCount = projects.filter(p => p.featured).length;
   const counts = new Map();
   for (const a of articles) counts.set(a.category, (counts.get(a.category) || 0) + 1);
   const topics = [...counts].sort((x, y) => y[1] - x[1] || x[0].localeCompare(y[0], 'zh-CN'));
@@ -131,21 +135,20 @@ export function home(projects, articles, series) {
 <div class="home-columns"><section class="section recent" aria-labelledby="recent-title">${sectionHeading('recent-title', '01', '最近的记录', `<a class="text-link" href="${url('blog/')}">全部 ${articles.length} 篇 →</a>`)}${rest.slice(0, 4).map(a => articleRow(a, { heading: 'h3' })).join('')}</section>
 <aside class="section topics" aria-labelledby="topics-title">${sectionHeading('topics-title', '02', '按主题读')}<nav class="topic-list" aria-label="主题">${topics.slice(0, 6).map(([name, count], i) => `<a class="topic-link" href="${categoryHref(name)}"><span>${escape(name)}</span><span class="topic-count${i === 0 ? ' accent' : ''}">${count}</span><span class="topic-bar" aria-hidden="true"><span style="width:${Math.max(4, Math.round(count / max * 100))}%"${i === 0 ? ' class="accent"' : ''}></span></span></a>`).join('')}${topics.length > 6 ? `<a class="topic-more" href="${url('blog/')}">+ 其余 ${topics.length - 6} 个主题 →</a>` : ''}</nav></aside></div>
 <section class="section" aria-labelledby="series">${sectionHeading('series', '03', '连载系列', '<span class="muted">从第一篇开始，按顺序读完</span>')}<div class="series-grid">${series.map((s, i) => `<a class="series-card" href="${url(s.items[0].article.href)}"><span class="series-code">S-${pad(i + 1)} · ${escape(s.category)} · ${s.items.length} 篇</span><span class="series-name">${escape(s.name)}</span><span class="series-desc">从「${escape(s.items[0].subtitle)}」到「${escape(s.items.at(-1).subtitle)}」</span><span class="series-segments" aria-hidden="true" style="--parts:${s.items.length}">${'<span></span>'.repeat(s.items.length)}</span></a>`).join('')}</div></section>
-<section class="section" aria-labelledby="projects-title">${sectionHeading('projects-title', '04', '把想法，做成工具', `<a class="text-link" href="${url('projects/')}">全部 ${projects.length} 个项目 →</a>`)}<div class="project-rows">${projects.slice(0, 4).map(projectRow).join('')}</div></section>
+<section class="section" aria-labelledby="projects-title">${sectionHeading('projects-title', '04', '把想法，做成工具', `<a class="text-link" href="${url('projects/')}">全部 ${projects.length} 个项目 →</a>`)}${featuredProjects(projects)}<div class="project-rows">${projects.filter(p => !p.featured).slice(0, Math.max(0, 4 - featuredCount)).map((p, i) => projectRow(p, i + featuredCount)).join('')}</div></section>
 ${subscribe('subscribe-title')}
 </div></main>` });
 }
 
 export function projectsPage(projects) {
-  const featured = projects.find(p => !isRepo(p));
   const groups = new Map();
-  for (const p of projects.filter(p => p !== featured)) {
+  for (const p of projects.filter(p => !p.featured)) {
     const group = p.group || '其他';
     if (!groups.has(group)) groups.set(group, []);
     groups.get(group).push(p);
   }
   return layout({ title: '项目', active: 'projects', canonical: 'projects/', body: `<main id="main"><section class="page-intro grid-bg"><div class="wrap"><p class="eyebrow">// BUILD LOG · ${projects.length} PROJECTS</p><h1>把想法，做成工具</h1><p class="lead">一些解决小问题的尝试，也是探索技术的另一种方式。大多是命令行工具，开源在 GitHub。</p>
-${featured ? `<a class="featured-project" href="${escape(featured.url)}"><span class="featured-project-copy"><span class="signal"><span class="pulse" aria-hidden="true"></span>FEATURED · LIVE SITE</span><span class="featured-project-name">${escape(featured.name)}</span><span class="featured-project-desc">${escape(featured.description)}</span>${featured.stats ? `<span class="readouts">${featured.stats.map(s => `<span><span class="readout-label">${escape(s.label)}</span><span class="readout-value">${escape(s.value)}</span></span>`).join('')}</span>` : ''}<span class="button primary">打开网站 ${icon('external')}</span></span><span class="featured-project-tags">${escape(featured.tags)}</span></a>` : ''}</div></section>
+${featuredProjects(projects)}</div></section>
 <div class="wrap">${[...groups].sort((a, b) => ['阅读与学习', '笔记与写作', '开发与折腾', '其他'].indexOf(a[0]) - ['阅读与学习', '笔记与写作', '开发与折腾', '其他'].indexOf(b[0])).map(([name, items], i) => `<section class="section project-group" aria-labelledby="group-${i}">${sectionHeading(`group-${i}`, String.fromCharCode(65 + i), escape(name), `<span class="muted mono">${pad(items.length)}</span>`)}<div class="project-grid">${items.map(projectCard).join('')}</div></section>`).join('')}
 <section class="section archive" aria-labelledby="archive-title">${sectionHeading('archive-title', 'X', '过去的尝试', '<span class="muted">已停止维护</span>')}<div class="archive-row"><a href="https://www.cattalk.club/" target="_blank" rel="noopener noreferrer">CatTalk ${icon('external')}</a><p>无需翻墙的 ChatGPT 网站</p><span class="status-archived">ARCHIVED</span></div><div class="archive-row"><span class="archive-name">TalkWithCat</span><p>基于 OpenAI 的聊天、PDF 摘要小程序</p><span class="status-archived">ARCHIVED</span></div></section></div></main>` });
 }

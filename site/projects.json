@@ -5,15 +5,8 @@
     "tags": "RSS 阅读 · 知识整理",
     "url": "https://stream-rss.vercel.app/",
     "icon": "rss",
-    "group": "阅读与学习"
-  },
-  {
-    "name": "wx-downloader",
-    "description": "保存微信视频号分享的视频。支持批量下载和去重，方便收藏与回看。",
-    "tags": "视频工具 · 微信视频号",
-    "url": "https://github.com/QinGeneral/wx-downloader",
-    "icon": "image",
-    "group": "开发与折腾"
+    "group": "阅读与学习",
+    "featured": true
   },
   {
     "name": "精英日课知识地图",
@@ -22,6 +15,7 @@
     "url": "https://qingeneral.github.io/elite-course-knowledge-map/",
     "icon": "layers",
     "group": "开发与折腾",
+    "featured": true,
     "stats": [
       {
         "label": "DOMAINS",
@@ -32,6 +26,14 @@
         "value": "785"
       }
     ]
+  },
+  {
+    "name": "wx-downloader",
+    "description": "保存微信视频号分享的视频。支持批量下载和去重，方便收藏与回看。",
+    "tags": "视频工具 · 微信视频号",
+    "url": "https://github.com/QinGeneral/wx-downloader",
+    "icon": "image",
+    "group": "开发与折腾"
   },
   {
     "name": "geektime_cli",
