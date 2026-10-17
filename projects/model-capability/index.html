@@ -1,0 +1,1855 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>开发者模型能力雷达图</title>
+  <meta name="description" content="从 8 个维度比较不同 Agent Harness 下的模型能力，交互查看雷达图、任务路由和评分权重。" />
+  <link rel="canonical" href="https://qingeneral.github.io/projects/model-capability/" />
+  <style>
+    :root {
+      --bg: #07111f;
+      --panel: rgba(12, 24, 40, .78);
+      --panel-2: rgba(18, 34, 54, .72);
+      --line: rgba(255,255,255,.10);
+      --grid: rgba(164, 190, 216, .22);
+      --text: #f5f7fb;
+      --muted: #98a8bc;
+      --accent: #ff925d;
+      --good: #72e2bd;
+      --shadow: 0 22px 60px rgba(0,0,0,.34);
+      --radius: 22px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      background:
+        radial-gradient(circle at 18% 12%, rgba(255, 118, 73, .16), transparent 32%),
+        radial-gradient(circle at 82% 26%, rgba(80, 147, 255, .16), transparent 30%),
+        linear-gradient(145deg, #050b14 0%, #081524 48%, #06101c 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: .16;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 32px 32px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.65), transparent 82%);
+    }
+
+    button { font: inherit; }
+
+    .project-nav { margin-bottom: 22px; }
+    .project-nav a { color: var(--muted); text-decoration: none; font-size: 14px; }
+    .project-nav a:hover { color: var(--accent); }
+    .project-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 6px; border-radius: 3px; }
+
+    .app {
+      width: min(1480px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 40px 0 56px;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 28px;
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: clamp(34px, 4.4vw, 64px);
+      line-height: 1.03;
+      letter-spacing: -.045em;
+      font-weight: 800;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg, #fff 0%, #ffd1ba 48%, #ff8a52 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .subtitle {
+      margin-top: 12px;
+      color: var(--muted);
+      font-size: 16px;
+      line-height: 1.7;
+      max-width: 720px;
+    }
+
+    .method {
+      flex: 0 0 auto;
+      text-align: right;
+      color: #b6c4d6;
+      font-size: 13px;
+      line-height: 1.6;
+      padding-bottom: 5px;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.55fr) minmax(350px, .8fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: linear-gradient(180deg, rgba(17,33,53,.86), rgba(9,20,34,.84));
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      backdrop-filter: blur(18px);
+    }
+
+    .chart-card {
+      padding: 22px;
+      min-width: 0;
+      align-self: start;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-title {
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .ghost-btn {
+      cursor: pointer;
+      color: #cdd8e6;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 10px;
+      padding: 8px 11px;
+      transition: .18s ease;
+    }
+    .ghost-btn:hover { background: rgba(255,255,255,.085); }
+
+    .chart-wrap {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      aspect-ratio: 1.55 / 1;
+      min-height: 520px;
+    }
+
+    #radar {
+      width: 100%;
+      height: 100%;
+      display: block;
+      overflow: visible;
+    }
+
+    .legend {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .model-toggle {
+      --model-color: #fff;
+      cursor: pointer;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 9px;
+      min-height: 46px;
+      padding: 9px 11px;
+      color: #eaf0f6;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      text-align: left;
+      transition: transform .16s ease, background .16s ease, opacity .16s ease;
+    }
+
+    .model-toggle:hover { transform: translateY(-1px); background: rgba(255,255,255,.065); }
+    .model-toggle.off { opacity: .35; }
+
+    .swatch {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: var(--model-color);
+      box-shadow: 0 0 16px color-mix(in srgb, var(--model-color) 70%, transparent);
+      flex: 0 0 auto;
+    }
+
+    .legend-name {
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 650;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .legend-score {
+      display: none;
+      min-width: 38px;
+      padding: 3px 7px;
+      border-radius: 8px;
+      text-align: right;
+      font-size: 12px;
+      font-weight: 750;
+      font-variant-numeric: tabular-nums;
+      color: #b8c7d8;
+      background: rgba(255,255,255,.045);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .legend.dimension-scoring .legend-score { display: inline-block; }
+    .model-toggle.focus-best .legend-score {
+      color: #fff;
+      background: color-mix(in srgb, var(--model-color) 18%, rgba(255,255,255,.05));
+      border-color: color-mix(in srgb, var(--model-color) 46%, rgba(255,255,255,.08));
+      box-shadow: 0 0 14px color-mix(in srgb, var(--model-color) 20%, transparent);
+    }
+
+    aside { display: grid; gap: 20px; align-content: start; }
+
+    .side-card { padding: 20px; }
+    .side-card h2 { margin: 0 0 6px; font-size: 18px; }
+    .side-card p { margin: 0 0 16px; color: var(--muted); font-size: 13px; line-height: 1.65; }
+
+    .task-list { display: grid; gap: 9px; }
+    .task {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.032);
+      border: 1px solid rgba(255,255,255,.065);
+    }
+    .task-name { font-size: 13px; color: #dfe7f1; }
+    .task-model { font-size: 12px; font-weight: 700; color: #ffd1ba; text-align: right; }
+
+    .note {
+      margin-top: 14px;
+      padding: 12px 13px;
+      border: 1px dashed rgba(255,255,255,.12);
+      border-radius: 12px;
+      color: #9fb0c4;
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .metric-grid {
+      display: grid;
+      gap: 10px;
+    }
+    .metric {
+      padding: 11px 12px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.03);
+    }
+    .metric strong { display:block; font-size: 13px; margin-bottom: 4px; color: #e9eff7; }
+    .metric span { color: var(--muted); font-size: 12px; line-height: 1.55; }
+
+    .status {
+      margin-top: 14px;
+      min-height: 20px;
+      font-size: 12px;
+      color: #9fb0c4;
+    }
+
+    .axis-label {
+      fill: #d6e1ee;
+      font-size: 13px;
+      font-weight: 650;
+      dominant-baseline: middle;
+    }
+    .grid-line { stroke: var(--grid); stroke-width: 1; fill: none; }
+    .axis-line { stroke: rgba(177, 202, 226, .24); stroke-width: 1; }
+    .grid-number { fill: #74879d; font-size: 10px; }
+    .series {
+      fill-opacity: .05;
+      stroke-width: 2.25;
+      stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
+      transition: opacity .16s ease, stroke-width .16s ease, fill-opacity .16s ease, filter .16s ease;
+    }
+    .series-point {
+      stroke: #07111f;
+      stroke-width: 1.5;
+      vector-effect: non-scaling-stroke;
+      transition: opacity .16s ease, r .16s ease, stroke-width .16s ease;
+    }
+    .hidden-series { opacity: 0; pointer-events: none; }
+    .focus-muted { opacity: .12; }
+    .focus-muted .series { fill-opacity: .015; filter: none; }
+    .focus-best { opacity: 1; }
+    .focus-best .series { stroke-width: 4; fill-opacity: .12; }
+    .focus-best .series-point { stroke-width: 2.4; }
+
+    .axis-label, .axis-line {
+      transition: opacity .16s ease, fill .16s ease, stroke .16s ease, font-size .16s ease;
+    }
+    .axis-dimmed { opacity: .32; }
+    .axis-active.axis-label { fill: #ffffff; font-size: 15px; }
+    .axis-active.axis-line { stroke: rgba(255,255,255,.78); stroke-width: 2; }
+    .axis-hit {
+      stroke: transparent;
+      stroke-width: 58;
+      fill: none;
+      pointer-events: stroke;
+      cursor: crosshair;
+    }
+
+
+    .view-subtitle {
+      margin-top: 4px;
+      color: #8fa3b9;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .nav-btn { min-width: 38px; font-size: 18px; line-height: 1; }
+    .radar-carousel {
+      position: relative;
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+      border-radius: 16px;
+      touch-action: pan-y;
+      user-select: none;
+      cursor: grab;
+    }
+    .radar-carousel.dragging { cursor: grabbing; }
+    .radar-track {
+      display: flex;
+      width: 100%;
+      transform: translateX(0%);
+      transition: transform .36s cubic-bezier(.22,.74,.25,1);
+      will-change: transform;
+    }
+    .radar-carousel.dragging .radar-track { transition: none; }
+    .radar-slide {
+      min-width: 100%;
+      width: 100%;
+      flex: 0 0 100%;
+    }
+    .view-pager {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      min-height: 28px;
+      margin-top: 2px;
+    }
+    .view-dot {
+      width: 7px;
+      height: 7px;
+      border: 0;
+      border-radius: 999px;
+      padding: 0;
+      cursor: pointer;
+      background: rgba(255,255,255,.22);
+      transition: width .18s ease, background .18s ease, box-shadow .18s ease;
+    }
+    .view-dot.active {
+      width: 22px;
+      background: #ff9a67;
+      box-shadow: 0 0 14px rgba(255,146,93,.32);
+    }
+    .swipe-hint { color: #75899f; font-size: 10.5px; margin-left: 2px; }
+    .layer-summary {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 8px;
+      margin: 2px 0 10px;
+    }
+    .layer-summary[hidden] { display: none; }
+    .layer-summary > div {
+      min-width: 0;
+      padding: 9px 10px;
+      border-radius: 11px;
+      background: rgba(255,255,255,.028);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+    .layer-summary b { display: block; margin-bottom: 3px; color: #edf3fa; font-size: 12px; }
+    .layer-summary small { display: block; margin-bottom: 4px; color: #ffb28d; font-size: 10px; font-variant-numeric: tabular-nums; }
+    .layer-summary span { display: block; color: #899db3; font-size: 10.5px; line-height: 1.45; }
+
+    .model-toggle.focus-muted { opacity: .38; transform: none; }
+    .model-toggle.focus-best {
+      opacity: 1;
+      background: color-mix(in srgb, var(--model-color) 12%, rgba(255,255,255,.04));
+      border-color: color-mix(in srgb, var(--model-color) 48%, rgba(255,255,255,.08));
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--model-color) 20%, transparent), 0 0 24px color-mix(in srgb, var(--model-color) 16%, transparent);
+    }
+
+
+
+    .methodology-card {
+      margin-top: 20px;
+      padding: 24px;
+    }
+    .methodology-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 20px;
+      margin-bottom: 18px;
+    }
+    .methodology-head h2 { margin: 0 0 6px; font-size: 22px; }
+    .methodology-head p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; max-width: 820px; }
+    .formula-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.35fr) minmax(320px, .65fr);
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+    .formula-panel,
+    .rank-panel {
+      min-width: 0;
+      background: rgba(255,255,255,.032);
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      padding: 16px;
+    }
+    .formula-label {
+      color: #aebfd2;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      margin-bottom: 9px;
+    }
+    .formula {
+      overflow-x: auto;
+      padding: 12px 14px;
+      border-radius: 12px;
+      background: #07101c;
+      border: 1px solid rgba(255,255,255,.08);
+      color: #f8fbff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: clamp(13px, 1.4vw, 17px);
+      line-height: 1.75;
+      white-space: nowrap;
+    }
+    .formula .sym { color: #ffd0b9; font-weight: 800; }
+    .formula-help {
+      margin-top: 11px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+    .weight-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      margin-top: 12px;
+    }
+    .weight-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.035);
+      color: #c8d5e4;
+      border-radius: 999px;
+      padding: 5px 8px;
+      font-size: 11px;
+      font-variant-numeric: tabular-nums;
+    }
+    .weight-chip b { color: #fff; }
+    /* Task weight deltas are always compared against the global CAV baseline. */
+    .formula-term, .weight-chip { transition: color .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease; }
+    .formula-term.weight-up {
+      color: #74e7ad;
+      text-shadow: 0 0 14px rgba(116,231,173,.14);
+    }
+    .formula-term.weight-up .sym { color: #9af0c5; }
+    .formula-term.weight-up sup { color: #74e7ad; font-weight: 800; }
+    .formula-term.weight-down {
+      color: #ff8f9c;
+      text-shadow: 0 0 14px rgba(255,143,156,.12);
+    }
+    .formula-term.weight-down .sym { color: #ffb1ba; }
+    .formula-term.weight-down sup { color: #ff8f9c; font-weight: 800; }
+    .weight-chip.weight-up {
+      color: #9af0c5;
+      border-color: rgba(116,231,173,.30);
+      background: rgba(116,231,173,.085);
+    }
+    .weight-chip.weight-up b { color: #b9f6d5; }
+    .weight-chip.weight-down {
+      color: #ffadb7;
+      border-color: rgba(255,143,156,.28);
+      background: rgba(255,143,156,.075);
+    }
+    .weight-chip.weight-down b { color: #ffd0d5; }
+    .weight-delta-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 14px;
+      margin-top: 10px;
+      color: #8fa2b7;
+      font-size: 11px;
+    }
+    .weight-delta-legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .delta-dot { width: 8px; height: 8px; border-radius: 999px; display: inline-block; }
+    .delta-dot.up { background: #74e7ad; box-shadow: 0 0 10px rgba(116,231,173,.25); }
+    .delta-dot.down { background: #ff8f9c; box-shadow: 0 0 10px rgba(255,143,156,.22); }
+    .delta-dot.same { background: #7f91a5; }
+    .global-rank { display: grid; gap: 7px; }
+    .global-rank-row {
+      display: grid;
+      grid-template-columns: 24px minmax(0, 1fr) auto;
+      gap: 9px;
+      align-items: center;
+      font-size: 12px;
+      color: #dfe8f2;
+    }
+    .rank-index { color: #7f91a5; font-variant-numeric: tabular-nums; }
+    .rank-score { color: #ffd1ba; font-weight: 800; font-variant-numeric: tabular-nums; }
+
+    .task-formulas { min-width: 0; display: grid; gap: 22px; }
+    .routing-tier-overview {
+      display:grid; grid-template-columns:minmax(0,1fr) auto minmax(0,1fr) auto minmax(0,1fr);
+      align-items:stretch; gap:10px; margin:0 0 18px;
+    }
+    .routing-tier-card { min-width:0; padding:14px; border-radius:14px; border:1px solid rgba(255,255,255,.07); background:rgba(255,255,255,.026); }
+    .routing-tier-card > span { display:inline-flex; padding:3px 7px; border-radius:999px; font-size:10px; font-weight:800; margin-bottom:8px; }
+    .routing-tier-card strong { display:block; color:#f3f7fb; font-size:14px; margin-bottom:4px; }
+    .routing-tier-card b { display:block; color:#b8c8d8; font-size:11px; margin-bottom:5px; }
+    .routing-tier-card p { margin:0; color:#7f93a9; font-size:10.5px; line-height:1.5; }
+    .tier-light-card { border-color:rgba(94,215,229,.16); } .tier-light-card > span { color:#baf6fb; background:rgba(94,215,229,.10); }
+    .tier-daily-card { border-color:rgba(118,224,183,.16); } .tier-daily-card > span { color:#c9f8e5; background:rgba(118,224,183,.10); }
+    .tier-frontier-card { border-color:rgba(255,146,93,.18); } .tier-frontier-card > span { color:#ffd5c0; background:rgba(255,146,93,.11); }
+    .routing-tier-arrow { align-self:center; color:#526a81; font-size:20px; }
+    .task-tier-section { min-width:0; }
+    .task-tier-head { display:flex; align-items:end; justify-content:space-between; gap:14px; margin:0 0 10px; padding:0 2px; }
+    .task-tier-head span { font-size:10px; font-weight:800; letter-spacing:.05em; color:#889caf; }
+    .task-tier-head h3 { margin:2px 0 3px; font-size:17px; color:#f1f6fb; }
+    .task-tier-head p { margin:0; color:#7f93a9; font-size:11px; line-height:1.5; }
+    .task-tier-head > b { flex:none; font-size:10.5px; color:#aabdd0; padding:6px 9px; border-radius:999px; background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.06); }
+    .task-tier-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+    .tier-section-light .task-tier-head h3 { color:#baf6fb; }
+    .tier-section-daily .task-tier-head h3 { color:#c9f8e5; }
+    .tier-section-frontier .task-tier-head h3 { color:#ffd5c0; }
+    .tier-card-light { border-top:2px solid rgba(94,215,229,.38); }
+    .tier-card-daily { border-top:2px solid rgba(118,224,183,.38); }
+    .tier-card-frontier { border-top:2px solid rgba(255,146,93,.38); }
+    .task-formula-card {
+      min-width: 0;
+      scroll-margin-top: 20px;
+      padding: 16px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.028);
+      border: 1px solid rgba(255,255,255,.065);
+      transition: border-color .18s ease, background .18s ease, transform .18s ease;
+    }
+    .task-formula-card:target,
+    .task-formula-card.flash {
+      border-color: rgba(255,146,93,.52);
+      background: rgba(255,146,93,.07);
+    }
+    .task-formula-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .task-formula-title { font-size: 15px; font-weight: 760; color: #f2f6fb; }
+    .task-formula-best { font-size: 11px; font-weight: 750; color: #ffd1ba; text-align: right; white-space: nowrap; }
+    .task-formula-card .formula { font-size: 12px; padding: 9px 10px; line-height: 1.65; }
+    .task-radar-section {
+      margin-top: 12px;
+      padding: 12px;
+      border-radius: 13px;
+      background: rgba(5,13,23,.48);
+      border: 1px solid rgba(255,255,255,.065);
+    }
+    .task-radar-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+    .task-radar-title { color: #dce7f2; font-size: 11.5px; font-weight: 760; }
+    .task-radar-model { color: #ffd1ba; font-size: 10.5px; font-weight: 720; text-align: right; }
+    .task-radar-layout {
+      display: grid;
+      grid-template-columns: minmax(200px, .9fr) minmax(210px, 1.1fr);
+      gap: 10px;
+      align-items: center;
+    }
+    .task-mini-radar {
+      width: 100%;
+      min-height: 228px;
+      display: block;
+      overflow: visible;
+    }
+    .task-mini-grid { stroke: rgba(153,181,208,.17); stroke-width: 1; fill: none; }
+    .task-mini-axis { stroke: rgba(153,181,208,.18); stroke-width: 1; }
+    .task-mini-label { fill: #93a7bc; font-size: 10px; font-weight: 720; }
+    .task-mini-score { fill-opacity: .10; stroke-width: 2.2; stroke-linejoin: round; }
+    .task-mini-weight { fill: rgba(255,146,93,.055); stroke: #ff925d; stroke-width: 1.8; stroke-dasharray: 5 4; stroke-linejoin: round; }
+    .task-mini-score-point { stroke: #07111f; stroke-width: 1.2; }
+    .task-mini-weight-point { fill: #ff925d; stroke: #07111f; stroke-width: 1; }
+    .task-radar-side { min-width: 0; }
+    .task-radar-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 10px;
+      margin-bottom: 9px;
+      color: #8398ae;
+      font-size: 10px;
+      line-height: 1.45;
+    }
+    .task-radar-legend span { display: inline-flex; align-items: center; gap: 5px; }
+    .task-radar-legend i { width: 14px; height: 2px; display: inline-block; border-radius: 999px; }
+    .task-radar-legend .score-line { background: var(--task-model-color, #fff); box-shadow: 0 0 8px color-mix(in srgb, var(--task-model-color, #fff) 30%, transparent); }
+    .task-radar-legend .weight-line {
+      height: 0;
+      border-top: 2px dashed #ff925d;
+      background: transparent;
+      border-radius: 0;
+    }
+    .task-dimension-scores {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 6px;
+    }
+    .task-dimension-score {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 5px 7px;
+      align-items: center;
+      min-width: 0;
+      padding: 6px 7px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.026);
+      border: 1px solid rgba(255,255,255,.05);
+    }
+    .task-dimension-score b { color: #edf4fb; font-size: 10.5px; }
+    .task-dimension-score .dim-values {
+      min-width: 0;
+      text-align: right;
+      font-size: 10px;
+      color: #a9b9ca;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+    .task-dimension-score .dim-weight { color: #ffb08b; font-weight: 760; }
+    .task-radar-note {
+      margin-top: 8px;
+      color: #71869c;
+      font-size: 9.5px;
+      line-height: 1.5;
+    }
+    .reason-title { margin-top: 12px; margin-bottom: 6px; color: #dbe5ef; font-size: 12px; font-weight: 750; }
+    .reason-list {
+      margin: 0;
+      padding-left: 17px;
+      color: #94a6ba;
+      font-size: 11.5px;
+      line-height: 1.65;
+    }
+    .routing-mode {
+      display:inline-flex; flex-wrap:wrap; align-items:center; gap:6px; margin-top:10px; padding:5px 8px;
+      border:1px solid rgba(94,215,229,.22); background:rgba(94,215,229,.07);
+      color:#9eeaf2; border-radius:999px; font-size:10px; font-weight:750; letter-spacing:.02em;
+    }
+    .routing-mode span { opacity:.78; }
+    .routing-mode b { color:inherit; }
+    .routing-mode.tier-daily { border-color:rgba(118,224,183,.24); background:rgba(118,224,183,.075); color:#b9f4dd; }
+    .routing-mode.tier-frontier { border-color:rgba(255,146,93,.28); background:rgba(255,146,93,.075); color:#ffd1ba; }
+    .side-tier-badge { display:inline-flex; min-width:23px; justify-content:center; margin-right:6px; padding:2px 5px; border-radius:999px; font-size:8.5px; font-weight:850; vertical-align:1px; }
+    .side-tier-badge.tier-light { color:#baf6fb; background:rgba(94,215,229,.10); }
+    .side-tier-badge.tier-daily { color:#c9f8e5; background:rgba(118,224,183,.10); }
+    .side-tier-badge.tier-frontier { color:#ffd5c0; background:rgba(255,146,93,.11); }
+    .gate-row { display:flex; flex-wrap:wrap; gap:7px; margin-top:10px; }
+    .gate-chip {
+      display:inline-flex; gap:5px; align-items:center; padding:5px 8px; border-radius:9px;
+      border:1px solid rgba(94,215,229,.18); background:rgba(94,215,229,.045);
+      color:#a9dbe2; font-size:10px; font-variant-numeric:tabular-nums;
+    }
+    .gate-chip b { color:#e9fbff; }
+    .gate-explain { margin-top:8px; color:#7890a7; font-size:10px; line-height:1.55; }
+    .task-top3 {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 10px;
+    }
+    .task-top3 span {
+      padding: 4px 7px;
+      border-radius: 8px;
+      background: rgba(255,255,255,.035);
+      border: 1px solid rgba(255,255,255,.06);
+      color: #adbed0;
+      font-size: 10.5px;
+      font-variant-numeric: tabular-nums;
+    }
+    .task-top3 span:first-child { color: #fff; border-color: rgba(255,146,93,.32); }
+    .task { cursor: pointer; }
+    .task:hover { background: rgba(255,255,255,.055); }
+
+    .dimension-key {
+      margin-top: 16px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 8px;
+    }
+    .dimension-key-item {
+      padding: 9px 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,.025);
+      color: #9eafc2;
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .dimension-key-item b { color: #fff; margin-right: 5px; }
+
+    @media (max-width: 1050px) {
+      .formula-layout { grid-template-columns: 1fr; }
+      .routing-tier-overview { grid-template-columns:1fr; }
+      .routing-tier-arrow { transform:rotate(90deg); justify-self:center; line-height:12px; }
+      .task-tier-grid { grid-template-columns:1fr; }
+    }
+    @media (max-width: 800px) {
+      .task-formulas { grid-template-columns: 1fr; }
+      .task-radar-layout { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+      .dimension-key { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .methodology-card { padding: 15px; }
+      .methodology-head { align-items: start; flex-direction: column; }
+    }
+
+    @media (max-width: 1050px) {
+      .layout { grid-template-columns: 1fr; }
+      aside { grid-template-columns: 1fr 1fr; }
+      .legend { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .method { display:none; }
+    }
+
+    @media (max-width: 700px) {
+      .app { width: min(100% - 20px, 1480px); padding-top: 22px; }
+      .task-radar-layout { grid-template-columns: 1fr; }
+      .task-mini-radar { min-height: 260px; }
+      .task-dimension-scores { grid-template-columns: 1fr; }
+      header { margin-bottom: 16px; }
+      .chart-card, .side-card { padding: 14px; border-radius: 16px; }
+      .chart-wrap { width: 100%; min-width: 0; min-height: 0; height: 430px; aspect-ratio: auto; overflow: hidden; }
+      .legend { grid-template-columns: 1fr 1fr; gap: 7px; }
+      aside { grid-template-columns: 1fr; }
+      .toolbar { align-items: flex-start; }
+      .toolbar-actions { flex-wrap: wrap; justify-content: flex-end; }
+      .layer-summary { grid-template-columns: 1fr; gap: 6px; }
+      .swipe-hint { display: none; }
+      .model-toggle { min-height: 42px; }
+      .axis-label { font-size: 11px; }
+    }
+
+
+    .harness-bar {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 18px;
+      align-items: center;
+      padding: 15px 17px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      background: linear-gradient(135deg, rgba(255,255,255,.045), rgba(255,255,255,.02));
+      box-shadow: 0 14px 40px rgba(0,0,0,.14);
+    }
+    .harness-copy { min-width: 0; }
+    .harness-title { color:#f4f8fc; font-size:13px; font-weight:800; letter-spacing:.02em; }
+    .harness-desc { margin-top:5px; color:#90a3b8; font-size:12px; line-height:1.55; }
+    .harness-tabs { display:flex; align-items:center; gap:7px; padding:4px; border-radius:12px; background:rgba(0,0,0,.18); border:1px solid rgba(255,255,255,.06); }
+    .harness-tab { border:0; cursor:pointer; color:#9db0c4; background:transparent; border-radius:9px; padding:8px 12px; font:inherit; font-size:12px; font-weight:750; white-space:nowrap; transition:.18s ease; }
+    .harness-tab:hover { color:#e7eef7; background:rgba(255,255,255,.05); }
+    .harness-tab.active { color:#07131f; background:#dff3ff; box-shadow:0 5px 18px rgba(94,215,229,.18); }
+    .harness-evidence { grid-column:1 / -1; display:flex; gap:8px 14px; flex-wrap:wrap; padding-top:10px; border-top:1px solid rgba(255,255,255,.06); color:#8397ac; font-size:11px; line-height:1.5; }
+    .harness-evidence b { color:#c9d6e4; }
+    .compat-badge { display:inline-flex; align-items:center; width:max-content; margin-top:3px; padding:2px 6px; border-radius:999px; font-size:9px; font-weight:800; letter-spacing:.02em; border:1px solid rgba(255,255,255,.08); color:#92a8bc; background:rgba(255,255,255,.035); }
+    .compat-badge.native { color:#8df0bb; border-color:rgba(116,231,173,.24); background:rgba(116,231,173,.07); }
+    .compat-badge.official { color:#9ed8ff; border-color:rgba(118,169,255,.25); background:rgba(118,169,255,.07); }
+    .compat-badge.compat { color:#ffd38d; border-color:rgba(255,200,87,.25); background:rgba(255,200,87,.07); }
+    .compat-badge.estimated { color:#c6b1ff; border-color:rgba(196,156,255,.25); background:rgba(196,156,255,.07); }
+    .compat-badge.unavailable { color:#788898; border-color:rgba(255,255,255,.06); background:rgba(255,255,255,.02); }
+    .legend-name-wrap { min-width:0; display:flex; flex-direction:column; align-items:flex-start; }
+    .model-toggle.unavailable { opacity:.28; cursor:not-allowed; filter:saturate(.35); }
+    .model-toggle.unavailable:hover { transform:none; background:rgba(255,255,255,.035); }
+    .harness-weight-note { margin-top:8px; color:#879bb0; font-size:11px; line-height:1.55; }
+
+    @media (max-width: 760px) {
+      .harness-bar { grid-template-columns:1fr; gap:10px; }
+      .harness-tabs { width:100%; display:grid; grid-template-columns:repeat(3,1fr); }
+      .harness-tab { padding:9px 6px; }
+      .harness-evidence { grid-column:1; }
+    }
+
+  </style>
+</head>
+<body>
+  <main class="app">
+    <nav class="project-nav" aria-label="网站导航"><a href="../">← 返回项目列表</a></nav>
+    <header>
+      <div>
+        <h1><span>开发者模型能力雷达图</span></h1>
+        <div class="subtitle" id="mainSubtitle">从 8 个维度比较模型在不同 Agent Harness 下的真实开发价值。点击模型即可隐藏 / 展示；悬浮某个维度时会自动突出该维度最强模型。</div>
+      </div>
+      <div class="method" id="calibrationLabel">0–10 归一化工作分<br>2026-10-10 校准 · Harness-aware</div>
+    </header>
+
+    <section class="harness-bar" aria-label="Agent Harness 切换">
+      <div class="harness-copy">
+        <div class="harness-title">Agent Harness</div>
+        <div class="harness-desc" id="harnessDesc"></div>
+      </div>
+      <div class="harness-tabs" id="harnessTabs"></div>
+      <div class="harness-evidence" id="harnessEvidence"></div>
+    </section>
+
+    <section class="layout">
+      <div class="card chart-card">
+        <div class="toolbar">
+          <div>
+            <div class="toolbar-title" id="chartTitle">模型能力对比 · 8 维明细</div>
+            <div class="view-subtitle" id="chartSubtitle">逐项查看模型在 8 个基础维度上的能力形状</div>
+          </div>
+          <div class="toolbar-actions">
+            <button class="ghost-btn nav-btn" id="prevRadar" aria-label="上一张雷达图">←</button>
+            <button class="ghost-btn nav-btn" id="nextRadar" aria-label="下一张雷达图">→</button>
+            <button class="ghost-btn" id="showAll">全部显示</button>
+            <button class="ghost-btn" id="hideAll">全部隐藏</button>
+          </div>
+        </div>
+        <div class="radar-carousel" id="radarCarousel" aria-label="雷达图，可左右滑动切换">
+          <div class="radar-track" id="radarTrack">
+            <div class="radar-slide">
+              <div class="chart-wrap">
+                <svg id="radar" viewBox="0 0 920 620" role="img" aria-label="AI 模型 8 维能力雷达图"></svg>
+              </div>
+            </div>
+            <div class="radar-slide">
+              <div class="chart-wrap">
+                <svg id="layerRadar" viewBox="0 0 920 620" role="img" aria-label="AI 模型三层能力雷达图"></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="view-pager" aria-label="雷达图视图切换">
+          <button class="view-dot active" data-view="0" aria-label="8 维明细图"></button>
+          <button class="view-dot" data-view="1" aria-label="三层聚合图"></button>
+          <span class="swipe-hint">左右滑动切换</span>
+        </div>
+        <div class="layer-summary" id="layerSummary" hidden>
+          <div><b>能力层</b><small id="abilityLayerWeights"></small><span>它能不能把事情做好？</span></div>
+          <div><b>执行层</b><small id="executionLayerWeights"></small><span>它怎么把事情做好？</span></div>
+          <div><b>经济层</b><small id="economyLayerWeights"></small><span>为了把事情做好，需要付出多少时间和钱？</span></div>
+        </div>
+        <div class="legend" id="legend"></div>
+        <div class="status" id="status"></div>
+      </div>
+
+      <aside>
+        <section class="card side-card">
+          <h2>任务 → 最推荐模型</h2>
+          <p>优先按任务性质路由；“最强模型”并不总是最优选择。</p>
+          <div class="task-list" id="taskList"></div>
+          <div class="note" id="harnessNote"></div>
+        </section>
+
+        <section class="card side-card">
+          <h2>8 个维度怎么理解</h2>
+          <div class="metric-grid" id="metricGrid"></div>
+        </section>
+      </aside>
+    </section>
+
+    <section class="card methodology-card" id="scoringMethod">
+      <div class="methodology-head">
+        <div>
+          <h2>评分公式与任务权重</h2>
+          <p>综合排行使用当前 Agent Harness 对应的 CAV 权重；任务路由则明确分成三档：轻量任务「Gate → EfficiencyFit」、日常复杂任务「高门槛 Gate → DailyFit」、Frontier 疑难任务「TaskFit 能力最大化」。这样既不会用 Opus/Astra 做补日志，也不会因为成本优势把轻量模型推去做高风险重构。切换 Harness 后，模型 8 维评分、全局权重、综合排名和任务推荐都会实时重算。</p>
+          <div class="weight-delta-legend" aria-label="任务权重变化图例">
+            <span><i class="delta-dot up"></i>调高</span>
+            <span><i class="delta-dot down"></i>调低</span>
+            <span><i class="delta-dot same"></i>未改动</span>
+          </div>
+        </div>
+        <div class="method">公式是路由启发式，不是自然常数<br>建议随真实任务成功率持续校准</div>
+      </div>
+
+      <div class="routing-tier-overview" id="routingTierOverview">
+        <div class="routing-tier-card tier-light-card"><span>L1</span><strong>轻量任务</strong><b>Gate → EfficiencyFit</b><p>够用后看速度 / 成本 / 吞吐</p></div>
+        <div class="routing-tier-arrow">→</div>
+        <div class="routing-tier-card tier-daily-card"><span>L2</span><strong>日常复杂</strong><b>Gate → DailyFit</b><p>高门槛后平衡质量 / Agent / 效率</p></div>
+        <div class="routing-tier-arrow">→</div>
+        <div class="routing-tier-card tier-frontier-card"><span>L3</span><strong>Frontier</strong><b>TaskFit Max</b><p>疑难 / 高风险任务直接能力最大化</p></div>
+      </div>
+
+      <div class="formula-layout">
+        <div class="formula-panel">
+          <div class="formula-label" id="globalFormulaLabel">全局 Agent Value</div>
+          <div class="formula" id="globalFormula"></div>
+          <div class="weight-chips" id="globalWeights"></div>
+          <div class="formula-help">
+            三档路由分别解决不同问题：轻量任务追求“足够好且便宜快”；日常复杂任务追求“能力过线后的综合效率”；Frontier 任务追求“尽可能提高成功率和任务上限”。三档都使用几何平均惩罚短板，但只有前两档使用 Capability Gate。
+          </div>
+          <div class="dimension-key" id="dimensionKey"></div>
+        </div>
+        <div class="rank-panel">
+          <div class="formula-label" id="globalRankLabel">按 CAV 计算的当前综合排名</div>
+          <div class="global-rank" id="globalRank"></div>
+          <div class="formula-help" id="confidenceNote"></div>
+        </div>
+      </div>
+
+      <div class="task-formulas" id="taskFormulas"></div>
+    </section>
+
+  </main>
+
+  <script>
+    const dimensions = [
+      { key: 'limit', name: '任务上限', desc: '复杂推理、架构设计、疑难 Bug 和大型重构的能力上限。' },
+      { key: 'coding', name: 'Coding 成功率', desc: '真实多文件修改、Bugfix、Repo-level coding 的任务成功能力。' },
+      { key: 'context', name: '长上下文/大仓库', desc: '长上下文有效利用、大 Repo 导航、日志与跨文件依赖理解。' },
+      { key: 'agent', name: 'Agent 执行效率', desc: '在当前 Harness 中工具调用是否克制、步骤是否少、失败恢复是否高效。' },
+      { key: 'speed', name: '速度', desc: '当前 Harness 下的交互响应、工具往返和日常等待成本。' },
+      { key: 'cost', name: '成本效率', desc: '综合 token 单价、上下文开销、cache 与完成一个成功任务的估计成本。' },
+      { key: 'stable', name: '稳定性/可控性', desc: '当前 Harness 系统提示、工具协议下的 Instruction following、修改边界与行为稳定性。' },
+      { key: 'harness', name: 'Harness 适配', desc: '模型与当前 Agent 的工具协议、上下文管理、编辑/终端能力和原生优化程度。' },
+    ];
+
+    const modelCatalog = [
+      { id:'astra', name:'GPT-6 Astra High', color:'#ff6b4a' },
+      { id:'opus', name:'Claude Opus 5.5 High', color:'#ff9e4a' },
+      { id:'sol', name:'GPT-6.1 Sol High', color:'#ffc857' },
+      { id:'luna', name:'GPT-6 Luna High', color:'#fff08a' },
+      { id:'grok', name:'Grok 4.7 High', color:'#76e0b7' },
+      { id:'muse', name:'Muse Spark 1.3 High', color:'#50d3a8' },
+      { id:'kimi', name:'Kimi K3 High', color:'#76a9ff' },
+      { id:'sonnet', name:'Sonnet 5.5 High', color:'#c49cff' },
+      { id:'gemini', name:'Gemini 3.8 Flash High', color:'#5ed7e5' },
+      { id:'composer', name:'Composer 2.5', color:'#91c5ff' },
+    ];
+
+    // Harness-aware 0–10 working scores, calibrated 2026-10-10.
+    // Cursor: Q/A/E are anchored primarily to CursorBench 4.0 where direct High-effort data exists.
+    // Claude Code / Codex do not expose one unified benchmark covering every model, so non-native
+    // A/R/H/S values are conservative compatibility estimates. U/C are more model-intrinsic.
+    // OpenAI's current GPT-6 family is GPT-6 Astra + GPT-6.1 Sol + GPT-6 Luna; there are no
+    // official GPT-6.1 Terra/Luna models as of this calibration date.
+    const harnessProfiles = {
+      cursor: {
+        label:'Cursor', short:'Cursor', valueName:'Cursor Agent Value',
+        weights:{ coding:.35, limit:.15, context:.15, agent:.15, stable:.10, harness:.05, speed:.03, cost:.02 },
+        desc:'CursorBench 4.0 提供当前最完整的跨模型统一开发任务对比；Grok 4.7 是 Cursor 一方模型，Sonnet 5.5 与 Muse Spark 1.3 也有直接 High-effort 数据。GPT-6 家族当前并非 Cursor 内建主力模型，因此按 BYOK / 兼容路径保守估计 H。',
+        evidence:'高置信度：Sonnet 5.5 High、Grok 4.7 High、Muse Spark 1.3 High、Claude Opus 5.5 High、Gemini 3.8 Flash High、Composer 2.5 的 CursorBench 4.0。中等置信度：GPT-6 家族在 Cursor 下的适配；其 U/Q/C 主要锚定 OpenAI 官方基准。',
+        weightReason:'Cursor 有最丰富的统一实测，因此 Q 保持 35% 作为核心；A/C/U 各 15%。H 只占 5%，避免把“是否一方模型”凌驾于实际任务成功率之上。',
+        note:'Cursor（2026-10-10）：Sonnet 5.5 High 在 CursorBench 4.0 为 47.8% / 41 steps；Grok 4.7 High 为 43.9% / 71 steps；Muse Spark 1.3 High 为 33.4% / 69 steps。Grok 4.7 仍是 Cursor 一方深度优化模型；Muse 是官方 Meta provider 集成。GPT-6 Astra / 6.1 Sol / Luna 未进入当前 CursorBench 4.0，因此 H 和 A 采用保守兼容估算。',
+        scores:{
+          astra:{v:[10.0,9.8,10.0,8.5,5.5,3.5,9.4,4.0], support:'compat', supportLabel:'BYOK / 兼容'},
+          opus:{v:[10.0,10.0,9.8,9.3,6.5,7.5,9.9,9.5], support:'official', supportLabel:'官方集成'},
+          sol:{v:[9.8,9.9,10.0,8.4,7.5,8.7,9.4,4.5], support:'compat', supportLabel:'BYOK / 兼容'},
+          luna:{v:[8.5,8.8,10.0,7.5,10.0,10.0,7.8,4.5], support:'compat', supportLabel:'BYOK / 兼容'},
+          grok:{v:[9.4,9.2,8.3,8.8,7.5,8.8,9.3,10.0], support:'native', supportLabel:'一方原生'},
+          muse:{v:[8.8,8.0,9.7,7.4,7.7,9.3,8.5,9.0], support:'official', supportLabel:'官方集成'},
+          kimi:{v:[8.8,8.0,10.0,8.2,6.0,9.0,7.0,6.5], support:'official', supportLabel:'官方集成'},
+          sonnet:{v:[9.2,9.6,9.6,9.4,8.5,9.2,9.6,9.5], support:'official', supportLabel:'官方集成'},
+          gemini:{v:[8.3,8.8,9.6,4.5,9.5,8.5,7.8,8.8], support:'official', supportLabel:'官方集成'},
+          composer:{v:[7.4,7.3,6.8,8.6,9.5,10.0,8.6,10.0], support:'native', supportLabel:'一方原生'},
+        }
+      },
+      claude: {
+        label:'Claude Code', short:'Claude Code', valueName:'Claude Code Agent Value',
+        weights:{ coding:.30, limit:.15, context:.15, agent:.15, stable:.10, harness:.10, speed:.03, cost:.02 },
+        desc:'Claude Code 对 Claude 模型是一方原生 Harness；Sonnet 5.5 是当前日常编码主力之一。非 Anthropic 模型需要兼容网关/代理，无法把其原生 Harness 表现直接外推。',
+        evidence:'高置信度：Claude Opus 5.5 / Sonnet 5.5 的 Claude Code 原生工具语义与上下文管理。Opus 5.5 是 Anthropic 当前最强 Opus，Claude Code 原生支持，且典型 agent workload 相比 Opus 5 约低 40% 成本；其他模型的 A/R/H 为兼容层估算。',
+        weightReason:'Claude Code 与 Claude 工具协议和上下文管理耦合较强，因此 H 提到 10%；Q 仍占 30%，避免过度奖励“同厂模型”。',
+        note:'Claude Code（2026-10-10）：Claude Opus 5.5 与 Sonnet 5.5 均为原生一方模型；Opus 5.5 是更适合复杂、开放式、长链路 coding/agent 工作的高档模型。Claude Code 默认 effort 为 Medium，但可切 High。GPT / Grok / Muse / Kimi / Gemini 在本表中代表通过兼容 provider 接入的估计表现；Composer 2.5 无独立公开接口，不参与。',
+        scores:{
+          astra:{v:[10.0,9.6,10.0,7.6,5.2,3.3,9.0,4.0], support:'compat', supportLabel:'兼容层'},
+          opus:{v:[10.0,10.0,10.0,9.9,7.0,7.5,9.9,10.0], support:'native', supportLabel:'原生'},
+          sol:{v:[9.8,9.6,10.0,7.8,7.2,8.5,9.1,4.5], support:'compat', supportLabel:'兼容层'},
+          luna:{v:[8.5,8.5,10.0,7.0,9.7,9.8,7.5,4.0], support:'compat', supportLabel:'兼容层'},
+          grok:{v:[9.4,8.8,8.3,7.3,7.3,8.6,8.8,4.0], support:'compat', supportLabel:'兼容层'},
+          muse:{v:[8.8,8.1,9.7,7.2,7.5,9.1,8.2,4.5], support:'compat', supportLabel:'兼容层'},
+          kimi:{v:[8.8,8.2,10.0,7.2,5.8,8.8,6.7,4.0], support:'compat', supportLabel:'兼容层'},
+          sonnet:{v:[9.2,9.6,9.8,9.8,8.8,9.3,9.7,10.0], support:'native', supportLabel:'原生'},
+          gemini:{v:[8.3,8.6,9.6,5.5,9.3,8.4,7.5,4.5], support:'compat', supportLabel:'兼容层'},
+          composer:{v:null, support:'unavailable', supportLabel:'不可用'},
+        }
+      },
+      codex: {
+        label:'Codex', short:'Codex', valueName:'Codex Agent Value',
+        weights:{ coding:.30, limit:.15, context:.15, agent:.20, stable:.08, harness:.08, speed:.02, cost:.02 },
+        desc:'Codex 对 GPT-6 Astra、GPT-6.1 Sol 和 GPT-6 Luna 使用 OpenAI 一方模型与工具链。GPT-6.1 Sol 是当前复杂 coding 的高性价比核心，High effort 在 OpenAI DeepSWE 1.1 中达到其最佳区间；Luna 面向高吞吐、低成本工作。',
+        evidence:'高置信度：GPT-6 Astra / GPT-6.1 Sol / GPT-6 Luna 的 Codex 原生路径和 OpenAI 官方评测。GPT-6.1 Sol 在 DeepSWE 1.1 High 约 75.2%，官方称接近/匹配 Astra；非 OpenAI 模型通过自定义 provider 时 A/R/H 为中低置信度估算。',
+        weightReason:'Codex 强依赖 shell、patch、skills、MCP 和长链路工具编排，因此 A 提到 20%，H 为 8%；Q 30% 保证最终产出质量仍是第一驱动力。',
+        note:'Codex（2026-10-10）：官方当前 GPT-6 家族是 Astra / GPT-6.1 Sol / Luna，没有 GPT-6.1 Terra/Luna。GPT-6.1 Sol 已在 Codex 可用，并支持 Multi-agent；Luna 适合 scoped tasks、triage 和高频自动化。非 OpenAI 模型通过兼容 provider 时不假设其工具语义与 reasoning history 等同原生。',
+        scores:{
+          astra:{v:[10.0,9.8,10.0,9.8,5.7,3.5,9.5,10.0], support:'native', supportLabel:'原生'},
+          opus:{v:[10.0,9.7,9.8,8.5,6.5,7.3,9.7,5.5], support:'compat', supportLabel:'兼容层'},
+          sol:{v:[9.8,10.0,10.0,10.0,8.0,9.3,9.5,10.0], support:'native', supportLabel:'原生'},
+          luna:{v:[8.5,8.9,10.0,9.0,10.0,10.0,7.8,10.0], support:'native', supportLabel:'原生'},
+          grok:{v:[9.4,8.8,8.3,7.5,7.2,8.5,8.8,4.5], support:'compat', supportLabel:'兼容层'},
+          muse:{v:[8.8,8.1,9.7,7.4,7.5,9.1,8.3,4.5], support:'compat', supportLabel:'兼容层'},
+          kimi:{v:[8.8,8.2,10.0,7.3,5.8,8.8,6.7,4.0], support:'compat', supportLabel:'兼容层'},
+          sonnet:{v:[9.2,9.3,9.6,8.0,8.2,9.0,9.4,5.0], support:'compat', supportLabel:'兼容层'},
+          gemini:{v:[8.3,8.6,9.6,6.0,9.2,8.4,7.5,5.0], support:'compat', supportLabel:'兼容层'},
+          composer:{v:null, support:'unavailable', supportLabel:'不可用'},
+        }
+      }
+    };
+
+    const symbols = {
+      coding: 'Q', limit: 'U', context: 'C', agent: 'A',
+      stable: 'R', harness: 'H', speed: 'S', cost: 'E'
+    };
+
+    let activeHarness = 'cursor';
+    let models = [];
+    let globalWeights = { ...harnessProfiles.cursor.weights };
+
+    const taskDefs = [
+      // Frontier：高价值 / 高风险 / 能力上限优先。直接最大化 TaskFit，不做“够用即止”。
+      {
+        tier:'frontier', id:'hard-debug', name:'极难 Debug / Crash / ANR',
+        weights:{ coding:.30, limit:.25, context:.10, agent:.15, stable:.15, harness:.05, speed:0, cost:0 },
+        reasons:[
+          'Q 30%：最终必须形成正确、可落地的修复，成功率是第一约束。',
+          'U 25%：疑难根因通常需要跨层推理、反事实验证和复杂假设排除。',
+          'A/R 各 15%：要反复查日志、跑工具，同时避免越界修改和错误归因。',
+          'C 10% + H 5%：需要读取调用链、日志和跨模块上下文；速度与价格通常不是关键。'
+        ]
+      },
+      {
+        tier:'frontier', id:'architecture', name:'架构设计 / 技术决策',
+        weights:{ coding:.25, limit:.30, context:.15, agent:.05, stable:.15, harness:.05, speed:.03, cost:.02 },
+        reasons:[
+          'U 30%：架构任务的核心是抽象、权衡、边界设计和长期演进判断。',
+          'Q 25%：方案必须能落到真实工程，而不是只停留在概念层。',
+          'C/R 各 15%：需要理解既有系统约束，并保持决策一致、避免过度设计。',
+          'A/H/S/E 权重较低：架构决策通常低频，质量优先于几秒延迟或少量成本。'
+        ]
+      },
+      {
+        tier:'frontier', id:'refactor', name:'大型重构 / 技术栈迁移',
+        weights:{ coding:.30, limit:.20, context:.15, agent:.15, stable:.15, harness:.05, speed:0, cost:0 },
+        reasons:[
+          'Q 30%：重构或迁移成功的标准是行为正确、改动可合入且回归风险可控。',
+          'U 20%：需要同时处理设计、依赖、兼容和迁移路径。',
+          'C/A/R 各 15%：跨大量文件理解依赖、持续执行并控制修改边界同样关键。',
+          'H 5%：工具与 IDE 协同有帮助，但不应主导这类高价值任务。'
+        ]
+      },
+      {
+        tier:'frontier', id:'deep-review', name:'深度 / 高风险 Code Review',
+        weights:{ coding:.25, limit:.10, context:.10, agent:.05, stable:.30, harness:.15, speed:.03, cost:.02 },
+        reasons:[
+          'R 30%：支付、并发、安全、数据一致性等高风险 Review 最怕误报、漏报和越界判断。',
+          'Q 25%：需要准确识别真实缺陷，而不是只做风格点评。',
+          'H 15% + U/C 各 10%：要有效读取 diff、相关调用链，并进行必要的深层推理。',
+          'A 5%：Review 工具链通常比实现任务短；速度和成本只做轻微调节。'
+        ]
+      },
+      {
+        tier:'frontier', id:'huge-repo', name:'超大 Repo / 超长上下文',
+        weights:{ coding:.05, limit:.03, context:.65, agent:.10, stable:.05, harness:.02, speed:.02, cost:.08 },
+        reasons:[
+          'C 65%：这个场景的定义本身就是上下文规模成为主瓶颈，因此必须让 Context 主导。',
+          'A 10%：大仓库分析仍需要持续导航、搜索和组织大量中间结果。',
+          'E 8%：超长输入会放大 token 成本，因此成本效率比普通复杂任务更重要。',
+          'Q/R/U/H/S 合计 17%：仍保留基本正确性与可控性，但只有在“超大上下文确实是决定性约束”时才使用这套权重。'
+        ]
+      },
+      {
+        tier:'frontier', id:'long-agent', name:'长时间自主 Agent',
+        weights:{ coding:.25, limit:.15, context:.20, agent:.25, stable:.10, harness:.05, speed:0, cost:0 },
+        reasons:[
+          'Q/A 各 25%：长 Agent 的关键是持续把事情做对，并控制步骤数量和失败恢复。',
+          'C 20%：长链路任务会累积大量代码、日志和工具结果。',
+          'U 15% + R 10%：需要足够的问题解决上限和长期行为稳定性。',
+          'S/E 暂不计：这里假设任务价值高、允许长时间执行；成本敏感时应另加预算约束。'
+        ]
+      },
+
+      // Daily：能力先过线，再在合格模型里比较开发效率，避免 Opus/Astra 对日常任务过度占用。
+      {
+        tier:'daily', id:'complex-feature', name:'复杂 Feature', strategy:'daily-gated',
+        gates:{ coding:8.8, context:8.0, agent:8.5, stable:8.8, harness:8.5 },
+        weights:{ coding:.20, limit:0, context:.10, agent:.20, stable:.10, harness:.20, speed:.10, cost:.10 },
+        reasons:[
+          '先过门槛：Q≥8.8、C≥8.0、A≥8.5、R≥8.8、H≥8.5，确保模型具备稳定完成复杂 Feature 的基本能力。',
+          'Q/A/H 各 20%：做对、多步执行和与 Harness 的真实协同同等重要。',
+          'C/R/S/E 各 10%：兼顾代码库理解、可控性、交互速度和日常成本。',
+          'U 在效率阶段为 0%：任务上限已经通过 Gate 间接约束，不再额外奖励明显 overkill 的 Frontier 能力。'
+        ]
+      },
+      {
+        tier:'daily', id:'cross-file', name:'跨文件 / 多模块修改', strategy:'daily-gated',
+        gates:{ coding:8.5, context:8.2, agent:8.5, stable:8.5, harness:8.5 },
+        weights:{ coding:.15, limit:0, context:.20, agent:.25, stable:.10, harness:.20, speed:.05, cost:.05 },
+        reasons:[
+          '先过门槛：Q/C/A/R/H 都要达到日常复杂修改的可靠水平。',
+          'A 25%：跨文件任务最依赖持续搜索、编辑、测试、回退和再次修改。',
+          'C/H 各 20%：要正确保持跨文件依赖，同时充分利用当前 Harness 的检索与编辑能力。',
+          'Q 15% + R 10%，S/E 各 5%：质量仍重要，但不需要为超出需求的任务上限付出过多成本。'
+        ]
+      },
+      {
+        tier:'daily', id:'code-review', name:'普通 PR / Code Review', strategy:'daily-gated',
+        gates:{ coding:8.5, context:8.0, stable:8.8, harness:8.5 },
+        weights:{ coding:.20, limit:0, context:.10, agent:0, stable:.25, harness:.20, speed:.15, cost:.10 },
+        reasons:[
+          '先过门槛：Q≥8.5、C≥8.0、R≥8.8、H≥8.5，普通 PR Review 需要可靠但不必动用最强模型。',
+          'R 25%：重点是少误报、少漏报、遵守 Review 范围。',
+          'Q/H 各 20%：既要看懂代码，也要能顺畅读取 diff 和关联代码。',
+          'S 15% + E 10%：Review 高频发生，反馈速度和单位成本应该真正影响默认选择。'
+        ]
+      },
+
+      // Light：只要能力过最低门槛，之后优先优化吞吐和成本。
+      {
+        tier:'light', id:'repo-search', name:'Repo 搜索 / 代码检索', strategy:'light-gated',
+        gates:{ coding:7.0, context:7.5, stable:7.0, harness:7.5 },
+        weights:{ coding:0, limit:0, context:.20, agent:0, stable:0, harness:.05, speed:.50, cost:.25 },
+        reasons:[
+          '先过门槛：Q≥7.0、C≥7.5、R≥7.0、H≥7.5，确保模型能正确理解仓库并稳定使用检索工具。',
+          'S 50%：代码检索是高频、短回路任务，交互等待时间直接影响开发节奏。',
+          'E 25% + C 20%：大量搜索应尽量便宜，同时仍要求足够的大仓库/长上下文理解。',
+          'H 5%：通过能力门槛后只做轻量区分，不再奖励额外 Frontier 推理能力。'
+        ]
+      },
+      {
+        tier:'light', id:'simple-fix', name:'简单 Bugfix', strategy:'light-gated',
+        gates:{ coding:7.0, agent:7.0, stable:7.5, harness:7.5 },
+        weights:{ coding:.05, limit:0, context:0, agent:.10, stable:.10, harness:.15, speed:.30, cost:.30 },
+        reasons:[
+          '先过门槛：Q≥7.0、A≥7.0、R≥7.5、H≥7.5，达到“足够可靠地修好简单问题”即可。',
+          'S/E 各 30%：轻量 Bugfix 高频发生，响应速度与单位任务成本应成为主要优化目标。',
+          'H 15% + A/R 各 10%：要求编辑、搜索、测试工具协同顺畅，并控制修改范围。',
+          'Q 只保留 5%：正确性已由 Gate 保证，不再额外奖励超出任务需求的 Frontier 能力。'
+        ]
+      },
+      {
+        tier:'light', id:'mechanical', name:'机械修改 / 补日志补测试', strategy:'light-gated',
+        gates:{ coding:6.5, agent:7.0, stable:7.5, harness:7.5 },
+        weights:{ coding:.05, limit:0, context:0, agent:.10, stable:.10, harness:.10, speed:.25, cost:.40 },
+        reasons:[
+          '先过门槛：Q≥6.5、A≥7.0、R≥7.5、H≥7.5；机械任务只要求能力足够，不追求模型上限。',
+          'E 40% + S 25%：重复、高频、低风险任务最应该优化吞吐和单位成本。',
+          'A/R/H 各 10%：保证批量执行不乱改、工具链顺畅、失败率可控。',
+          'Q 5%，U/C 0%：通过 Gate 后不再为额外推理能力和长上下文付费。'
+        ]
+      }
+    ];
+
+    const routingTiers = {
+      light: {
+        name:'轻量任务', tag:'L1 · Efficiency',
+        route:'Capability Gate → EfficiencyFit',
+        desc:'能力够用即可，随后优先优化速度、成本和工具吞吐。',
+        color:'#5ed7e5'
+      },
+      daily: {
+        name:'日常复杂任务', tag:'L2 · Balanced',
+        route:'Capability Gate → DailyFit',
+        desc:'先保证复杂编码能力过线，再在质量、Agent 协作、速度与成本之间找最佳平衡。',
+        color:'#76e0b7'
+      },
+      frontier: {
+        name:'Frontier 疑难任务', tag:'L3 · Capability',
+        route:'TaskFit · Capability Maximization',
+        desc:'高价值、高风险或真正困难的任务，直接最大化能力上限和成功率。',
+        color:'#ff925d'
+      }
+    };
+
+    const layerDimensions = [
+      {
+        key: 'ability', name: '能力层', desc: '它能不能把事情做好？',
+        members: ['limit', 'coding', 'context']
+      },
+      {
+        key: 'execution', name: '执行层', desc: '它怎么把事情做好？',
+        members: ['agent', 'stable', 'harness']
+      },
+      {
+        key: 'economy', name: '经济层', desc: '为了把事情做好，需要付出多少时间和钱？',
+        members: ['speed', 'cost']
+      }
+    ];
+
+    const visible = new Set();
+    const svgs = {
+      detail: document.getElementById('radar'),
+      layer: document.getElementById('layerRadar')
+    };
+    const legend = document.getElementById('legend');
+    const status = document.getElementById('status');
+    const radarTrack = document.getElementById('radarTrack');
+    const radarCarousel = document.getElementById('radarCarousel');
+    const chartTitle = document.getElementById('chartTitle');
+    const chartSubtitle = document.getElementById('chartSubtitle');
+    const layerSummary = document.getElementById('layerSummary');
+    const harnessTabs = document.getElementById('harnessTabs');
+    const harnessDesc = document.getElementById('harnessDesc');
+    const harnessEvidence = document.getElementById('harnessEvidence');
+    const harnessNote = document.getElementById('harnessNote');
+    const mainSubtitle = document.getElementById('mainSubtitle');
+    const globalFormulaLabel = document.getElementById('globalFormulaLabel');
+    const globalRankLabel = document.getElementById('globalRankLabel');
+    const NS = 'http://www.w3.org/2000/svg';
+
+    const cx = 450, cy = 310, radius = 225;
+    const dimensionIndex = Object.fromEntries(dimensions.map((d, i) => [d.key, i]));
+    let activeView = 0; // 0 = 8维明细, 1 = 三层聚合
+    let focusedAxis = null; // { view:'detail'|'layer', index:number }
+
+    function el(tag, attrs = {}, text = '') {
+      const node = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([k,v]) => node.setAttribute(k, v));
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function geometricScore(model, weights) {
+      let score = 1;
+      Object.entries(weights).forEach(([key, weight]) => {
+        if (!weight) return;
+        score *= Math.pow(model.values[dimensionIndex[key]], weight);
+      });
+      return score;
+    }
+
+    function layerScore(model, layer) {
+      const total = layer.members.reduce((sum, key) => sum + globalWeights[key], 0);
+      const normalized = Object.fromEntries(layer.members.map(key => [key, globalWeights[key] / total]));
+      return geometricScore(model, normalized);
+    }
+
+    function valuesForView(model, view) {
+      return view === 'detail'
+        ? model.values
+        : layerDimensions.map(layer => layerScore(model, layer));
+    }
+
+    function dimsForView(view) {
+      return view === 'detail' ? dimensions : layerDimensions;
+    }
+
+    function angleFor(i, count) {
+      return (-Math.PI / 2) + i * (Math.PI * 2 / count);
+    }
+
+    function pointFor(i, value, count, r = radius) {
+      const a = angleFor(i, count);
+      const rr = r * value / 10;
+      return [cx + Math.cos(a) * rr, cy + Math.sin(a) * rr];
+    }
+
+    function drawRadar(view) {
+      const svg = svgs[view];
+      const dims = dimsForView(view);
+      const count = dims.length;
+      svg.innerHTML = '';
+
+      const defs = el('defs');
+      const filter = el('filter', { id: `softGlow-${view}`, x:'-40%', y:'-40%', width:'180%', height:'180%' });
+      filter.appendChild(el('feGaussianBlur', { stdDeviation: '4', result: 'blur' }));
+      const merge = el('feMerge');
+      merge.appendChild(el('feMergeNode', { in: 'blur' }));
+      merge.appendChild(el('feMergeNode', { in: 'SourceGraphic' }));
+      filter.appendChild(merge);
+      defs.appendChild(filter);
+      svg.appendChild(defs);
+
+      for (let level = 2; level <= 10; level += 2) {
+        const pts = dims.map((_, i) => pointFor(i, level, count)).map(p => p.join(',')).join(' ');
+        svg.appendChild(el('polygon', { points: pts, class: 'grid-line' }));
+        const [nx, ny] = pointFor(0, level, count);
+        svg.appendChild(el('text', { x: nx + 8, y: ny + 5, class:'grid-number' }, String(level)));
+      }
+
+      dims.forEach((dim, i) => {
+        const [x,y] = pointFor(i, 10, count);
+        svg.appendChild(el('line', { x1:cx, y1:cy, x2:x, y2:y, class:'axis-line', 'data-axis-index': i, 'data-view': view }));
+        const a = angleFor(i, count);
+        const labelR = radius + (view === 'layer' ? 58 : 48);
+        const lx = cx + Math.cos(a) * labelR;
+        const ly = cy + Math.sin(a) * labelR;
+        let anchor = 'middle';
+        if (Math.cos(a) > .25) anchor = 'start';
+        else if (Math.cos(a) < -.25) anchor = 'end';
+        svg.appendChild(el('text', { x:lx, y:ly, 'text-anchor':anchor, class:'axis-label', 'data-axis-index': i, 'data-view': view }, dim.name));
+      });
+
+      models.forEach(model => {
+        if (!model.available) return;
+        const values = valuesForView(model, view);
+        const g = el('g', { 'data-model': model.name, 'data-view': view });
+        const ptsArr = values.map((v,i) => pointFor(i,v,count));
+        g.appendChild(el('polygon', {
+          points: ptsArr.map(p => p.join(',')).join(' '),
+          class: 'series', fill: model.color, stroke: model.color,
+          filter: `url(#softGlow-${view})`
+        }));
+        ptsArr.forEach(([x,y]) => g.appendChild(el('circle', { cx:x, cy:y, r:3.4, fill:model.color, class:'series-point' })));
+        svg.appendChild(g);
+      });
+
+      dims.forEach((dim, i) => {
+        const a = angleFor(i, count);
+        const hitR = radius + 70;
+        const hx = cx + Math.cos(a) * hitR;
+        const hy = cy + Math.sin(a) * hitR;
+        const hit = el('line', {
+          x1:cx, y1:cy, x2:hx, y2:hy, class:'axis-hit',
+          'data-hit-index': i, 'data-view': view, tabindex:'0',
+          'aria-label': `${dim.name}：悬浮查看当前最强模型`
+        });
+        hit.addEventListener('mouseenter', () => focusAxis(view, i));
+        hit.addEventListener('mouseleave', clearAxisFocus);
+        hit.addEventListener('focus', () => focusAxis(view, i));
+        hit.addEventListener('blur', clearAxisFocus);
+        svg.appendChild(hit);
+      });
+    }
+
+    function getBestModels(view, index) {
+      const candidates = models.filter(m => m.available && visible.has(m.name));
+      if (!candidates.length) return { best: [], score: null };
+      const scoreOf = m => valuesForView(m, view)[index];
+      const score = Math.max(...candidates.map(scoreOf));
+      return { best: candidates.filter(m => Math.abs(scoreOf(m) - score) < 1e-9), score };
+    }
+
+    function focusAxis(view, index) {
+      if ((view === 'detail' && activeView !== 0) || (view === 'layer' && activeView !== 1)) return;
+      focusedAxis = { view, index };
+      const svg = svgs[view];
+      const dims = dimsForView(view);
+      const { best, score } = getBestModels(view, index);
+      const bestNames = new Set(best.map(m => m.name));
+
+      svg.querySelectorAll('[data-model]').forEach(g => {
+        const name = g.getAttribute('data-model');
+        const isVisible = visible.has(name);
+        g.classList.toggle('focus-best', isVisible && bestNames.has(name));
+        g.classList.toggle('focus-muted', isVisible && !bestNames.has(name));
+        g.querySelectorAll('.series-point').forEach((pt, pointIndex) => {
+          const activePoint = pointIndex === index && bestNames.has(name) && isVisible;
+          pt.setAttribute('r', activePoint ? '6.6' : '3.4');
+        });
+      });
+
+      legend.classList.add('dimension-scoring');
+      legend.querySelectorAll('.model-toggle').forEach(btn => {
+        const isVisible = visible.has(btn.dataset.model);
+        const model = models.find(m => m.name === btn.dataset.model);
+        const scoreEl = btn.querySelector('.legend-score');
+        if (!model.available) {
+          scoreEl.textContent = '—';
+          btn.title = `${model.name} · ${harnessProfiles[activeHarness].label} 下不可用`;
+          btn.classList.remove('focus-best', 'focus-muted');
+          return;
+        }
+        const value = valuesForView(model, view)[index];
+        scoreEl.textContent = value.toFixed(1);
+        scoreEl.setAttribute('aria-label', `${dims[index].name}评分 ${value.toFixed(1)} / 10`);
+        btn.title = `${model.name} · ${dims[index].name}：${value.toFixed(1)} / 10`;
+        btn.classList.toggle('focus-best', isVisible && bestNames.has(btn.dataset.model));
+        btn.classList.toggle('focus-muted', isVisible && !bestNames.has(btn.dataset.model));
+      });
+
+      svg.querySelectorAll('[data-axis-index]').forEach(node => {
+        const active = Number(node.getAttribute('data-axis-index')) === index;
+        node.classList.toggle('axis-active', active);
+        node.classList.toggle('axis-dimmed', !active);
+      });
+
+      if (!best.length) status.textContent = `${dims[index].name}：当前没有可见模型`;
+      else status.textContent = `${dims[index].name} 最强：${best.map(m => m.name).join('、')} · ${score.toFixed(1)} / 10`;
+    }
+
+    function clearAxisFocus() {
+      focusedAxis = null;
+      Object.values(svgs).forEach(svg => {
+        svg.querySelectorAll('[data-model]').forEach(g => {
+          g.classList.remove('focus-best', 'focus-muted');
+          g.querySelectorAll('.series-point').forEach(pt => pt.setAttribute('r', '3.4'));
+        });
+        svg.querySelectorAll('[data-axis-index]').forEach(node => node.classList.remove('axis-active', 'axis-dimmed'));
+      });
+      legend.classList.remove('dimension-scoring');
+      legend.querySelectorAll('.model-toggle').forEach(btn => {
+        btn.classList.remove('focus-best', 'focus-muted');
+        btn.removeAttribute('title');
+      });
+      updateStatus();
+    }
+
+    function updateStatus() {
+      const viewText = activeView === 0 ? '8 维明细' : '三层聚合';
+      const availableCount = models.filter(m => m.available).length;
+      status.textContent = visible.size === 0
+        ? `已隐藏全部可用模型 · ${harnessProfiles[activeHarness].label}`
+        : `当前显示 ${visible.size} / ${availableCount} 个可用模型 · ${harnessProfiles[activeHarness].label} · ${viewText} · 悬浮维度可聚焦最强模型`;
+    }
+
+    function updateVisibility() {
+      Object.values(svgs).forEach(svg => {
+        svg.querySelectorAll('[data-model]').forEach(g => g.classList.toggle('hidden-series', !visible.has(g.getAttribute('data-model'))));
+      });
+      legend.querySelectorAll('.model-toggle').forEach(btn => {
+        const model = models.find(m => m.name === btn.dataset.model);
+        const isAvailable = model?.available;
+        btn.classList.toggle('unavailable', !isAvailable);
+        btn.classList.toggle('off', isAvailable && !visible.has(btn.dataset.model));
+        btn.setAttribute('aria-pressed', Boolean(isAvailable && visible.has(btn.dataset.model)));
+        btn.disabled = !isAvailable;
+      });
+      if (focusedAxis) focusAxis(focusedAxis.view, focusedAxis.index);
+      else updateStatus();
+    }
+
+    function buildLegend() {
+      legend.innerHTML = '';
+      models.forEach(model => {
+        const btn = document.createElement('button');
+        btn.className = 'model-toggle';
+        btn.dataset.model = model.name;
+        btn.style.setProperty('--model-color', model.color);
+        btn.innerHTML = `<span class="swatch"></span><span class="legend-name-wrap"><span class="legend-name">${model.name}</span><small class="compat-badge ${model.support}">${model.supportLabel}</small></span><span class="legend-score" aria-hidden="true"></span>`;
+        if (model.available) {
+          btn.addEventListener('click', () => {
+            if (visible.has(model.name)) visible.delete(model.name);
+            else visible.add(model.name);
+            updateVisibility();
+          });
+        }
+        legend.appendChild(btn);
+      });
+    }
+
+    function rankModels(weights) {
+      return models
+        .filter(model => model.available)
+        .map(model => ({ model, score: geometricScore(model, weights) }))
+        .sort((a, b) => b.score - a.score);
+    }
+
+    function passesGates(model, gates = {}) {
+      return Object.entries(gates).every(([key, threshold]) =>
+        model.values[dimensionIndex[key]] >= threshold
+      );
+    }
+
+    function isGatedTask(task) {
+      return task.strategy === 'light-gated' || task.strategy === 'daily-gated';
+    }
+
+    function rankTask(task) {
+      const available = models.filter(model => model.available);
+      if (!isGatedTask(task)) {
+        return available
+          .map(model => ({ model, score: geometricScore(model, task.weights), eligible: true }))
+          .sort((a, b) => b.score - a.score);
+      }
+      const eligible = available.filter(model => passesGates(model, task.gates));
+      const pool = eligible.length ? eligible : available;
+      return pool
+        .map(model => ({ model, score: geometricScore(model, task.weights), eligible: eligible.length ? true : passesGates(model, task.gates) }))
+        .sort((a, b) => b.score - a.score);
+    }
+
+    function taskFormulaName(task) {
+      if (task.strategy === 'light-gated') return 'EfficiencyFit';
+      if (task.strategy === 'daily-gated') return 'DailyFit';
+      return 'TaskFit';
+    }
+
+    function gateHTML(task) {
+      const tier = routingTiers[task.tier || 'frontier'];
+      const tierHeader = `<div class="routing-mode tier-${task.tier || 'frontier'}"><span>${tier.tag}</span><b>${tier.route}</b></div>`;
+      if (!isGatedTask(task)) {
+        return `${tierHeader}<div class="gate-explain">${tier.desc} 不设“够用即止”的能力门槛，直接按任务能力权重最大化。</div>`;
+      }
+      const explain = task.strategy === 'light-gated'
+        ? '先满足最低能力要求，再只在合格模型中比较效率；更强但更“重”的模型不会因为综合能力高而自动胜出。'
+        : '先满足日常复杂开发的较高能力门槛，再在合格模型中比较质量、Agent 协作、速度与成本，避免把 Frontier 模型当默认日常模型。';
+      return `${tierHeader}
+        <div class="gate-row">${Object.entries(task.gates).map(([key,v]) => `<span class="gate-chip"><b>${symbols[key]}</b>≥${v.toFixed(1)}</span>`).join('')}</div>
+        <div class="gate-explain">${explain}</div>`;
+    }
+
+    function weightDeltaClass(key, weight, baseline = globalWeights) {
+      if (!baseline || !(key in baseline)) return '';
+      const delta = weight - baseline[key];
+      if (Math.abs(delta) < 1e-9) return 'weight-same';
+      return delta > 0 ? 'weight-up' : 'weight-down';
+    }
+
+    function formulaHTML(label, weights, { compareToGlobal = false, showZero = false } = {}) {
+      const entries = Object.entries(weights).filter(([,w]) => showZero || w > 0);
+      const terms = entries
+        .map(([key,w]) => {
+          const deltaClass = compareToGlobal ? weightDeltaClass(key, w) : '';
+          return `<span class="formula-term ${deltaClass}"><span class="sym">${symbols[key]}</span><sup>${w.toFixed(2)}</sup></span>`;
+        })
+        .join(' · ');
+      return `${label} = ${terms}`;
+    }
+
+    function drawTaskMiniRadar(svg, task, model) {
+      const w = 330, h = 270, mcx = 165, mcy = 135, mr = 92;
+      const count = dimensions.length;
+      svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+      svg.innerHTML = '';
+
+      const miniPoint = (i, value) => {
+        const a = (-Math.PI / 2) + i * (Math.PI * 2 / count);
+        const rr = mr * value / 10;
+        return [mcx + Math.cos(a) * rr, mcy + Math.sin(a) * rr];
+      };
+
+      [2.5, 5, 7.5, 10].forEach(level => {
+        const pts = dimensions.map((_, i) => miniPoint(i, level)).map(p => p.join(',')).join(' ');
+        svg.appendChild(el('polygon', { points: pts, class: 'task-mini-grid' }));
+      });
+
+      dimensions.forEach((d, i) => {
+        const [x, y] = miniPoint(i, 10);
+        svg.appendChild(el('line', { x1: mcx, y1: mcy, x2: x, y2: y, class: 'task-mini-axis' }));
+        const a = (-Math.PI / 2) + i * (Math.PI * 2 / count);
+        const lr = mr + 24;
+        const lx = mcx + Math.cos(a) * lr;
+        const ly = mcy + Math.sin(a) * lr;
+        let anchor = 'middle';
+        if (Math.cos(a) > .3) anchor = 'start';
+        else if (Math.cos(a) < -.3) anchor = 'end';
+        const label = el('text', { x: lx, y: ly, 'text-anchor': anchor, class: 'task-mini-label' }, symbols[d.key]);
+        svg.appendChild(label);
+      });
+
+      const scoreValues = model.values;
+      const maxWeight = Math.max(...dimensions.map(d => task.weights[d.key] || 0), 0.0001);
+      const weightValues = dimensions.map(d => ((task.weights[d.key] || 0) / maxWeight) * 10);
+      const scorePts = scoreValues.map((v, i) => miniPoint(i, v));
+      const weightPts = weightValues.map((v, i) => miniPoint(i, v));
+
+      svg.appendChild(el('polygon', {
+        points: weightPts.map(p => p.join(',')).join(' '),
+        class: 'task-mini-weight'
+      }));
+      weightPts.forEach(([x,y], i) => {
+        const pt = el('circle', { cx:x, cy:y, r:2.5, class:'task-mini-weight-point' });
+        pt.appendChild(el('title', {}, `${dimensions[i].name} · 权重 ${(task.weights[dimensions[i].key] * 100).toFixed(0)}%`));
+        svg.appendChild(pt);
+      });
+
+      svg.appendChild(el('polygon', {
+        points: scorePts.map(p => p.join(',')).join(' '),
+        class: 'task-mini-score', fill: model.color, stroke: model.color
+      }));
+      scorePts.forEach(([x,y], i) => {
+        const pt = el('circle', { cx:x, cy:y, r:3.2, fill:model.color, class:'task-mini-score-point' });
+        pt.appendChild(el('title', {}, `${dimensions[i].name} · ${model.name} ${scoreValues[i].toFixed(1)} / 10`));
+        svg.appendChild(pt);
+      });
+    }
+
+    function taskDimensionScoreHTML(task, model) {
+      return dimensions.map((d, i) => {
+        const score = model.values[i];
+        const weight = task.weights[d.key] || 0;
+        return `<div class="task-dimension-score" title="${d.name}：模型得分 ${score.toFixed(1)} / 10；任务权重 ${(weight*100).toFixed(0)}%">
+          <b>${symbols[d.key]} · ${d.name}</b>
+          <span class="dim-values">${score.toFixed(1)} <span class="dim-weight">· ${(weight*100).toFixed(0)}%</span></span>
+        </div>`;
+      }).join('');
+    }
+
+    function buildScoringMethod() {
+      document.getElementById('globalWeights').innerHTML = '';
+      document.getElementById('dimensionKey').innerHTML = '';
+      document.getElementById('globalRank').innerHTML = '';
+      document.getElementById('taskFormulas').innerHTML = '';
+      document.querySelectorAll('.harness-weight-note').forEach(n => n.remove());
+      const profile = harnessProfiles[activeHarness];
+      document.getElementById('confidenceNote').textContent = activeHarness === 'cursor'
+        ? 'Cursor 下 Q/A/E 有统一 CursorBench 锚点，其他维度包含启发式归一化；0.1 的细微差异不应被解读为统计显著。'
+        : `在 ${profile.label} 下，原生模型的 H/A/R 置信度较高；非原生模型依赖兼容层估算，排名更适合看梯队而不是 0.1 的精细差距。`;
+      globalFormulaLabel.textContent = `全局 ${profile.valueName}`;
+      globalRankLabel.textContent = `按 ${profile.short} CAV 计算的当前综合排名`;
+      document.getElementById('globalFormula').innerHTML = formulaHTML('CAV', globalWeights);
+
+      const globalWeightEl = document.getElementById('globalWeights');
+      Object.entries(globalWeights).forEach(([key,w]) => {
+        const chip = document.createElement('span');
+        chip.className = 'weight-chip';
+        chip.innerHTML = `<b>${symbols[key]}</b>${dimensions[dimensionIndex[key]].name} ${(w*100).toFixed(0)}%`;
+        globalWeightEl.appendChild(chip);
+      });
+      const weightNote = document.createElement('div');
+      weightNote.className = 'harness-weight-note';
+      weightNote.textContent = harnessProfiles[activeHarness].weightReason;
+      globalWeightEl.insertAdjacentElement('afterend', weightNote);
+
+      const dimensionKey = document.getElementById('dimensionKey');
+      dimensions.forEach(d => {
+        const item = document.createElement('div');
+        item.className = 'dimension-key-item';
+        item.innerHTML = `<b>${symbols[d.key]}</b>${d.name}`;
+        dimensionKey.appendChild(item);
+      });
+
+      const globalRank = document.getElementById('globalRank');
+      rankModels(globalWeights).forEach((item, index) => {
+        const row = document.createElement('div');
+        row.className = 'global-rank-row';
+        row.innerHTML = `<span class="rank-index">${index+1}</span><span>${item.model.name}</span><span class="rank-score">${item.score.toFixed(2)}</span>`;
+        globalRank.appendChild(row);
+      });
+
+      const taskFormulas = document.getElementById('taskFormulas');
+      ['light','daily','frontier'].forEach(tierKey => {
+        const tier = routingTiers[tierKey];
+        const section = document.createElement('section');
+        section.className = `task-tier-section tier-section-${tierKey}`;
+        section.innerHTML = `<div class="task-tier-head"><div><span>${tier.tag}</span><h3>${tier.name}</h3><p>${tier.desc}</p></div><b>${tier.route}</b></div><div class="task-tier-grid"></div>`;
+        const grid = section.querySelector('.task-tier-grid');
+        taskDefs.filter(task => task.tier === tierKey).forEach(task => {
+          const ranked = rankTask(task);
+          const best = ranked[0];
+          const card = document.createElement('article');
+          card.className = `task-formula-card tier-card-${tierKey}`;
+          card.id = `task-${task.id}`;
+          card.innerHTML = `
+            <div class="task-formula-head">
+              <div class="task-formula-title">${task.name}</div>
+              <div class="task-formula-best">推荐：${best.model.name}<br>${best.score.toFixed(2)}</div>
+            </div>
+            ${gateHTML(task)}
+            <div class="formula">${formulaHTML(taskFormulaName(task), task.weights, { compareToGlobal: true, showZero: true })}</div>
+            <div class="weight-chips">
+              ${Object.entries(task.weights).map(([key,w]) => `<span class="weight-chip ${weightDeltaClass(key, w)}" title="CAV 基准 ${(globalWeights[key]*100).toFixed(0)}%"><b>${symbols[key]}</b>${(w*100).toFixed(0)}%</span>`).join('')}
+            </div>
+            <div class="task-radar-section" style="--task-model-color:${best.model.color}">
+              <div class="task-radar-head">
+                <div class="task-radar-title">推荐模型能力 × ${task.strategy === 'light-gated' ? '轻量效率权重' : task.strategy === 'daily-gated' ? '日常综合权重' : 'Frontier 任务权重'}</div>
+                <div class="task-radar-model">${best.model.name}</div>
+              </div>
+              <div class="task-radar-layout">
+                <svg class="task-mini-radar" role="img" aria-label="${task.name} 的推荐模型能力得分与任务权重雷达图"></svg>
+                <div class="task-radar-side">
+                  <div class="task-radar-legend">
+                    <span><i class="score-line"></i>模型能力得分（0–10）</span>
+                    <span><i class="weight-line"></i>任务权重形状（最高权重=10）</span>
+                  </div>
+                  <div class="task-dimension-scores">${taskDimensionScoreHTML(task, best.model)}</div>
+                  <div class="task-radar-note">每项依次显示“模型分数 · 任务权重”。虚线仅用于比较权重形状，精确百分比以右侧数值为准。</div>
+                </div>
+              </div>
+            </div>
+            <div class="reason-title">为什么这样分配权重</div>
+            <ul class="reason-list">${task.reasons.map(r => `<li>${r}</li>`).join('')}</ul>
+            <div class="task-top3">${ranked.slice(0,3).map((r,i) => `<span>#${i+1} ${r.model.name} · ${r.score.toFixed(2)}</span>`).join('')}</div>
+          `;
+          grid.appendChild(card);
+          drawTaskMiniRadar(card.querySelector('.task-mini-radar'), task, best.model);
+        });
+        taskFormulas.appendChild(section);
+      });
+    }
+
+    function buildSidePanels() {
+      const taskList = document.getElementById('taskList');
+      taskList.innerHTML = '';
+      const metricGrid = document.getElementById('metricGrid');
+      metricGrid.innerHTML = '';
+      taskDefs.forEach(task => {
+        const ranked = rankTask(task);
+        const row = document.createElement('div');
+        row.className = 'task';
+        row.setAttribute('role', 'button');
+        row.setAttribute('tabindex', '0');
+        row.innerHTML = `<div class="task-name"><span class="side-tier-badge tier-${task.tier}">${routingTiers[task.tier].tag.split(' · ')[0]}</span>${task.name}</div><div class="task-model">${ranked[0].model.name}</div>`;
+        const openFormula = () => {
+          const target = document.getElementById(`task-${task.id}`);
+          if (!target) return;
+          target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          target.classList.add('flash');
+          setTimeout(() => target.classList.remove('flash'), 1400);
+        };
+        row.addEventListener('click', openFormula);
+        row.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openFormula(); } });
+        taskList.appendChild(row);
+      });
+
+      dimensions.forEach(d => {
+        const m = document.createElement('div');
+        m.className = 'metric';
+        m.innerHTML = `<strong>${symbols[d.key]} · ${d.name}</strong><span>${d.desc}</span>`;
+        metricGrid.appendChild(m);
+      });
+    }
+
+    function materializeModels(profileKey) {
+      const profile = harnessProfiles[profileKey];
+      return modelCatalog.map(base => {
+        const entry = profile.scores[base.id] || { v:null, support:'unavailable', supportLabel:'不可用' };
+        return {
+          ...base,
+          values: entry.v,
+          available: Array.isArray(entry.v),
+          support: entry.support,
+          supportLabel: entry.supportLabel
+        };
+      });
+    }
+
+    function updateLayerWeightSummary() {
+      const fmt = members => {
+        const total = members.reduce((sum,key) => sum + globalWeights[key], 0);
+        return members.map(key => `${symbols[key]} ${Math.round(globalWeights[key] / total * 100)}%`).join(' · ');
+      };
+      document.getElementById('abilityLayerWeights').textContent = fmt(['limit','coding','context']);
+      document.getElementById('executionLayerWeights').textContent = fmt(['agent','stable','harness']);
+      document.getElementById('economyLayerWeights').textContent = fmt(['speed','cost']);
+    }
+
+    function buildHarnessTabs() {
+      harnessTabs.innerHTML = '';
+      Object.entries(harnessProfiles).forEach(([key,profile]) => {
+        const btn = document.createElement('button');
+        btn.className = 'harness-tab';
+        btn.dataset.harness = key;
+        btn.textContent = profile.label;
+        btn.addEventListener('click', () => setHarness(key));
+        harnessTabs.appendChild(btn);
+      });
+    }
+
+    function setHarness(key) {
+      if (!harnessProfiles[key]) return;
+      activeHarness = key;
+      const profile = harnessProfiles[key];
+      models = materializeModels(key);
+      globalWeights = { ...profile.weights };
+      visible.clear();
+      models.filter(m => m.available).forEach(m => visible.add(m.name));
+      focusedAxis = null;
+
+      harnessTabs.querySelectorAll('.harness-tab').forEach(btn => btn.classList.toggle('active', btn.dataset.harness === key));
+      harnessDesc.textContent = profile.desc;
+      harnessEvidence.innerHTML = `<span><b>数据口径：</b>${profile.evidence}</span><span><b>权重变化：</b>${profile.weightReason}</span>`;
+      harnessNote.textContent = profile.note;
+      mainSubtitle.textContent = `当前：${profile.label}。从任务上限、Coding 成功率、长上下文、Agent 执行效率、速度、成本、稳定性和 Harness 适配八个维度比较。切换 Harness 会同步重算评分、CAV 排名与任务推荐。`;
+
+      buildLegend();
+      buildSidePanels();
+      buildScoringMethod();
+      drawRadar('detail');
+      drawRadar('layer');
+      updateLayerWeightSummary();
+      applyResponsiveViewBox();
+      updateVisibility();
+      setView(activeView);
+    }
+
+    function setView(index) {
+      activeView = Math.max(0, Math.min(1, index));
+      clearAxisFocus();
+      radarTrack.style.transform = `translateX(-${activeView * 100}%)`;
+      document.querySelectorAll('.view-dot').forEach(dot => dot.classList.toggle('active', Number(dot.dataset.view) === activeView));
+      if (activeView === 0) {
+        chartTitle.textContent = '模型能力对比 · 8 维明细';
+        chartSubtitle.textContent = `逐项查看模型在 ${harnessProfiles[activeHarness].label} 下的 8 个维度评分`;
+        layerSummary.hidden = true;
+      } else {
+        chartTitle.textContent = '模型能力对比 · 3 层聚合';
+        chartSubtitle.textContent = `能力层 / 执行层 / 经济层；层内按 ${harnessProfiles[activeHarness].label} CAV 权重归一化后做几何平均`;
+        layerSummary.hidden = false;
+      }
+      updateStatus();
+    }
+
+    document.getElementById('showAll').addEventListener('click', () => {
+      models.filter(m => m.available).forEach(m => visible.add(m.name));
+      updateVisibility();
+    });
+    document.getElementById('hideAll').addEventListener('click', () => {
+      visible.clear();
+      updateVisibility();
+    });
+    document.getElementById('prevRadar').addEventListener('click', () => setView(activeView - 1));
+    document.getElementById('nextRadar').addEventListener('click', () => setView(activeView + 1));
+    document.querySelectorAll('.view-dot').forEach(dot => dot.addEventListener('click', () => setView(Number(dot.dataset.view))));
+
+    // Mouse/touch horizontal swipe. Vertical scroll remains available on mobile.
+    let dragStartX = null;
+    let dragStartY = null;
+    let dragging = false;
+    radarCarousel.addEventListener('pointerdown', e => {
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+      dragging = true;
+      radarCarousel.classList.add('dragging');
+      radarCarousel.setPointerCapture?.(e.pointerId);
+    });
+    radarCarousel.addEventListener('pointerup', e => {
+      if (!dragging || dragStartX === null) return;
+      const dx = e.clientX - dragStartX;
+      const dy = e.clientY - dragStartY;
+      dragging = false;
+      radarCarousel.classList.remove('dragging');
+      if (Math.abs(dx) > 55 && Math.abs(dx) > Math.abs(dy) * 1.15) setView(activeView + (dx < 0 ? 1 : -1));
+      else setView(activeView);
+      dragStartX = dragStartY = null;
+    });
+    radarCarousel.addEventListener('pointercancel', () => {
+      dragging = false;
+      radarCarousel.classList.remove('dragging');
+      dragStartX = dragStartY = null;
+      setView(activeView);
+    });
+
+    function applyResponsiveViewBox() {
+      const viewBox = window.innerWidth <= 700 ? '120 0 660 620' : '0 0 920 620';
+      Object.values(svgs).forEach(svg => svg.setAttribute('viewBox', viewBox));
+    }
+
+    buildHarnessTabs();
+    setHarness('cursor');
+    setView(0);
+    window.addEventListener('resize', applyResponsiveViewBox);
+  </script>
+</body>
+</html>
