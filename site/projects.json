@@ -28,6 +28,14 @@
     ]
   },
   {
+    "name": "计算机基础知识地图",
+    "description": "按 7 个领域探索计算机基础知识，支持概念搜索、交互思维导图、原图核对和 Markdown 下载。",
+    "tags": "计算机基础 · 交互思维导图",
+    "url": "https://qingeneral.github.io/computer-knowledge-map/",
+    "icon": "layers",
+    "group": "阅读与学习"
+  },
+  {
     "name": "开发者模型能力雷达图",
     "description": "交互比较 Cursor、Claude Code 和 Codex 下的模型能力，查看 8 维雷达图、任务路由与评分权重。",
     "tags": "AI 模型 · 交互可视化",
