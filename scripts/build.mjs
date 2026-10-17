@@ -74,6 +74,8 @@ const series = annotateSeries(articles);
 await rm(output, { recursive: true, force: true });
 await mkdir(output, { recursive: true });
 await cp('site/assets', path.join(output, 'assets'), { recursive: true });
+// Standalone interactive projects retain their own markup, styles and scripts.
+await cp('site/projects', path.join(output, 'projects'), { recursive: true });
 await cp('node_modules/highlight.js/styles/github.css', path.join(output, 'assets/highlight.css'));
 const darkSyntax = await readFile('node_modules/highlight.js/styles/github-dark.css', 'utf8');
 // Scope the bundled syntax theme so manual light/dark switching applies to code too.
@@ -137,5 +139,5 @@ await write('feed.xml', `<?xml version="1.0" encoding="UTF-8"?>
 <lastBuildDate>${new Date(`${articles[0].date}T00:00:00Z`).toUTCString()}</lastBuildDate>
 ${articles.map(a => `<item><title>${xml(a.title)}</title><link>${xml(absolute(a.href))}</link><guid isPermaLink="true">${xml(absolute(a.href))}</guid><description>${xml(a.excerpt)}</description><category>${xml(a.category)}</category><pubDate>${new Date(`${a.date}T00:00:00Z`).toUTCString()}</pubDate></item>`).join('\n')}
 </channel></rss>`);
-await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['', 'blog/', 'projects/', ...articles.map(a => a.href)].map(href => `<url><loc>https://qingeneral.github.io${url(href)}</loc></url>`).join('')}</urlset>`);
+await write('sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${['', 'blog/', 'projects/', ...projects.filter(p => p.url.startsWith('/')).map(p => p.url.slice(1)), ...articles.map(a => a.href)].map(href => `<url><loc>https://qingeneral.github.io${url(href)}</loc></url>`).join('')}</urlset>`);
 console.log(`已生成首页、项目页、博客列表和 ${articles.length} 篇文章 → dist/`);

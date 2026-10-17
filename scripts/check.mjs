@@ -35,7 +35,8 @@ for (const file of pages) {
   }
 }
 const search = JSON.parse(await readFile(path.join(root, 'assets/search.json'), 'utf8'));
-assert.equal(pages.length, search.length + 4, '每篇文章都应生成页面');
+const projectPages = (await walk(path.resolve(import.meta.dirname, '../site/projects'))).filter(file => file.endsWith('.html'));
+assert.equal(pages.length, search.length + projectPages.length + 4, '每篇文章和独立项目都应生成页面');
 assert(search.every(a => !/^(草稿|plan|task|写作风格)/.test(a.path)), '草稿不能进入搜索索引');
 assert(search.some(a => a.text.includes('invokestatic')), '全文搜索需包含代码正文');
 assert.equal(failures.length, 0, `站内链接或锚点失效：\n${failures.join('\n')}`);

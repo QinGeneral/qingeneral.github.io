@@ -33,7 +33,8 @@ export const icon = (name, className = '') => {
 const pad = n => String(n).padStart(2, '0');
 const dotted = date => date.replaceAll('-', '.');
 const categoryHref = category => `${url('blog/')}?category=${encodeURIComponent(category)}`;
-const isRepo = p => new URL(p.url).hostname === 'github.com';
+const isRepo = p => new URL(p.url, siteOrigin).hostname === 'github.com';
+const projectHref = p => p.url.startsWith('/') ? url(p.url.slice(1)) : p.url;
 
 // Numbered titles such as “浅谈 JVM 3：指令集” form a series once two or more parts exist.
 export function annotateSeries(articles) {
@@ -111,11 +112,11 @@ export function articleRow(a, { heading = 'h2', yearStart = '' } = {}) {
   return `<article class="article-row" data-path="${escape(a.path)}" data-category="${escape(a.category)}" data-origin="${a.origin}" data-year="${a.date.slice(0, 4)}"${collection ? ` data-collection="${escape(collection)}"` : ''}${yearStart ? ` data-year-start="${yearStart}"` : ''}><time class="row-date" datetime="${a.date}">${dotted(a.date)}</time><div class="row-body">${seriesBadge(a)}<${heading}><a href="${url(a.href)}">${escape(a.title)}</a></${heading}><p>${escape(a.excerpt)}</p></div><div class="row-meta"><span class="tag">${escape(a.category)}</span><span>${a.minutes} 分钟</span>${articleOrigin(a)}</div></article>`;
 }
 
-const projectRow = (p, i) => `<a class="project-row" href="${escape(p.url)}"><span class="row-index">P-${pad(i + 1)}</span><span class="project-name${isRepo(p) ? ' mono' : ''}">${escape(p.name)}</span><span class="project-desc">${escape(p.description)}</span><span class="project-kind${isRepo(p) ? '' : ' live'}">${isRepo(p) ? 'REPO' : '<span class="pulse" aria-hidden="true"></span>LIVE'} ↗</span></a>`;
+const projectRow = (p, i) => `<a class="project-row" href="${escape(projectHref(p))}"><span class="row-index">P-${pad(i + 1)}</span><span class="project-name${isRepo(p) ? ' mono' : ''}">${escape(p.name)}</span><span class="project-desc">${escape(p.description)}</span><span class="project-kind${isRepo(p) ? '' : ' live'}">${isRepo(p) ? 'REPO' : '<span class="pulse" aria-hidden="true"></span>LIVE'} ↗</span></a>`;
 
-const projectCard = p => `<a class="project-card" href="${escape(p.url)}"><span class="project-card-head"><span class="project-name${/^[\w.-]+$/.test(p.name) ? ' mono' : ''}">${escape(p.name)}</span>${icon('external', 'project-arrow')}</span><span class="project-desc">${escape(p.description)}</span><span class="project-foot"><span>${escape(p.tags)}</span><span class="project-kind">${isRepo(p) ? '源码 REPO' : '打开网站'}</span></span></a>`;
+const projectCard = p => `<a class="project-card" href="${escape(projectHref(p))}"><span class="project-card-head"><span class="project-name${/^[\w.-]+$/.test(p.name) ? ' mono' : ''}">${escape(p.name)}</span>${icon('external', 'project-arrow')}</span><span class="project-desc">${escape(p.description)}</span><span class="project-foot"><span>${escape(p.tags)}</span><span class="project-kind">${isRepo(p) ? '源码 REPO' : '打开网站'}</span></span></a>`;
 
-const featuredProject = p => `<a class="featured-project" href="${escape(p.url)}"><span class="featured-project-copy"><span class="signal"><span class="pulse" aria-hidden="true"></span>FEATURED · LIVE SITE</span><span class="featured-project-name">${escape(p.name)}</span><span class="featured-project-desc">${escape(p.description)}</span>${p.stats ? `<span class="readouts">${p.stats.map(s => `<span><span class="readout-label">${escape(s.label)}</span><span class="readout-value">${escape(s.value)}</span></span>`).join('')}</span>` : ''}<span class="button primary">打开网站 ${icon('external')}</span></span><span class="featured-project-tags">${escape(p.tags)}</span></a>`;
+const featuredProject = p => `<a class="featured-project" href="${escape(projectHref(p))}"><span class="featured-project-copy"><span class="signal"><span class="pulse" aria-hidden="true"></span>FEATURED · LIVE SITE</span><span class="featured-project-name">${escape(p.name)}</span><span class="featured-project-desc">${escape(p.description)}</span>${p.stats ? `<span class="readouts">${p.stats.map(s => `<span><span class="readout-label">${escape(s.label)}</span><span class="readout-value">${escape(s.value)}</span></span>`).join('')}</span>` : ''}<span class="button primary">打开网站 ${icon('external')}</span></span><span class="featured-project-tags">${escape(p.tags)}</span></a>`;
 const featuredProjects = projects => projects.some(p => p.featured) ? `<div class="featured-projects">${projects.filter(p => p.featured).map(featuredProject).join('')}</div>` : '';
 
 export function home(projects, articles, series) {
