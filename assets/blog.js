@@ -112,7 +112,7 @@
     const requested = params.get('category') || '';
     category = categoryLinks.some(link => link.dataset.category === requested) ? requested : '';
     search.value = params.get('q') || '';
-    origin = ['manual', 'ai'].includes(params.get('origin')) ? params.get('origin') : '';
+    origin = ['translation', 'manual', 'ai'].includes(params.get('origin')) ? params.get('origin') : '';
     if (collapse) collapse.checked = params.get('cards') !== 'all';
     expanded.clear();
     for (const key of (params.get('expanded') || '').split(',')) {

@@ -1,0 +1,339 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Claude Code 团队如何进行代码审查 · QinGeneral</title><meta name="description" content="面对智能体产出的海量代码，你该如何进行审查？在 Claude Code 团队，当我们实现了高覆盖率和深入审查之后，就开始着手优化：在不增加回滚或事故的前提下，把人工审查时间降到最低。 原文： How the Claude Code…">
+<meta name="theme-color" content="#05070a"><meta property="og:title" content="Claude Code 团队如何进行代码审查"><meta property="og:description" content="面对智能体产出的海量代码，你该如何进行审查？在 Claude Code 团队，当我们实现了高覆盖率和深入审查之后，就开始着手优化：在不增加回滚或事故的前提下，把人工审查时间降到最低。 原文： How the Claude Code…"><meta property="og:type" content="article">
+<link rel="canonical" href="https://qingeneral.github.io/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.html"><meta property="og:url" content="https://qingeneral.github.io/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.html"><meta property="og:site_name" content="QinGeneral"><meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qingeneral.github.io/assets/share-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="QinGeneral · 在代码与文字之间，持续探索世界。">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Claude Code 团队如何进行代码审查"><meta name="twitter:description" content="面对智能体产出的海量代码，你该如何进行审查？在 Claude Code 团队，当我们实现了高覆盖率和深入审查之后，就开始着手优化：在不增加回滚或事故的前提下，把人工审查时间降到最低。 原文： How the Claude Code…"><meta name="twitter:image" content="https://qingeneral.github.io/assets/share-preview.png">
+<link rel="alternate" type="application/rss+xml" title="QinGeneral 博客订阅" href="/feed.xml">
+<script src="/assets/theme.js?v=d6d7d975711e"></script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css?v=6bc55e7b4301">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Web fonts load without blocking rendering; system fonts remain the fallback where Google Fonts is unreachable. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" media="print" onload="this.media='all'">
+<script src="/assets/site.js?v=31e0929a8788" defer></script></head>
+<body><a class="skip-link" href="#main">跳到正文</a>
+<header class="site-header"><div class="wrap header-inner"><a class="wordmark" href="/" aria-label="QinGeneral 首页"><span class="brand-mark" aria-hidden="true">QG</span><span>QinGeneral</span></a>
+<nav class="main-nav" aria-label="主导航"><a href="/" ><span class="nav-index" aria-hidden="true">01</span>首页</a><a href="/blog/" aria-current="page"><span class="nav-index" aria-hidden="true">02</span>文章</a><a href="/#series" ><span class="nav-index" aria-hidden="true">03</span>系列</a><a href="/projects/" ><span class="nav-index" aria-hidden="true">04</span>项目</a></nav>
+<div class="header-tools"><a class="search-trigger" href="/blog/#article-search"><span class="prompt" aria-hidden="true">&gt;</span><span class="search-label">搜索文章</span><kbd aria-hidden="true">/</kbd></a><a class="icon-button github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg><span>GitHub</span></a><button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到日间模式" aria-pressed="true" hidden><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><a class="icon-button rss-link" href="/feed.xml" aria-label="RSS 订阅博客"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="19" r="1"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/></svg></a></div></div></header>
+<div class="reading-progress" aria-hidden="true"></div><main id="main" class="article-page"><header class="article-hero grid-bg"><div class="wrap article-hero-inner"><a class="text-link article-back" href="/blog/?category=AI"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg> 返回AI文章</a><div class="article-tags"><a class="tag accent" href="/blog/?category=AI">AI</a><span class="article-origin origin-translation"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12M9 3v2m4 0c-1 6-4 9-9 11m1-8c1 3 4 6 8 8m1 5 4-10 4 10m-6.5-4h5"/></svg><span>翻译</span></span></div><h1>Claude Code 团队如何进行代码审查</h1><dl class="article-stats"><div><dt>UPDATED</dt><dd><time datetime="2026-10-18">2026.10.18</time></dd></div><div><dt>READ TIME</dt><dd>约 20 分钟</dd></div><div><dt>SECTIONS</dt><dd>11 个小节</dd></div></dl></div></header>
+<div class="wrap reading-layout"><aside class="article-tools" aria-label="文章工具"><button type="button" class="tool-button" data-copy="https://qingeneral.github.io/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>复制链接</span></button><a class="tool-button" href="https://github.com/QinGeneral/qingeneral.github.io/blob/main/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.md" target="_blank" rel="noopener noreferrer"><span>.md 原文</span></a></aside>
+<article class="prose"><p>面对智能体产出的海量代码，你该如何进行审查？在 Claude Code 团队，当我们实现了高覆盖率和深入审查之后，就开始着手优化：在不增加回滚或事故的前提下，把人工审查时间降到最低。</p>
+<blockquote>
+<p>原文：<a href="https://claude.dev/blog/solving-code-review-at-anthropic/" rel="noopener noreferrer">How the Claude Code team does code review</a></p>
+<p>作者：Addy Osmani、Morgan Westlee Lunt 和 Qing Wang</p>
+<p>分类：工程</p>
+<p>原文发布日期：2026 年 10 月 15 日</p>
+<p>原文阅读时间：14 分钟</p>
+<p>本文根据所提供的英文正文翻译。原文图表中的文字和数据以表格、列表呈现。</p>
+</blockquote>
+<p>我们以前说过，Claude Code 自身大约 90% 的代码由 Claude 编写。那么，面对我们产出代码的规模，该如何进行审查？现在还有人读代码吗？如果出了问题，又由谁发现？</p>
+<p>这篇文章介绍了 Claude Code 团队的代码审查流程，以及它是如何演变的。从 6 月到 9 月，Claude Code 代码库中合并的拉取请求数量翻了一倍多，而不得不回滚的比例下降了 40% 以上。</p>
+<p>我们没有取消审查。但我们确实把大部分阅读工作交给了机器，围绕人的时间和注意力进行优化，并投入大量精力，让撤销错误变得快捷、容易。</p>
+<h2 id="重新思考代码审查的目的">重新思考代码审查的目的</h2>
+<p>当智能体开始写代码，变更的数量就会迅速增长。在 Anthropic 的单体仓库中，今年每天合入的变更数量，从 <a href="https://www.anthropic.com/engineering/redesigning-source-control" rel="noopener noreferrer">5 月的约 2,500 次增长到了 9 月的超过 30,000 次</a>。</p>
+<p>Claude Code 使用独立的仓库，与单体仓库分开，但它也承受着很大的压力。当交付速度如此之快时，人工逐行审查代码即使并非不可能，也极其困难。</p>
+<p>代码审查承担两项工作：</p>
+<ol>
+<li>在交付之前发现并修复问题。</li>
+<li>在团队中建立共享的上下文，以及对代码库的理解。</li>
+</ol>
+<p>本文主要关注发现和修复问题，但会在接近结尾时回到第二项工作。</p>
+<p>我们认为，“有没有人读过代码？”并不能准确代表真正应该问的问题：“这次变更可能出什么问题，哪一种检查——自动检查还是人工检查——最适合发现它？”</p>
+<p>提出这个问题，也改变了审查发生的时机。过去，审查是路尽头的一道关卡：写代码、发起 PR，然后等同事来看。</p>
+<p>现在，审查是持续进行的，更像写作时的拼写检查。大多数变更在请人查看之前，已经由 Claude 审查并修复过至少一次。这能发现大多数常规错误，把团队的注意力留给更高层次的问题和审视。</p>
+<h2 id="稀缺资源-人的时间和注意力">稀缺资源：人的时间和注意力</h2>
+<p>我们希望把人的时间和注意力留给只有人才能解决的问题，并确保自动检查能发现其余问题。以我们目前的变更速度，仍有大量工作需要人来完成，团队几乎每天都会遇到全新的挑战。</p>
+<p>人的时间涵盖了审查成本的两个方面：人们花在审查上的时间，以及修复糟糕代码所造成破坏的时间。如果省下前者，却只是让这些时间出现在后者上，那就没有帮助。</p>
+<p>因此，我们的目标是：Claude Code 各个仓库中的大多数拉取请求，包括 CLI、桌面与 Web 应用，以及移动应用，合并时最多只需要一个人参与，这个人也可以是作者本人，同时不增加回滚或事故。为了衡量人的时间，我们跟踪每个 PR 的人工批准次数（中位数和第 95 百分位数）、人工评论，以及 PR 等待人工处理的时长。回滚率和事故率是护栏：如果它们上升，我们就没有节省人的时间，只是把时间转移到了别处。</p>
+<h2 id="一次变更的生命周期">一次变更的生命周期</h2>
+<p>一次典型变更，从工程师的笔记本电脑出发，或者从 Slack 中的一次 Claude 会话出发，会经过多层代码审查。</p>
+<p><strong>一次变更的生命周期</strong></p>
+<p>一次典型的 Claude Code 变更，从作者的机器到用户手中：</p>
+<table>
+<thead>
+<tr>
+<th>阶段</th>
+<th>环节</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>发起拉取请求之前</td>
+<td>验证工作成果</td>
+<td>Claude 运行测试、构建和 lint 检查；第二个智能体在全新的上下文中审查代码差异。</td>
+</tr>
+<tr>
+<td>每个拉取请求都要经过</td>
+<td>必须通过的 CI</td>
+<td>lint、类型检查、跨平台测试、构建和打包。检查失败会阻止合并。</td>
+</tr>
+<tr>
+<td>每个拉取请求都要经过</td>
+<td>Claude 代码审查</td>
+<td>多个智能体并行寻找缺陷，验证者对每项发现投票，保留下来的发现按严重程度排序。</td>
+</tr>
+<tr>
+<td>每个拉取请求都要经过</td>
+<td>安全审查</td>
+<td>单独进行一轮审查。两种审查中任何尚未解决的发现都会阻止合并。</td>
+</tr>
+<tr>
+<td>每个拉取请求都要经过</td>
+<td>基于风险的批准</td>
+<td>分类器确定等级：无需人工、一人或两人。有些路径始终需要人工。</td>
+</tr>
+<tr>
+<td>合并时</td>
+<td>合并队列</td>
+<td>将变更应用到最新的 main 分支后，再运行一遍检查。</td>
+</tr>
+<tr>
+<td>合并之后</td>
+<td>放在功能开关后，先供内部使用</td>
+<td>Anthropic 员工先使用，然后才面向所有人。</td>
+</tr>
+<tr>
+<td>合并之后</td>
+<td>逐步发布</td>
+<td>先发布到 latest 通道；stable 通道随后跟进。</td>
+</tr>
+<tr>
+<td>合并之后</td>
+<td>观察、向前修复或回滚</td>
+<td>作者和值班人员持续观察；功能开关可以迅速关闭，出问题的构建会被回滚。</td>
+</tr>
+</tbody>
+</table>
+<p>图例：自动执行；由人决定，参与程度随风险调整；恢复。</p>
+<p><em>图 A：大部分流程是自动化的；人的注意力投向风险所在。</em></p>
+<h2 id="逐层来看">逐层来看</h2>
+<p><strong>多层防线，而非单一关卡</strong></p>
+<p>六层检查，下方还有回滚兜底：</p>
+<p>问题进入 → 验证 → 必须通过的 CI → AI 审查 → 安全审查 → 人工批准 → 合并队列与功能开关 → 快速回滚。</p>
+<p><em>图 B：每一层都会发现一些问题，也会漏掉另一些问题。很少有问题能穿过所有层，回滚负责处理剩下的情况。</em></p>
+<h3 id="1-在其他人查看之前-先验证工作成果">1. 在其他人查看之前，先验证工作成果</h3>
+<p>现在，大多数审查发生在 PR 创建之前。我们给 Claude 可以运行的东西，比如测试、构建，或者一张可用来与设计对比的截图，并要求它展示输出，而不只是说已经完成。然后，由一个子智能体在全新的上下文中审查代码差异。这两种习惯都来自我们的<a href="https://code.claude.com/docs/en/best-practices" rel="noopener noreferrer">最佳实践指南</a>。</p>
+<p>在发起 PR 之前，我们中的许多人还会运行几个内部技能：一个寻找缺陷，一个简化代码差异，还有一个从端到端检查行为。UI 变更还会按照我们的设计规范进行检查。</p>
+<p>Claude Code 的创建者 Boris Cherny 曾说，为 Claude 提供验证自身工作的方法，可能是获得良好结果最重要的一件事。他估计，这能让最终结果好上两到三倍，并写道：“不同领域的验证方式各不相同。它可能简单到只需运行一条 bash 命令，也可能是运行一套测试，或者在浏览器或手机模拟器中测试应用。”</p>
+<p>当自动审查者不断指出同一类问题时，我们就从源头解决：修改技能、增加 lint 规则，或者更新指令文件，例如：</p>
+<ul>
+<li><code>CLAUDE.md</code> 告诉 Claude 这个项目是什么：技术栈、约定、目标，以及非目标。每次审查都会加载它，所以在大型代码库中，我们会让它保持简短，并从中链接到其他文档。审查者也会指出违反其中约定的代码，以及使其中某一行内容过时的变更。</li>
+<li><code>REVIEW.md</code> 由代码负责人编写，告诉审查者，他们负责的代码中哪些事情重要。我们会单独检查审查者是否真的遵循了它。好的 <code>REVIEW.md</code> 都很短。它们会说明这个仓库中的失败是什么样子（对文档来说是“说错了”，对配置来说是“路由错了”），限制细枝末节意见的数量，列出应当跳过的路径，并要求用文件和行号作为证据，而不是根据名字猜测。它们还要求总结以数量开头，并在没有需要修复的问题时直说。</li>
+</ul>
+<h3 id="2-每个拉取请求都进行-ai-审查">2. 每个拉取请求都进行 AI 审查</h3>
+<p>每个拉取请求在人工查看之前，都会先接受一次 Claude 审查。它会结合整个仓库和 PR 声明的意图来阅读代码差异，并提出问题：这个变更解决了它要解决的问题吗？它与系统契合吗？它会破坏其他东西吗？</p>
+<p>对于缺陷修复，它会寻找根本原因。公开版本 <a href="https://code.claude.com/docs/en/code-review" rel="noopener noreferrer">Code Review for Claude Code</a> 现已在 Team 和 Enterprise 套餐中正式推出，而 <code>/code-review</code> 可以在本地运行一个轻量版本。</p>
+<p>当我们<a href="https://claude.com/resources/articles/code-review" rel="noopener noreferrer">推出研究预览版</a>时，收到实质性审查评论的内部 PR 比例从 16% 上升到了 54%。超过 1,000 行的 PR 大多会被发现问题，而大多数小 PR 则会干净地通过。管理员为每个仓库选择 Quick、Standard 或 Deep。当漏掉一个缺陷的代价高于额外审查时间的成本时，Deep 就值得使用。</p>
+<p>在人工审阅发现之前，其他智能体会先验证这些发现。几个智能体同时寻找缺陷，然后由另一组智能体对每项发现投票；只有当足够多的智能体同意问题确实存在时，它才会被发布。仅涉及风格、诊断或清理的发现会被丢弃。我们先在自己的 PR 上对这些过滤器进行了 A/B 测试，然后才保留它们。剩下的发现会以行内评论的形式出现，并按严重程度排序。每条评论都会标记为 Important（重要）、Nit（细节）或 Pre-existing（已有问题），这样，PR 没有引入的缺陷就不会看起来像是作者的责任。</p>
+<p>每项发现都必须得到回应。要么修复，要么说明理由并将讨论标记为已解决。智能体经常会在夜间接手修复，所以作者回来时，PR 已经又经历了一轮处理。</p>
+<h3 id="3-能够阻止合并的安全审查">3. 能够阻止合并的安全审查</h3>
+<p>安全也有自己独立的自动审查。只要缺陷审查或安全审查中还有任何一项发现未解决，PR 就不能合并。你要么修复问题，要么简要说明理由并关闭讨论；误报就是这样清除的。</p>
+<p>如果后续提交修复了问题，这项发现会自动清除。你也可以使用开源的安全审查 GitHub Action，或者 <code>/security-review</code> 命令，配置同样的机制。设置方法见 <a href="https://support.claude.com/en/articles/11932705-automated-security-reviews-in-claude-code" rel="noopener noreferrer">Claude Code 中的自动安全审查</a>。</p>
+<h3 id="4-能够阻止合并的自动检查">4. 能够阻止合并的自动检查</h3>
+<p>就是那些常见项目：lint、类型检查、各个平台上的测试，以及构建。（我们曾在<a href="https://claude.com/resources/articles/agentic-coding-is-straining-ci-heres-how-we-scaled-test-impact-analysis-at-anthropic" rel="noopener noreferrer">这里</a>介绍过如何扩展 CI 来应对这样的规模。）一个典型的 CLI 拉取请求，在任何人查看之前，可能已经运行了几十项检查。PR 模板会询问如何测试这次变更，以及如何撤销它。Claude 可以填写这些内容，但提出变更需求的人必须确认。</p>
+<h3 id="5-按风险调整人工批准要求">5. 按风险调整人工批准要求</h3>
+<p>修正文档和修改自动更新程序的风险不同，因此它们接受的审查也不同。</p>
+<table>
+<thead>
+<tr>
+<th>风险</th>
+<th>示例</th>
+<th>人工批准</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>低</td>
+<td>文档、文案、仅限内部使用的功能、放在功能开关后的新增变更</td>
+<td>自动审查和安全检查全部通过后，无需人工批准</td>
+</tr>
+<tr>
+<td>中</td>
+<td>常规产品变更，以及涉及缓存、自动更新程序或系统提示词等敏感区域的变更</td>
+<td>一人</td>
+</tr>
+<tr>
+<td>高</td>
+<td>风险最高的代码，以及少数始终需要两人批准的路径</td>
+<td>两人</td>
+</tr>
+</tbody>
+</table>
+<p>等级由变更决定，而不是由作者决定。一个分类器阅读变更，选择它的风险等级。第二个分类器会进一步判断：即使等级要求不需要，这个具体变更是否仍然需要另一个人参与。有些路径始终需要人工，包括负责人列为敏感的所有内容，以及任何 CI 工作流文件。</p>
+<p>只有受信任的作者才能使用更宽松的流程。只有列在仓库信任名单中的作者才能使用更宽松的流程，主要是负责该仓库的团队。其他人都需要第二个人批准。智能体的批准也永远不能算作人的批准。自动审查可以放行低风险变更，但不能顶替一个明确要求人工参与的名额。</p>
+<p>谁发出指令要求进行变更，谁就要为它负责。在智能体编写的 PR 中，指挥智能体的人算作所需审查者中的一位，就像代码是他们亲手敲出来的一样。</p>
+<p>一次批准只覆盖一个特定提交。如果又有系统无法担保的新提交加入，例如智能体推送的提交，或有人手动解决冲突后的合并，就必须重新批准。</p>
+<h3 id="6-合并队列-功能开关与逐步发布">6. 合并队列、功能开关与逐步发布</h3>
+<p>合并队列会将变更应用到 main 分支后，重新运行所有检查，这样两个分别通过检查的 PR 就不会组合成一个出问题的 main 分支。新行为通常先放在功能开关后，发布给 Anthropic 员工；我们的高强度使用经常能在用户遇到之前暴露回归问题。公开版本先发布到 <code>latest</code> 通道，<code>stable</code> 通道随后跟进。</p>
+<h3 id="7-快速发现-快速回滚">7. 快速发现，快速回滚</h3>
+<p>仍然会有一些错误穿过防线，因此最后一层关注的是迅速发现它们。关闭功能开关不需要部署。Claude Code 实行每周轮换的值班制度，事故复盘会追问：本来应该由哪一层发现这个问题？</p>
+<p>发现有问题的合并，仍然依赖作者、值班人员，以及回滚和事故看板。我们还没有能在这些数字变化时自动收紧批准要求的熔断机制；这里的工程师希望，在更多代码转向零人工合并之前，先把它们建立起来。</p>
+<p>一位同事说，放慢速度确实能降低出错率，但主要是因为你做的所有事情都变少了。我们更愿意提高发现和修复问题的速度。</p>
+<h2 id="我们如何改进审查者">我们如何改进审查者</h2>
+<p>我们的代码审查流程正在一个循环中不断改进。</p>
+<p>现在，每一次事故都会成为一项评测。团队收集了过去引发事故的 PR，以及对应的向前修复和回滚，并请熟悉相关代码的工程师确认每个缺陷及其所在位置。审查者每天都会在这套数据集上运行。</p>
+<p><strong>我们的事故就是评测集</strong></p>
+<p>由过去的事故和回滚构建，每天运行：</p>
+<table>
+<thead>
+<tr>
+<th>步骤</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>事故或回滚</td>
+<td>某次变更破坏了某些东西。</td>
+</tr>
+<tr>
+<td>经专家核验的案例</td>
+<td>专家确认缺陷。</td>
+</tr>
+<tr>
+<td>加入数据集</td>
+<td>每次事故都增加一个案例。</td>
+</tr>
+<tr>
+<td>修改审查者</td>
+<td>修改它的提示词、工具或模型。</td>
+</tr>
+<tr>
+<td>每日评测运行</td>
+<td>对每个案例进行评分。</td>
+</tr>
+<tr>
+<td>分数提高了吗？</td>
+<td>提高就保留，否则舍弃。</td>
+</tr>
+<tr>
+<td>下一次变更</td>
+<td>进入下一轮。</td>
+</tr>
+</tbody>
+</table>
+<p><em>图 C：每次事故都会扩充评测集，审查者的每次改动都要在整个评测集上评分。</em></p>
+<p>我们通过观察人们如何处理评论来衡量噪声。如果你不介意把大量并非缺陷的内容也标记出来，那发现更多缺陷并不难，因此我们需要对此进行约束。我们按照 PR 参与者的回应，对审查者留下的每条评论进行分类：修复了问题、认为评论有误、说明该行为是有意为之，或决定这个问题并不重要。我们还会让审查者运行在已知没有问题的 PR 上，统计它多大概率会报告某个问题，而这个报告本来会引导人做出有害的修改。我们明确写下的优先级是：首先发现真正的缺陷，其次减少审查轮次。</p>
+<p>当作者是智能体时，噪声的成本更高。人可以在几秒钟内忽略一个无关紧要的小意见。智能体却会去修复它，这意味着又一个提交，以及又一轮审查。</p>
+<p>审查必须收敛。智能体作者和智能体审查者可能会让彼此无休止地忙下去。有一个 CLI PR 在一夜之间经历了五十多轮审查和修复，最后才被作者叫停。</p>
+<p>当我们对审查者反复指出的内容运行 <code>git blame</code> 时，发现其中约 59% 的代码从审查者第一轮审查时就已经存在。审查者很少是在发现新缺陷，而是在每一轮多找到几个旧缺陷。</p>
+<p>我们自己也让情况变得更糟了。因为每一轮都能发现新东西，我们已经习惯默认运行好几轮。对于高风险变更，这可能值得，但不应该对每个 PR 都这么做。团队现在除了跟踪召回率，也会跟踪通过审查所需的轮次，并调整了再次审查的方式：</p>
+<ul>
+<li>设置轮次上限。三轮之后，审查者会请作者退一步，重新考虑实现方案。</li>
+<li>前几轮之后，只重新审查代码差异。</li>
+<li>指出缺陷的类别，让作者修复所有同类实例，而不只是一行。</li>
+<li>不重复已经发布过的发现。</li>
+</ul>
+<p>审查智能体也会每晚扫描现有代码，帮助我们在旧缺陷出现在其他地方之前发现它们。</p>
+<p><strong>能够收敛的审查</strong></p>
+<p>收敛改进前后的内部拉取请求：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>改进前</th>
+<th>收敛改进后</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>一轮审查与修复后通过</td>
+<td>65%</td>
+<td>78%</td>
+</tr>
+<tr>
+<td>需要五轮或更多轮</td>
+<td>8.9%</td>
+<td>1.5%</td>
+</tr>
+<tr>
+<td>通过所需的平均审查次数</td>
+<td>2.08</td>
+<td>1.32</td>
+</tr>
+</tbody>
+</table>
+<p><em>图 D：收敛改进后，每个内部拉取请求需要的审查轮次更少了。</em></p>
+<h2 id="哪些环节仍然需要人参与">哪些环节仍然需要人参与</h2>
+<p>让一位资深工程师从深度工作中抽身，去发现一个常规错误，成本远高于自动审查。在 Anthropic，我们的工作已经从阅读每一份代码差异，转向机器不擅长的决策：</p>
+<ul>
+<li>我们到底该不该做这件事？方向、品味和范围。有个团队宣布解决了审查瓶颈，却仍然保留对团队外部变更的人工审查，就是为了有人问一句：“我们究竟该不该做这个？”</li>
+<li>有风险的代码，例如计费、自动更新程序和 CI 工作流。</li>
+<li>会成为他人效仿范式的架构。</li>
+<li>阅读证据。测试输出、运行的命令及其返回结果、截图、审查者的发现。如果你说不清检查会漏掉什么，就应该要求一次真正的审查，而不是快速批准。</li>
+<li>为结果负责。每一项交付的变更都有一个人负责，无论代码是谁敲的。</li>
+</ul>
+<p><strong>由人做决定的地方</strong></p>
+<p>五项决策留给人；其余地方运行检查：</p>
+<ol>
+<li>我们该做它吗？</li>
+<li>有风险的代码。</li>
+<li>架构。</li>
+<li>阅读证据。</li>
+<li>为结果负责。</li>
+</ol>
+<p>自动检查围绕整个流程运行。</p>
+<p>图例：自动检查；由人决定。</p>
+<p><em>图 E：人们从阅读每一份代码差异，转向机器不擅长的决策。</em></p>
+<h2 id="在团队中共享上下文">在团队中共享上下文</h2>
+<p>代码审查的第二项工作，一直是传播对代码库的理解。阅读同事的代码差异，是你了解改了什么、各个部分如何配合的方式。如果大部分阅读由机器完成，人们又该如何了解代码？</p>
+<p>我们没有正式的流程。团队中没有人会在脑中保留一份完整的 Claude Code 心智模型，我们也不认为任何人有必要这样做。当有人想理解代码库中的某一部分时，他们会请 Claude 专门为那个部分写一份讲解。只需要几分钟，而且反映的是代码今天的实际情况。</p>
+<blockquote>
+<p>图示：“如果大部分阅读由机器完成，人们又该如何了解代码？”左侧，一个网格代表代码库，其中几个方格被高亮，表示你想了解的托管设置部分；没有人在脑中保留完整的心智模型。一条标注着“就那个具体部分询问 Claude”的箭头，以“Claude Code 如何获取托管设置？”为例，指向两个结果：Claude 写一份讲解，只需几分钟，反映代码今天的实际情况；对有些人来说，Claude 还会制作一个小型作品，将这部分代码可视化，并按照那个人喜欢的学习方式进行讲解。底部文字：逐行阅读琐碎的代码差异，一行文案修改几乎教不了你什么；对你即将修改的模块所作的讲解，却能让你学到很多。</p>
+</blockquote>
+<p>我们中的一些人还会更进一步，让 Claude 制作一个小型作品，把那部分代码可视化，并按照各自喜欢的学习方式来讲解。</p>
+<p>如果目标是把人的注意力用在值得的地方，这就比逐行阅读琐碎的代码差异更好。一行文案修改几乎教不了你什么；对你即将修改的模块所作的讲解，却能让你学到很多。我们默认在开放的 Slack 频道中工作的文化也有帮助，因为你能在别人构建东西的过程中看到他们正在做什么。</p>
+<h2 id="谁合入-谁负责">“谁合入，谁负责”</h2>
+<p>如果你合入一个小型或中型变更，结果仍然出了问题，团队的惯例是通常由你来修复。以下几点让这件事不至于变糟：</p>
+<ul>
+<li>变更很小，因此容易审查、调试和回滚。</li>
+<li>一切都可以撤销。功能开关、回滚和分阶段发布，可以在几分钟内撤销大多数错误。</li>
+<li>影响范围决定要求。出问题代价高昂的代码，需要更多人和更多检查。</li>
+<li>通过遥测和内部使用，回归问题能迅速暴露。</li>
+<li>这不是追责。由你负责修复，是因为你掌握的上下文最多；事故复盘关注的是系统。</li>
+</ul>
+<p>责任也是共享的。团队中的许多人在<a href="https://claude.com/product/tag" rel="noopener noreferrer">开放频道</a>工作，任何人都可以看到其他人在做什么，接上某段讨论，或者让 Claude 去补一个缺口，不负责这部分代码的人也会提供反馈。没有对每一行都设一道关卡，质量却依然很高，这种开放性是重要原因。</p>
+<h2 id="什么时候改变方向">什么时候改变方向</h2>
+<p>智能体降低了启动工作的成本，因此有些工作不应该合入。通常，频道里会有人问为什么要做，指出之前的某项决定，或者建议一条更简单的路线，然后作者就会关闭 PR，或者调整它。</p>
+<p>因为代码写得很快，关闭 PR 不会让人觉得是一种损失。关键是尽早在讨论中提出不同方向，而不是等 PR 完成之后，再留下一条阻止合并的评论。</p>
+<h2 id="你的团队如何采用这套流程">你的团队如何采用这套流程</h2>
+<p>要让你的团队采用这套流程，大多数所需组件今天都已经存在。</p>
+<h3 id="发起拉取请求之前">发起拉取请求之前</h3>
+<ul>
+<li>为智能体提供它能运行的检查，把它们列在简短的 <code>CLAUDE.md</code> 中，并配上运行格式化工具和 lint 工具的钩子。</li>
+<li>在本地运行 <code>/code-review</code> 和 <code>/security-review</code>，或者由一个具有全新上下文的子智能体进行审查。</li>
+<li>添加 <code>REVIEW.md</code>，把反复出现的审查评论转移到其中。</li>
+</ul>
+<h3 id="每个拉取请求">每个拉取请求</h3>
+<ul>
+<li>要求 CI 必须通过，并在 PR 模板中增加“测试”“风险”和“如何回滚”。</li>
+<li>先在一个仓库中加入 AI 审查者（Code Review for Claude Code，或 Claude Code GitHub Action），用几周时间调整 <code>REVIEW.md</code>，然后再扩大范围。</li>
+<li>添加自动安全审查，并要求合并前解决所有审查讨论。</li>
+<li>让审查投入与风险相匹配：常规变更快速审查，漏掉缺陷代价高昂的地方深入审查（Code Review 中的 Quick、Standard 或 Deep）。</li>
+<li>限制审查轮次；前几轮之后，只重新审查新增的代码差异。</li>
+</ul>
+<h3 id="批准">批准</h3>
+<ul>
+<li>写下风险等级，根据变更本身而非作者来定级；一开始严格一些，再根据证据逐步放宽。</li>
+<li>只为你信任的作者保留更宽松的批准流程。</li>
+<li>使用 <code>CODEOWNERS</code> 和分支保护，确保身份认证、计费、CI 与发布工作流，以及安装程序始终需要人工参与。</li>
+<li>绝不让机器人的批准替代必需的人工批准；出现新提交时，撤销已有批准。</li>
+</ul>
+<h3 id="合并及之后">合并及之后</h3>
+<ul>
+<li>使用合并队列、功能开关、内部先用、分阶段发布，以及一步回滚。</li>
+<li>把事故和回滚变成评测集，每当审查者的提示词、工具或模型发生变化时，重新评分。</li>
+<li>衡量人的时间，以回滚率和事故率作为护栏。</li>
+</ul>
+<h2 id="接下来会怎样">接下来会怎样</h2>
+<p>Code Review 的<a href="https://claude.com/resources/articles/code-review" rel="noopener noreferrer">发布公告</a>说，批准拉取请求仍然由人来决定；产品会发布发现，而不是批准。我们自己的仓库走得更远，让负责人决定哪些低风险变更只凭自动检查就可以合并，而且这条界线还在不断移动。</p>
+<p>当一次审查漏掉了某个问题，我们会问：模型当时缺少了什么信息？然后把补救措施加入 <code>CLAUDE.md</code>、某个技能，或者一项新的检查。目标没有改变：每次变更花费更少的人工时间，回滚却不比以前更多。</p>
+<p>如果你的团队允许智能体发起拉取请求，我们很想知道：你们把哪些检查自动化了？哪些仍然需要人？你认为我们有哪些地方想错了？</p>
+<p>感谢 Emma Webb、Michael Segner 和 Amie Rotherham 的审阅。</p>
+<div class="article-end"><nav class="pager" aria-label="相邻文章"><a href="/AI/OpenClaw%20%E5%A4%9A%20Agent%20%E5%86%99%E4%BD%9C%E5%AE%9E%E6%88%98.html"><span class="pager-label">← 上一篇</span><span>把 OpenClaw 搭成你的 AI 中控台：安装、配置与多 Agent 协作实战</span></a></nav><section class="subscribe" aria-labelledby="article-subscribe"><div class="subscribe-copy"><p class="eyebrow">// SUBSCRIBE · RSS</p><h2 id="article-subscribe">新文章发布时，第一时间收到</h2><p>用任意 RSS 阅读器订阅，不打扰，也不需要留邮箱。</p></div><div class="subscribe-field"><label class="sr-only" for="article-subscribe-url">RSS 地址</label><span class="prompt" aria-hidden="true">$</span><input id="article-subscribe-url" readonly value="https://qingeneral.github.io/feed.xml"><button type="button" class="button primary" data-copy="https://qingeneral.github.io/feed.xml">复制地址</button></div></section></div></article><aside class="toc"><details open><summary><span>目录 CONTENTS</span><span class="toc-progress" aria-hidden="true">0%</span></summary><span class="toc-bar" aria-hidden="true"><span></span></span><nav aria-label="文章目录"><a class="toc-link level-2" href="#重新思考代码审查的目的">重新思考代码审查的目的</a><a class="toc-link level-2" href="#稀缺资源-人的时间和注意力">稀缺资源：人的时间和注意力</a><a class="toc-link level-2" href="#一次变更的生命周期">一次变更的生命周期</a><a class="toc-link level-2" href="#逐层来看">逐层来看</a><a class="toc-link level-3" href="#1-在其他人查看之前-先验证工作成果">1. 在其他人查看之前，先验证工作成果</a><a class="toc-link level-3" href="#2-每个拉取请求都进行-ai-审查">2. 每个拉取请求都进行 AI 审查</a><a class="toc-link level-3" href="#3-能够阻止合并的安全审查">3. 能够阻止合并的安全审查</a><a class="toc-link level-3" href="#4-能够阻止合并的自动检查">4. 能够阻止合并的自动检查</a><a class="toc-link level-3" href="#5-按风险调整人工批准要求">5. 按风险调整人工批准要求</a><a class="toc-link level-3" href="#6-合并队列-功能开关与逐步发布">6. 合并队列、功能开关与逐步发布</a><a class="toc-link level-3" href="#7-快速发现-快速回滚">7. 快速发现，快速回滚</a><a class="toc-link level-2" href="#我们如何改进审查者">我们如何改进审查者</a><a class="toc-link level-2" href="#哪些环节仍然需要人参与">哪些环节仍然需要人参与</a><a class="toc-link level-2" href="#在团队中共享上下文">在团队中共享上下文</a><a class="toc-link level-2" href="#谁合入-谁负责">“谁合入，谁负责”</a><a class="toc-link level-2" href="#什么时候改变方向">什么时候改变方向</a><a class="toc-link level-2" href="#你的团队如何采用这套流程">你的团队如何采用这套流程</a><a class="toc-link level-3" href="#发起拉取请求之前">发起拉取请求之前</a><a class="toc-link level-3" href="#每个拉取请求">每个拉取请求</a><a class="toc-link level-3" href="#批准">批准</a><a class="toc-link level-3" href="#合并及之后">合并及之后</a><a class="toc-link level-2" href="#接下来会怎样">接下来会怎样</a></nav></details></aside></div>
+<section class="wrap related section" aria-labelledby="related-title"><div class="section-heading"><h2 id="related-title"><span class="section-index" aria-hidden="true">[+]</span>继续阅读</h2><a class="text-link" href="/blog/?category=AI">更多AI文章 →</a></div><article class="article-row" data-path="AI/OpenClaw 多 Agent 写作实战.md" data-category="AI" data-origin="ai" data-year="2026"><time class="row-date" datetime="2026-03-14">2026.03.14</time><div class="row-body"><h3><a href="/AI/OpenClaw%20%E5%A4%9A%20Agent%20%E5%86%99%E4%BD%9C%E5%AE%9E%E6%88%98.html">把 OpenClaw 搭成你的 AI 中控台：安装、配置与多 Agent 协作实战</a></h3><p>很多人现在已经不满足于“在一个网页里和一个 AI 聊天”了。 更理想的状态是：我可以直接在 WhatsApp、Telegram、Discord，甚至 iMessage 里调度自己的 AI；这个 AI 不只是会聊天，还能分角色、分工…</p></div><div class="row-meta"><span class="tag">AI</span><span>16 分钟</span><span class="article-origin origin-ai"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></svg><span>AI 生成</span></span></div></article><article class="article-row" data-path="AI/AI Coding 最佳实践（202506 版）.md" data-category="AI" data-origin="manual" data-year="2025"><time class="row-date" datetime="2025-06-07">2025.06.07</time><div class="row-body"><h3><a href="/AI/AI%20Coding%20%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5%EF%BC%88202506%20%E7%89%88%EF%BC%89.html">AI Coding 最佳实践（202506 版）</a></h3><p>Trae 海外版近期开始收费了。但是 AI Coding 最强 IDE 的宝座目前还是属于 Cursor，特别是在 Claude 4 的加持下。我两个都买了会员，同样的模型、同样的提示词，比较之下，Trae 还是稍欠火候。 这里我…</p></div><div class="row-meta"><span class="tag">AI</span><span>7 分钟</span><span class="article-origin origin-manual"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15l-1 5Z"/></svg><span>手工编写</span></span></div></article></section></main>
+<footer class="site-footer"><div class="wrap footer-inner"><span>© QINGENERAL — 保持好奇，持续记录。</span><span class="footer-links"><a href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GITHUB</a><a href="/feed.xml">RSS</a><a href="/sitemap.xml">SITEMAP</a></span></div></footer>
+<button class="back-top" aria-label="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"d5d1a73bfefc4797998e83cb80de1477","spa":false}'></script></body></html>
