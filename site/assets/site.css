@@ -686,6 +686,9 @@ button{
   width:13px;
   height:13px;
 }
+.origin-translation{
+  color:var(--green);
+}
 .series-badge{
   display:inline-block;
   font-size:10px;
@@ -846,6 +849,7 @@ button{
   gap:18px}
 .origin-filter{
   display:flex;
+  flex-wrap:wrap;
   gap:4px}
 .origin-filter button,.expand-collection{
   background:none;

@@ -27,6 +27,7 @@ export const icon = (name, className = '') => {
     link: '<path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/>',
     pen: '<path d="m15 5 4 4M4 20l4-1L20 7a2.8 2.8 0 0 0-4-4L4 15l-1 5Z"/>',
     sparkle: '<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/>',
+    translate: '<path d="M3 5h12M9 3v2m4 0c-1 6-4 9-9 11m1-8c1 3 4 6 8 8m1 5 4-10 4 10m-6.5-4h5"/>',
   };
   return `<svg class="icon ${className}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths[name] || paths.arrow}</svg>`;
 };
@@ -104,7 +105,12 @@ const sectionHeading = (id, index, title, link = '') => `<div class="section-hea
 
 const subscribe = (headingId, compact = false) => `<section class="subscribe${compact ? ' compact' : ''}" aria-labelledby="${headingId}"><div class="subscribe-copy"><p class="eyebrow">// SUBSCRIBE · RSS</p><h2 id="${headingId}">${compact ? '订阅更新' : '新文章发布时，第一时间收到'}</h2><p>用任意 RSS 阅读器订阅，不打扰，也不需要留邮箱。</p></div><div class="subscribe-field"><label class="sr-only" for="${headingId}-url">RSS 地址</label>${compact ? '' : '<span class="prompt" aria-hidden="true">$</span>'}<input id="${headingId}-url" readonly value="${escape(feedUrl)}"><button type="button" class="button primary" data-copy="${escape(feedUrl)}">复制地址</button></div></section>`;
 
-const articleOrigin = a => `<span class="article-origin origin-${a.origin}">${icon(a.origin === 'ai' ? 'sparkle' : 'pen')}<span>${a.origin === 'ai' ? 'AI 生成' : '手工编写'}</span></span>`;
+const articleOrigins = {
+  translation: { label: '翻译', icon: 'translate' },
+  manual: { label: '手工编写', icon: 'pen' },
+  ai: { label: 'AI 生成', icon: 'sparkle' },
+};
+const articleOrigin = a => `<span class="article-origin origin-${a.origin}">${icon(articleOrigins[a.origin].icon)}<span>${articleOrigins[a.origin].label}</span></span>`;
 const seriesBadge = a => a.series ? `<span class="series-badge">SERIES ${escape(a.series.group.name)} · ${a.series.index}/${a.series.group.items.length}</span>` : '';
 
 export function articleRow(a, { heading = 'h2', yearStart = '' } = {}) {
@@ -182,7 +188,7 @@ export function blogPage(articles, series) {
   return layout({ title: '博客', active: 'blog', canonical: 'blog/', script: true, body: `<main id="main"><section class="page-intro grid-bg"><div class="wrap"><p class="eyebrow">// INDEX · ${articles.length} ENTRIES</p><h1>文章</h1><p class="lead">关于 AI、编程与阅读的思考和实践。</p><form class="search-form" role="search" action="${url('blog/')}"><label for="article-search" class="sr-only">搜索文章</label><span class="prompt" aria-hidden="true">&gt;</span><input id="article-search" type="search" name="q" placeholder="搜索标题、正文或关键词，例如：JVM、MCP、重构" autocomplete="off"><button type="button" id="clear-search" hidden aria-label="清除搜索">清除</button><kbd aria-hidden="true">/</kbd></form></div></section>
 <div class="wrap"><noscript><style>.collection-row{display:none}</style><p class="muted">启用 JavaScript 后可使用搜索和分类筛选，以下是全部文章。</p></noscript>
 <nav class="categories" aria-label="文章分类"><a class="category-link selected" data-category="" href="${url('blog/')}" aria-current="true">全部<span class="count">${articles.length}</span></a>${preferred.filter(c => counts.has(c)).map(categoryLink).join('')}<details class="more-categories"><summary>+ 其余 ${categories.filter(c => !preferred.includes(c)).length} 个</summary><div class="more-list">${categories.filter(c => !preferred.includes(c)).map(categoryLink).join('')}</div></details></nav>
-<div class="list-toolbar"><div class="origin-filter" role="group" aria-label="写作方式"><button type="button" data-origin="" aria-pressed="true">全部</button><button type="button" data-origin="manual" aria-pressed="false">手工编写</button><button type="button" data-origin="ai" aria-pressed="false">AI 生成</button></div><p id="result-label" role="status" aria-live="polite">全部文章 <span>${articles.length} 篇</span></p><div class="toolbar-end">${collections.size ? '<label class="toggle"><input type="checkbox" id="collapse-collections" checked>折叠卡片合集</label>' : ''}<label class="sort-label"><span class="sr-only">文章排序</span><select id="article-sort"><option value="newest">最新优先</option><option value="oldest">最早优先</option><option value="title">按标题</option></select></label></div></div>
+<div class="list-toolbar"><div class="origin-filter" role="group" aria-label="写作方式"><button type="button" data-origin="" aria-pressed="true">全部</button><button type="button" data-origin="translation" aria-pressed="false">翻译</button><button type="button" data-origin="manual" aria-pressed="false">手工编写</button><button type="button" data-origin="ai" aria-pressed="false">AI 生成</button></div><p id="result-label" role="status" aria-live="polite">全部文章 <span>${articles.length} 篇</span></p><div class="toolbar-end">${collections.size ? '<label class="toggle"><input type="checkbox" id="collapse-collections" checked>折叠卡片合集</label>' : ''}<label class="sort-label"><span class="sr-only">文章排序</span><select id="article-sort"><option value="newest">最新优先</option><option value="oldest">最早优先</option><option value="title">按标题</option></select></label></div></div>
 <div class="blog-layout"><section class="article-list" aria-label="文章列表"><div id="article-results">${rows}</div><div id="empty-state" hidden><h2>暂时没有找到文章</h2><p>试试其他关键词，或清除筛选后继续探索。</p><button id="reset-filters" class="button">查看全部文章</button></div><nav id="pagination" class="pagination" aria-label="文章分页" hidden><button id="previous-page" class="button">← 上一页</button><span id="page-label"></span><button id="next-page" class="button">下一页 →</button></nav></section>
 <aside class="blog-aside">${series.length ? `<section class="panel" aria-labelledby="side-series"><h2 id="side-series"><span class="section-index" aria-hidden="true">[S]</span>连载系列</h2>${series.map(s => `<a class="panel-link" href="${url(s.items[0].article.href)}"><span>${escape(s.name)}</span><span class="mono muted">${pad(s.items.length)}</span></a>`).join('')}</section>` : ''}${subscribe('side-subscribe', true)}</aside></div></div></main>` });
 }
