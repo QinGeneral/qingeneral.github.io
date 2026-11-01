@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>如何更有雄心：写给使用模型的人类的教程 · QinGeneral</title><meta name="description" content="我参与 Claude 的开发。这是一种很有意思的体验：每天，我都会了解到又一件借助 Claude 或由 Claude 完成的壮举，而这些事情，要么我从未想过，要么我以为不可能，要么我只是缺乏好奇心和时间去尝试。这个月，它可能帮助人…">
+<meta name="theme-color" content="#05070a"><meta property="og:title" content="如何更有雄心：写给使用模型的人类的教程"><meta property="og:description" content="我参与 Claude 的开发。这是一种很有意思的体验：每天，我都会了解到又一件借助 Claude 或由 Claude 完成的壮举，而这些事情，要么我从未想过，要么我以为不可能，要么我只是缺乏好奇心和时间去尝试。这个月，它可能帮助人…"><meta property="og:type" content="article">
+<link rel="canonical" href="https://qingeneral.github.io/AI/%E5%A6%82%E4%BD%95%E6%9B%B4%E6%9C%89%E9%9B%84%E5%BF%83%EF%BC%9A%E5%86%99%E7%BB%99%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BA%BA%E7%B1%BB%E7%9A%84%E6%95%99%E7%A8%8B.html"><meta property="og:url" content="https://qingeneral.github.io/AI/%E5%A6%82%E4%BD%95%E6%9B%B4%E6%9C%89%E9%9B%84%E5%BF%83%EF%BC%9A%E5%86%99%E7%BB%99%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BA%BA%E7%B1%BB%E7%9A%84%E6%95%99%E7%A8%8B.html"><meta property="og:site_name" content="QinGeneral"><meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://qingeneral.github.io/assets/share-preview.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:type" content="image/png"><meta property="og:image:alt" content="QinGeneral · 在代码与文字之间，持续探索世界。">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="如何更有雄心：写给使用模型的人类的教程"><meta name="twitter:description" content="我参与 Claude 的开发。这是一种很有意思的体验：每天，我都会了解到又一件借助 Claude 或由 Claude 完成的壮举，而这些事情，要么我从未想过，要么我以为不可能，要么我只是缺乏好奇心和时间去尝试。这个月，它可能帮助人…"><meta name="twitter:image" content="https://qingeneral.github.io/assets/share-preview.png">
+<link rel="alternate" type="application/rss+xml" title="QinGeneral 博客订阅" href="/feed.xml">
+<script src="/assets/theme.js?v=d6d7d975711e"></script>
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/site.css?v=6bc55e7b4301">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!-- Web fonts load without blocking rendering; system fonts remain the fallback where Google Fonts is unreachable. -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Space+Grotesk:wght@500;700&amp;display=swap" media="print" onload="this.media='all'">
+<script src="/assets/site.js?v=31e0929a8788" defer></script></head>
+<body><a class="skip-link" href="#main">跳到正文</a>
+<header class="site-header"><div class="wrap header-inner"><a class="wordmark" href="/" aria-label="QinGeneral 首页"><span class="brand-mark" aria-hidden="true">QG</span><span>QinGeneral</span></a>
+<nav class="main-nav" aria-label="主导航"><a href="/" ><span class="nav-index" aria-hidden="true">01</span>首页</a><a href="/blog/" aria-current="page"><span class="nav-index" aria-hidden="true">02</span>文章</a><a href="/#series" ><span class="nav-index" aria-hidden="true">03</span>系列</a><a href="/projects/" ><span class="nav-index" aria-hidden="true">04</span>项目</a></nav>
+<div class="header-tools"><a class="search-trigger" href="/blog/#article-search"><span class="prompt" aria-hidden="true">&gt;</span><span class="search-label">搜索文章</span><kbd aria-hidden="true">/</kbd></a><a class="icon-button github-link" href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer" aria-label="GitHub"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"/></svg><span>GitHub</span></a><button id="theme-toggle" class="icon-button theme-toggle" type="button" aria-label="切换到日间模式" aria-pressed="true" hidden><svg class="icon theme-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.9 13A9 9 0 0 1 11 3.1 9 9 0 1 0 20.9 13Z"/></svg><svg class="icon theme-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg></button><a class="icon-button rss-link" href="/feed.xml" aria-label="RSS 订阅博客"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="5" cy="19" r="1"/><path d="M4 11a9 9 0 0 1 9 9M4 4a16 16 0 0 1 16 16"/></svg></a></div></div></header>
+<div class="reading-progress" aria-hidden="true"></div><main id="main" class="article-page"><header class="article-hero grid-bg"><div class="wrap article-hero-inner"><a class="text-link article-back" href="/blog/?category=AI"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5m6-6-6 6 6 6"/></svg> 返回AI文章</a><div class="article-tags"><a class="tag accent" href="/blog/?category=AI">AI</a><span class="article-origin origin-translation"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12M9 3v2m4 0c-1 6-4 9-9 11m1-8c1 3 4 6 8 8m1 5 4-10 4 10m-6.5-4h5"/></svg><span>翻译</span></span></div><h1>如何更有雄心：写给使用模型的人类的教程</h1><dl class="article-stats"><div><dt>UPDATED</dt><dd><time datetime="2026-11-01">2026.11.01</time></dd></div><div><dt>READ TIME</dt><dd>约 11 分钟</dd></div><div><dt>SECTIONS</dt><dd>4 个小节</dd></div></dl></div></header>
+<div class="wrap reading-layout"><aside class="article-tools" aria-label="文章工具"><button type="button" class="tool-button" data-copy="https://qingeneral.github.io/AI/%E5%A6%82%E4%BD%95%E6%9B%B4%E6%9C%89%E9%9B%84%E5%BF%83%EF%BC%9A%E5%86%99%E7%BB%99%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BA%BA%E7%B1%BB%E7%9A%84%E6%95%99%E7%A8%8B.html"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 0 0-7-7l-1 1"/><path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 0 0 7 7l1-1"/></svg><span>复制链接</span></button><a class="tool-button" href="https://github.com/QinGeneral/qingeneral.github.io/blob/main/AI/%E5%A6%82%E4%BD%95%E6%9B%B4%E6%9C%89%E9%9B%84%E5%BF%83%EF%BC%9A%E5%86%99%E7%BB%99%E4%BD%BF%E7%94%A8%E6%A8%A1%E5%9E%8B%E7%9A%84%E4%BA%BA%E7%B1%BB%E7%9A%84%E6%95%99%E7%A8%8B.md" target="_blank" rel="noopener noreferrer"><span>.md 原文</span></a></aside>
+<article class="prose"><p>我参与 Claude 的开发。这是一种很有意思的体验：每天，我都会了解到又一件借助 Claude 或由 Claude 完成的壮举，而这些事情，要么我从未想过，要么我以为不可能，要么我只是缺乏好奇心和时间去尝试。这个月，它可能帮助人们<a href="https://gizmodo.com/did-claude-help-an-amateur-astronomer-discover-a-new-planet-2000824393?ref=felixrieseberg.com" rel="noopener noreferrer">发现了一颗新行星</a>；我看到了第一支<a href="https://www.youtube.com/watch?v=AoNnbz237E0&amp;ref=felixrieseberg.com" rel="noopener noreferrer">真正喜欢的</a> AI 音乐视频；我们也正在讨论<a href="https://terrytao.wordpress.com/2026/10/10/math-2-0/?ref=felixrieseberg.com" rel="noopener noreferrer">数学的新时代</a>。</p>
+<blockquote>
+<p>原文：<a href="https://felixrieseberg.com/how-to-be-more-ambitious-a-tutorial-for-humans-with-models/" rel="noopener noreferrer">How to be more ambitious: A tutorial for humans with models</a></p>
+<p>作者：<a href="https://felixrieseberg.com/" rel="noopener noreferrer">Felix Rieseberg</a></p>
+<p>原文发布日期：2026 年 10 月 13 日</p>
+<p>原文阅读时间：8 分钟</p>
+<p>主题：claude</p>
+<p>本文根据所提供的英文正文完整翻译。</p>
+</blockquote>
+<p><img src="https://storage.ghost.io/c/89/e0/89e08557-681a-40be-8264-278bf46d6b25/content/images/size/w2000/2026/10/modo_de_volar_a_way_of_flying_1951.10.55-1.jpg" alt="弗朗西斯科·戈雅《飞行的方式》（Modo de volar）" loading="lazy" decoding="async"></p>
+<p>模型的能力并不是均匀增长的。正如陶哲轩所说，模型“在某些方向上令人惊叹，在另一些方向上却能力不足”。有些人成功驾驭了那些令人惊叹的能力，看起来仿佛飞了起来——看着人们用我参与打造的产品达到不可思议的高度，实在让人着迷。还有很多人仍在努力让自己的新翅膀发挥作用，不知道除了问“法国的首都是哪里”或“你能把这封邮件改得不那么生气吗”，它们还能用来做什么。</p>
+<p>我经常和其他从事 AI 工作的人一起宣称：我们在使用 AI 时，应该更有雄心。这已经成了一句号召。每当看到令人印象深刻的东西，我们就转发，然后写下“我们的雄心还不够”。我理解，要遵循这个建议有多难，所以这里有一份关于如何更有雄心的教程。</p>
+<p>我把雄心分为四种：速度、高度、深度和广度。</p>
+<ul>
+<li><strong>速度</strong>：用更少的时间完成同样的工作，这是 AI 经济价值的基本盘。如果你需要写一些代码，我用 Claude 就能更快地完成。这一点已经相当成熟，在使用 AI 的方式上也不太需要创造力，所以我会跳过这一项。</li>
+<li><strong>高度</strong>：提高抽象层次，考虑最终结果，而不是单个任务。</li>
+<li><strong>深度</strong>：像某个领域的顶尖专家那样看待一项任务。我们不只在任务所在的层面上操作，而是再深入一层，接触底层的数据、工具和问题。</li>
+<li><strong>广度</strong>：借鉴多个领域，而不只是任务表面上可能需要的那一个领域，使用你平时不会用到的知识、工具和技术。</li>
+</ul>
+<p>我主要使用 Claude（这还用说），但我的建议并不针对某个特定模型。</p>
+<h2 id="高度">高度</h2>
+<p>我们常常轻描淡写地把这称为“让模型在更高的抽象层次上工作”。当你把一项任务交给模型时，它执行的其实是你对于“如何获得想要的结果”的最佳猜测。要在高度上更有雄心，就问问自己：你希望接下来发生什么？目标背后的目标是什么？去年年初，我还在让 Claude 帮我修复一个个具体的崩溃问题。后来，我干脆让 Claude 保证我们的应用不发生崩溃。</p>
+<p>来考虑一项日常的办公室任务——我能不能说，它甚至有点平淡无奇？你在一家虚构的 Acme 公司工作，需要为季度业务回顾（QBR）准备一份幻灯片。给 Claude 一堆数据，它就会很乐意地帮你做出一些幻灯片。也许你甚至已经有了模板，它只需要把内容填进去。这可很难与发现一颗新行星相提并论，所以，让我们看看一些具体步骤，如何让我们的做法更有雄心。我们从基础开始，每一步都再多一点雄心：</p>
+<ul>
+<li>在输入方面，大多数业务回顾都想知道：这个季度发生了什么变化，为什么，以及应该采取什么措施。克制住只更新模板里那些数字的冲动——把你能拿到的数据尽可能多地交给模型，让它理解你的业务：“告诉我这个季度发生了什么变化，为什么，以及我们应该怎么做。”</li>
+<li>会议——至少好的会议如此——理想情况下应该以一些决策结束。问 Claude：“根据你了解到的所有情况，找出最紧迫的三个决策，并开始研究可能的方向，列出赞成和反对的理由。”</li>
+<li>季度业务回顾诞生的那个时代，做好一次回顾需要人类仔细筛选数据，弄清数据意味着什么，以及业务是否应该调整。问 Claude：“做业务回顾，是为了让管理层及早发现问题，把资金和人员调配到正确的地方。设计一种比季度幻灯片更好的方式，用我们自己的历史记录证明它本来能更早发现问题，再让它与现有方式并行运行一个季度。”</li>
+</ul>
+<p>如果你确实是在追求某个最终结果，提高高度的做法最有效；对于创造性活动，它的效果就没那么好。一个很好的判断信号是：你是否打算开会讨论自己正在做的东西。如果是，那么在高度上更有雄心通常是个好主意。目前仍然存在一些限制——在 2026 年，仅凭一句“Claude，去赚钱”，对大多数企业来说似乎还不管用——但总体上，我观察到，模型越有能力，似乎就越能在更高的抽象层次上工作。</p>
+<p>人们也会在高度这个维度上找到持久运转的工作流，让人不必再参与其中，从而减少你不断给模型下达一个又一个任务的必要。要做好这一点，往往需要改变你的工作流：为了让 Claude 确保我们的应用不发生崩溃，我首先得确保它能够轻松获取崩溃报告，弄清哪个应用版本对应哪个 Git 提交，并让它能访问 Windows、macOS 和 Linux 计算机，这样它才能真正独立复现问题并验证修复。</p>
+<h2 id="深度">深度</h2>
+<p>有时候，你只是希望把一项任务完成得特别好。在深度上更有雄心，意味着推动模型使用这个领域最优秀的专业人士所采用的工具、技术、媒介和知识，并继续推动下去，直到连那些人都可能从你的工作中学到新东西。</p>
+<p>继续用 Acme 公司季度业务回顾幻灯片的例子。暂且假设，Acme 公司正面临一些用户流失问题，也就是客户随时间推移而流失。我发现，把下面这些方法结合起来很有用：</p>
+<ul>
+<li><strong>坚持使用业内顶尖人士所用的工具</strong>：当你要求模型表现得像专业人士时，它们往往只是换了一套词汇，却没有真正改变方法。要深入解决我们的问题，就需要使用最优秀的数据科学家和统计学家所使用的工具。当 Claude 准备使用 Markdown 表格时，坚持让它使用数据库和统计模型。你不一定要知道专家用什么，Claude 通常知道。</li>
+<li><strong>设定不合理的目标，并告诉模型这些目标非常合理</strong>：你需要把网站加载时间从 10 秒缩短到 5 秒？那就要求 200 毫秒。某件事在模型看来似乎不可能？再次强调，它完全可以解决，只需要继续努力。</li>
+<li><strong>挑战你所知道的东西</strong>：尤其是在商业领域，很多我们以为正确的事情，都只是对现实的粗略近似。让模型访问原始信息和数据，要求它以对抗性的方式检验假设。“我们认为，用户流失是新用户引导出了问题。试着从原始数据中复现这个结论。”</li>
+<li><strong>创造新知识</strong>：这很容易接在“挑战你所知道的东西”后面——既然 Claude 已经深入数据，就让它寻找盲点。“构建一个客户模拟模型，用我们的日志复现过去一年的情况。然后找出我们还不知道的、最早的用户流失信号，并证明它能对未见过的数据作出预测。”</li>
+<li><strong>使用外部评判者</strong>：不要让模型自己评判自己。我想，随着模型智能的提升，这个问题最终会得到解决；但在 2026 年 10 月，我恳请你坚持进行外部验证。理想情况下，这应该是一种模型能够运行、并立即从中获得反馈的工具。</li>
+</ul>
+<p>下面这段简单的提示词经常能帮到我：</p>
+<blockquote>
+<p>我想要的是把这项任务做得更深，而不是做得更大。在改写之前：（1）说出这个领域的顶尖专业人士会在这里做哪些我没有要求的事；（2）指出他们会从哪些最原始的材料入手，而不是从那些已经替我消化过的材料入手；（3）指出他们会使用的具体方法和工具；（4）说明除了你或我之外，还有什么能够证明结果是正确的。然后，改写我的提示词，明确要求做到这些。</p>
+</blockquote>
+<h2 id="广度">广度</h2>
+<p>简单来说，在广度上更有雄心，就是从不同领域的角度看待我们的工作——涉及的领域数量，要比过去在成本上划算的数量更多。这不是什么特别独到的见解，每一部盗窃题材电影，前 30 分钟都在集结一群各有特点、各有所长的人物。随着 AI 产品让运行多智能体系统变得越来越容易——无论是通过多个线程、编排器，还是简单的子智能体——我已经见过一些很有意思的结果，而它们来自我反复要求 Claude 引入更多领域。</p>
+<p>把这件事付诸实践并不容易，它需要你发挥创造力。在看到同事 Alex Albert 使用 Blender 渲染室内设计之前，我从来没想过让 Claude 为我的<a href="https://www.felixrieseberg.com/?ref=felixrieseberg.com" rel="noopener noreferrer">个人主页</a>制作 3D 环境——尽管我以前还做过电子游戏！不过，这无疑是我见到最多奇妙事情发生的地方。</p>
+<p>那么，我们该怎么做？我会使用下面这些方法：</p>
+<ul>
+<li><strong>试着把名词换成动词</strong>：这是 Tom Kelley 和 Jonathan Littman 在《创新的艺术》（The Art of Innovation）中提到的一个老技巧。季度业务回顾不是“一份幻灯片”，而是“在 30 分钟内，让忙碌的人相信一个关于因果关系的故事，并在不确定性下作出决策”。有了这些动词，我和 Claude 就更容易理解，哪些领域可能带来独特而有用的视角。</li>
+<li><strong>集结团队</strong>：这份幻灯片必须惊艳，否则外星人就会炸毁地球。人类会组建一支什么样的团队？为了达到成品应有的质量，我会找来一位分析师、一位记者和一位编辑。如果还需要现场演示，可能还要有一位动效设计师和一位音频设计师。引入一支对抗性的“红队”也许有用，那就再请来一位做空者和一位法务会计师。</li>
+</ul>
+<p>你很容易不小心陷入角色扮演，这只会让对话记录变得更奇怪，却不会改善实际结果。用这个方法来寻找领域和技术。不要让模型像做空者那样写作，而要让它去做做空者为了研究自己的做空头寸而会做的事情。</p>
+<p>我所描述的所有这些雄心，都要求模型拥有一台能够安装软件的计算机，并且能够访问各种相关数据，无论是通过 MCP 连接器还是其他方式。很多工具都能做到这一点，我建议你选一个来用。</p>
+<h2 id="我们以前也经历过">我们以前也经历过</h2>
+<p>以上就是我关于如何更有雄心的具体建议。如果你愿意再留一分钟，我还想说说，为什么我认为这件事首先就是必要的。</p>
+<p>我们人类一直受制于自己认为什么是可能的。更糟的是，我们通常只在非常狭窄的领域里相信自己。有个著名的故事：米开朗基罗不想为西斯廷教堂作画——你看，他是雕塑家，不是画家。</p>
+<p>在研究雄心这个问题时，我了解到，心理学对这种现象有一个名称：<a href="https://en.wikipedia.org/wiki/Self-efficacy?ref=felixrieseberg.com" rel="noopener noreferrer">自我效能</a>。简单来说，自我效能高的人更相信自己的能力，因此实际上也能取得更多成就。有证据表明，自我效能是可以通过一些技巧来提升的：Locke 和 Latham 仔细研究了 35 年的目标设定研究，因而有把握地宣称，被赋予具体而困难目标的人，<a href="https://med.stanford.edu/content/dam/sm/s-spire/documents/PD.locke-and-latham-retrospective_Paper.pdf?ref=felixrieseberg.com" rel="noopener noreferrer">表现好于那些只是被要求尽力而为的人</a>。Stripe 创始人 Patrick Collison 维护着一份名为 <a href="https://patrickcollison.com/fast?ref=felixrieseberg.com" rel="noopener noreferrer">“Fast”的清单</a>，记录了人类在同时获得大胆目标和紧迫期限时完成的许多事情。下面是一些有充分记录的技巧：</p>
+<ul>
+<li><strong>通过相信难事可以做到，来完成难事</strong>：1939 年，George Dantzig 去伯克利的一堂统计课时迟到了。他从黑板上抄下两道题，以为是作业，后来交上了自己的解答。那其实是统计学中的两道未解难题。</li>
+<li><strong>通过看到别人做到，来完成难事</strong>：几十年来，人类一直在追求四分钟跑完一英里。Roger Bannister 于 1954 年 5 月打破了这个界限，但他作为唯一做到这件事的人，只保持了短短 46 天。如果你喜欢跑步，我们正在看到类似的事情发生在两小时马拉松上：Sabastian Sawe 今年 4 月在伦敦跑出了首个官方认可的两小时以内的马拉松成绩。在同一场比赛中，亚军也突破了两小时大关。</li>
+<li><strong>通过允许自己失败，来完成难事</strong>：大家最喜欢的商业书籍似乎都是《网球的内在游戏》（The Inner Game of Tennis），而我上周才发现这本书。它的核心观点是：如果你非常、非常用力地想打好网球，你反而打不出自己的最佳水平。我们工程师也许还记得 Linux，它在宣布时被称为“只是一个爱好，不会像 gnu 那样庞大而专业”。</li>
+</ul>
+<p>自我效能不是一个新问题，但如今它的影响更大了。在一个我们的能力每隔几周就会跃升的世界里，我们需要一些方法，让我们去做那些自己原本没有认真考虑过、或不相信可能做到的事。如果你找到了更多让人更有雄心的方法，请一定告诉我！</p>
+<p>本文配图为<a href="https://en.wikipedia.org/wiki/Francisco_Goya?ref=felixrieseberg.com" rel="noopener noreferrer">弗朗西斯科·戈雅</a>的《飞行的方式》（“Modo de volar”，A Way of Flying）。</p>
+<p>—— 完 ——</p>
+<div class="article-end"><nav class="pager" aria-label="相邻文章"><a href="/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.html"><span class="pager-label">← 上一篇</span><span>Claude Code 团队如何进行代码审查</span></a></nav><section class="subscribe" aria-labelledby="article-subscribe"><div class="subscribe-copy"><p class="eyebrow">// SUBSCRIBE · RSS</p><h2 id="article-subscribe">新文章发布时，第一时间收到</h2><p>用任意 RSS 阅读器订阅，不打扰，也不需要留邮箱。</p></div><div class="subscribe-field"><label class="sr-only" for="article-subscribe-url">RSS 地址</label><span class="prompt" aria-hidden="true">$</span><input id="article-subscribe-url" readonly value="https://qingeneral.github.io/feed.xml"><button type="button" class="button primary" data-copy="https://qingeneral.github.io/feed.xml">复制地址</button></div></section></div></article><aside class="toc"><details open><summary><span>目录 CONTENTS</span><span class="toc-progress" aria-hidden="true">0%</span></summary><span class="toc-bar" aria-hidden="true"><span></span></span><nav aria-label="文章目录"><a class="toc-link level-2" href="#高度">高度</a><a class="toc-link level-2" href="#深度">深度</a><a class="toc-link level-2" href="#广度">广度</a><a class="toc-link level-2" href="#我们以前也经历过">我们以前也经历过</a></nav></details></aside></div>
+<section class="wrap related section" aria-labelledby="related-title"><div class="section-heading"><h2 id="related-title"><span class="section-index" aria-hidden="true">[+]</span>继续阅读</h2><a class="text-link" href="/blog/?category=AI">更多AI文章 →</a></div><article class="article-row" data-path="AI/Claude Code 团队如何进行代码审查.md" data-category="AI" data-origin="translation" data-year="2026"><time class="row-date" datetime="2026-10-18">2026.10.18</time><div class="row-body"><h3><a href="/AI/Claude%20Code%20%E5%9B%A2%E9%98%9F%E5%A6%82%E4%BD%95%E8%BF%9B%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%A1%E6%9F%A5.html">Claude Code 团队如何进行代码审查</a></h3><p>面对智能体产出的海量代码，你该如何进行审查？在 Claude Code 团队，当我们实现了高覆盖率和深入审查之后，就开始着手优化：在不增加回滚或事故的前提下，把人工审查时间降到最低。 原文： How the Claude Code…</p></div><div class="row-meta"><span class="tag">AI</span><span>20 分钟</span><span class="article-origin origin-translation"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 5h12M9 3v2m4 0c-1 6-4 9-9 11m1-8c1 3 4 6 8 8m1 5 4-10 4 10m-6.5-4h5"/></svg><span>翻译</span></span></div></article><article class="article-row" data-path="AI/OpenClaw 多 Agent 写作实战.md" data-category="AI" data-origin="ai" data-year="2026"><time class="row-date" datetime="2026-03-14">2026.03.14</time><div class="row-body"><h3><a href="/AI/OpenClaw%20%E5%A4%9A%20Agent%20%E5%86%99%E4%BD%9C%E5%AE%9E%E6%88%98.html">把 OpenClaw 搭成你的 AI 中控台：安装、配置与多 Agent 协作实战</a></h3><p>很多人现在已经不满足于“在一个网页里和一个 AI 聊天”了。 更理想的状态是：我可以直接在 WhatsApp、Telegram、Discord，甚至 iMessage 里调度自己的 AI；这个 AI 不只是会聊天，还能分角色、分工…</p></div><div class="row-meta"><span class="tag">AI</span><span>16 分钟</span><span class="article-origin origin-ai"><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3Z"/></svg><span>AI 生成</span></span></div></article></section></main>
+<footer class="site-footer"><div class="wrap footer-inner"><span>© QINGENERAL — 保持好奇，持续记录。</span><span class="footer-links"><a href="https://github.com/QinGeneral" target="_blank" rel="noopener noreferrer">GITHUB</a><a href="/feed.xml">RSS</a><a href="/sitemap.xml">SITEMAP</a></span></div></footer>
+<button class="back-top" aria-label="回到顶部" hidden><svg class="icon " viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 14 6-6 6 6"/></svg></button>
+<script type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"d5d1a73bfefc4797998e83cb80de1477","spa":false}'></script></body></html>
