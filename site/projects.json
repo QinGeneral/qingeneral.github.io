@@ -36,6 +36,14 @@
     "group": "阅读与学习"
   },
   {
+    "name": "排序实验室 · Anatomy",
+    "description": "逐步演示 6 种排序算法的比较、移动与归位，支持自定义输入、单步播放和复杂度对比。",
+    "tags": "排序算法 · 交互可视化",
+    "url": "https://anatomy-sorting-lab.vercel.app/",
+    "icon": "layers",
+    "group": "阅读与学习"
+  },
+  {
     "name": "开发者模型能力雷达图",
     "description": "交互比较 Cursor、Claude Code 和 Codex 下的模型能力，查看 8 维雷达图、任务路由与评分权重。",
     "tags": "AI 模型 · 交互可视化",
